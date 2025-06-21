@@ -1,0 +1,656 @@
+[
+  {
+    "PatternName": "Flag",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "4 Corners",
+    "Category": "Traditional",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "+ Sign",
+    "Category": "Traditional",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Box Small",
+    "Category": "Box",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, true, true, true, false ],
+      [ false, true, false, true, false ],
+      [ false, true, true, true, false ],
+      [ false, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Box Large",
+    "Category": "Box",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Space-Invader",
+    "Pattern": [
+      [ false, true, false, true, false ],
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, true, true, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Smiley",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, true, false, true, false ],
+      [ false, false, false, false, false ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Sad",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, true, false, true, false ],
+      [ false, false, false, false, false ],
+      [ false, true, true, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "7",
+    "Category": "Numbers",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ false, false, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, true, false, false, false ],
+      [ true, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter L",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter U",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Cup",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ false, true, false, true, false ],
+      [ false, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter X",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, true, false, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter T",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "HashTag",
+    "Pattern": [
+      [ false, true, false, true, false ],
+      [ true, true, true, true, true ],
+      [ false, true, false, true, false ],
+      [ true, true, true, true, true ],
+      [ false, true, false, true, false ]
+    ]
+  },
+  {
+    "PatternName": "No Free Parking",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, false, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Heart",
+    "Pattern": [
+      [ false, true, false, true, false ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ false, true, true, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Arrow Down",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ true, true, true, true, true ],
+      [ false, true, true, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Arrow Up",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, true, true, false ],
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Arrow Left",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, true, false, false ],
+      [ true, true, true, true, true ],
+      [ false, true, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Arrow Right",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, false, true, true, false ],
+      [ true, true, true, true, true ],
+      [ false, false, true, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Postage Stamp (Top Left)",
+    "Pattern": [
+      [ true, true, false, false, false ],
+      [ true, true, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Postage Stamp (Top Right)",
+    "Pattern": [
+      [ false, false, false, true, true ],
+      [ false, false, false, true, true ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Postage Stamp (Bottom Left)",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ true, true, false, false, false ],
+      [ true, true, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Postage Stamp (Bottom Right)",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, false, false ],
+      [ false, false, false, true, true ],
+      [ false, false, false, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Diamond (Small)",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ false, false, true, false, false ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Diamond (Large)",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, false, true, false ],
+      [ true, false, false, false, true ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Train Tracks",
+    "Pattern": [
+      [ true, false, true, false, true ],
+      [ true, false, true, false, true ],
+      [ true, false, true, false, true ],
+      [ true, false, true, false, true ],
+      [ true, false, true, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter I Inverted",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, false, false, false, true ],
+      [ true, true, false, true, true ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter W",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, true, false, true ],
+      [ true, true, false, true, true ],
+      [ false, true, false, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter M",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, true, false, true, true ],
+      [ true, false, true, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter A",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, false, true, false ],
+      [ true, true, true, true, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter B",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter C",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, true, true, true, true ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ false, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter D",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter E",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, false, false, false, false ],
+      [ true, true, true, true, false ],
+      [ true, false, false, false, false ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter F",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, false, false, false, false ],
+      [ true, true, true, true, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter G",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, true, true, true, false ],
+      [ true, false, false, false, false ],
+      [ true, false, true, true, true ],
+      [ true, false, false, false, true ],
+      [ false, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter H",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter I",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter J",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, false, false, true, true ],
+      [ false, false, false, true, false ],
+      [ false, false, false, true, false ],
+      [ true, false, false, true, false ],
+      [ false, true, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter K",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, true, false ],
+      [ true, true, true, false, false ],
+      [ true, false, false, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter N",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, true, false, false, true ],
+      [ true, false, true, false, true ],
+      [ true, false, false, true, true ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter O",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ false, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter P",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter Q",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ true, false, true, false, true ],
+      [ false, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter R",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, false ],
+      [ true, false, false, false, true ],
+      [ true, true, true, true, false ],
+      [ true, false, false, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Letter S",
+    "Category": "Letters",
+    "Pattern": [
+      [ false, true, true, true, true ],
+      [ true, false, false, false, false ],
+      [ false, true, true, true, false ],
+      [ false, false, false, false, true ],
+      [ true, true, true, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter V",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ true, false, false, false, true ],
+      [ false, true, false, true, false ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter Y",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, false, false, false, true ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Letter Z",
+    "Category": "Letters",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ false, false, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, true, false, false, false ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Sword",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, true, true, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Blackout",
+    "Category": "Traditional",
+    "Pattern": [
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ],
+      [ true, true, true, true, true ]
+    ]
+  },
+  {
+    "PatternName": "Any Line",
+    "Category": "Traditional",
+    "Pattern": [
+      [ false, false, false, false, true ],
+      [ false, false, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, true, false, false, false ],
+      [ true, false, false, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Star",
+    "Pattern": [
+      [ true, false, true, false, true ],
+      [ false, true, true, true, false ],
+      [ true, true, false, true, true ],
+      [ false, true, true, true, false ],
+      [ true, false, true, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Rocket",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, true, true, false ],
+      [ false, true, true, true, false ],
+      [ true, true, true, true, true ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Tree",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ false, true, true, true, false ],
+      [ true, true, true, true, true ],
+      [ true, false, true, false, true ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Chair",
+    "Pattern": [
+      [ false, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, false, false, false, false ],
+      [ true, true, true, true, false ],
+      [ true, false, false, true, false ]
+    ]
+  },
+  {
+    "PatternName": "Tulip",
+    "Pattern": [
+      [ false, true, true, true, false ],
+      [ true, true, true, true, true ],
+      [ false, true, true, true, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Stick Man",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ true, true, true, true, true ],
+      [ false, false, true, false, false ],
+      [ false, true, false, true, false ],
+      [ true, false, false, false, true ]
+    ]
+  },
+  {
+    "PatternName": "Tree 2",
+    "Pattern": [
+      [ true, false, true, false, true ],
+      [ false, true, false, true, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ],
+      [ false, false, true, false, false ]
+    ]
+  },
+  {
+    "PatternName": "Airplane",
+    "Pattern": [
+      [ false, false, true, false, false ],
+      [ true, false, false, true, false ],
+      [ true, true, true, true, true ],
+      [ true, false, false, true, false ],
+      [ false, false, true, false, false ]
+    ]
+  }
+]
