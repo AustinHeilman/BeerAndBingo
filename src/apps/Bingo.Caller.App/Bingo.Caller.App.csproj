@@ -70,6 +70,7 @@
 	  <ProjectReference Include="..\..\libs\Bingo.ImageProcessing\Bingo.ImageProcessing.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.Infrastructure\Bingo.Infrastructure.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.Integrations\Bingo.Integrations.csproj" />
+	  <ProjectReference Include="..\..\libs\Bingo.Services\Bingo.Services.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.UI.Shared\Bingo.UI.Shared.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.ViewModel\Bingo.ViewModel.csproj" />
 	</ItemGroup>

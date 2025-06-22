@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Extensions\" />
-    <Folder Include="Interface\" />
-    <Folder Include="Service\" />
-    <Folder Include="Repository\" />
+    <Compile Remove="Interface\**" />
+    <Compile Remove="Repository\**" />
+    <Compile Remove="Service\**" />
+    <EmbeddedResource Remove="Interface\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <EmbeddedResource Remove="Service\**" />
+    <None Remove="Interface\**" />
+    <None Remove="Repository\**" />
+    <None Remove="Service\**" />
   </ItemGroup>
 
 </Project>

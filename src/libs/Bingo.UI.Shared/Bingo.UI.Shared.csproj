@@ -28,4 +28,15 @@
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="2.0.0" />
 		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="3.119.0" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Views\Patterns\PatternList\" />
+	  <Folder Include="Views\Patterns\PatternEditor\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Views\Patterns\PatternDisplay\PatternDisplayView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
 </Project>

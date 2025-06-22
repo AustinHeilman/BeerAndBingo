@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\patterns.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\patterns.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.6" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
     <PackageReference Include="System.Text.Json" Version="9.0.6" />
@@ -14,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bingo.Core\Bingo.Core.csproj" />
-    <ProjectReference Include="..\Bingo.Infrastructure\Bingo.Infrastructure.csproj" />
+    <ProjectReference Include="..\Bingo.Services\Bingo.Services.csproj" />
   </ItemGroup>
 
 </Project>
