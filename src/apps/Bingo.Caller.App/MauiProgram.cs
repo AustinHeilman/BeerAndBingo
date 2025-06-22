@@ -11,7 +11,7 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>()
             .AddCustomFonts()
-            .AddDebugLogging()
+            .AddDebugLogging()            
             .AddBeerAndBingoServices();
 
         return builder.Build();

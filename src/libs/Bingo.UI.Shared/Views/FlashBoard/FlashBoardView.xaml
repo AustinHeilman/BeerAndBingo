@@ -2,40 +2,90 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView">
 
-    <!-- Outer container to control vertical space -->
-    <Grid x:Name="BoardGrid" VerticalOptions="Fill"
-        HeightRequest="{OnPlatform Android=400, iOS=400, WinUI=400}" 
-        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
-        Padding="12"
-        RowSpacing="4"
-        ColumnSpacing="4">
+    <Grid VerticalOptions="Fill"
+          HeightRequest="{OnPlatform Android=400, iOS=400, WinUI=400}">
 
-        <!-- Define rows: one for headers, five for numbers -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+        <!-- Layer 0: Background number grid -->
+        <Grid x:Name="FlashBoardGrid"
+      VerticalOptions="Fill"
+      HorizontalOptions="Fill"
+      Padding="12"
+      RowSpacing="4"
+      ColumnSpacing="4"
+      BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <!-- Define 15 columns (B = 1–15, etc.) -->
-        <Grid.ColumnDefinitions>
-            <!-- Repeat 15 times -->
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <!-- ... or use a markup extension: ColumnDefinitions="Repeat(15, *)" if supported -->
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <!-- Header letters: B I N G O -->
-        <!-- These can span 3 columns each for visual grouping -->
-        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="B" Style="{StaticResource FlashBoardHeaderLabel}" />
-        <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="3" Text="I" Style="{StaticResource FlashBoardHeaderLabel}" />
-        <Label Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" Text="N" Style="{StaticResource FlashBoardHeaderLabel}" />
-        <Label Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="3" Text="G" Style="{StaticResource FlashBoardHeaderLabel}" />
-        <Label Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="3" Text="O" Style="{StaticResource FlashBoardHeaderLabel}" />
+            <!-- number cells injected in code-behind -->
 
-        <!-- Number buttons will be injected from code-behind -->
+        </Grid>
+
+        <!-- Layer 1: BINGO headers above cells -->
+        <Grid Padding="12"
+              RowSpacing="4"
+              ColumnSpacing="4"
+              InputTransparent="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="B"
+                   Style="{StaticResource FlashBoardHeaderLabel}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Label Grid.Row="1" Grid.Column="0" Text="I"
+                   Style="{StaticResource FlashBoardHeaderLabel}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Label Grid.Row="2" Grid.Column="0" Text="N"
+                   Style="{StaticResource FlashBoardHeaderLabel}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Label Grid.Row="3" Grid.Column="0" Text="G"
+                   Style="{StaticResource FlashBoardHeaderLabel}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+            <Label Grid.Row="4" Grid.Column="0" Text="O"
+                   Style="{StaticResource FlashBoardHeaderLabel}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+        </Grid>
     </Grid>
 </ContentView>
+<!-- Note: The code-behind will handle the dynamic creation of number cells and their interactions -->

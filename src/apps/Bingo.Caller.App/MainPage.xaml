@@ -5,7 +5,7 @@
              x:Class="Bingo.Caller.App.MainPage"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
-    <Grid RowSpacing="8" ColumnSpacing="12" Padding="16">
+    <Grid RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*" />
             <!-- FlashBoard -->
@@ -15,9 +15,11 @@
 
         <!-- FlashBoardView -->
         <flash:FlashBoardView
-            Grid.Row="0"
-            ViewModel="{Binding FlashBoardVM}"
-            IsInteractive="True" />
+    Grid.Row="0"
+    ViewModel="{Binding FlashBoardVM}"
+    IsInteractive="True"
+    VerticalOptions="Fill"
+    HorizontalOptions="Fill" />
 
         <!-- Caller Tools + Pattern Grid -->
         <Grid Grid.Row="1" ColumnSpacing="12">
@@ -33,10 +35,10 @@
             </VerticalStackLayout>
 
             <!-- Pattern Grid -->
-            <pattern:PatternDisplayView
-                Grid.Column="1"
-                ViewModel="{Binding PatternVM}" />
-
+            <flash:FlashBoardView
+                Grid.Row="0"
+                ViewModel="{Binding FlashBoardVM}"
+                IsInteractive="True" />
         </Grid>
     </Grid>
 </ContentPage>

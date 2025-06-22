@@ -39,6 +39,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Styles\FlashBoardTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\FlashBoard\FlashBoardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

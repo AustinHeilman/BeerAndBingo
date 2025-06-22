@@ -1,4 +1,5 @@
 ﻿using Bingo.ModelView.FlashBoard;
+using Bingo.UI.Shared.Device;
 
 namespace Bingo.UI.Shared.Views.FlashBoard;
 
@@ -9,6 +10,8 @@ public partial class FlashBoardView : ContentView
 
     public static readonly BindableProperty IsInteractiveProperty =
         BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), true);
+
+    private readonly FontSizeService _fontSizeService;
 
     public FlashBoardViewModel ViewModel
     {
@@ -24,9 +27,11 @@ public partial class FlashBoardView : ContentView
 
     private readonly Dictionary<int, Border> _cellMap = new();
 
-    public FlashBoardView()
+    public FlashBoardView(FontSizeService fontSizeService)
     {
         InitializeComponent();
+
+        _fontSizeService = fontSizeService;
     }
 
     private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
@@ -39,22 +44,26 @@ public partial class FlashBoardView : ContentView
 
     private void BuildFlashBoard(FlashBoardViewModel vm)
     {
-        BoardGrid.Children.Clear();
+        System.Diagnostics.Debug.WriteLine("⚡ FlashBoardView.BuildFlashBoard() triggered");
+
+        FlashBoardGrid.Children.Clear();
         _cellMap.Clear();
 
         int number = 1;
-        for (int col = 0; col < 15; col++)
+
+        for (int row = 0; row < 5; row++) // B to O
         {
-            for (int row = 1; row <= 5; row++)
+            for (int col = 1; col <= 15; col++) // skip col 0 (label)
             {
                 var cell = CreateCell(number, vm);
-                BoardGrid.Add(cell, col, row);
+                FlashBoardGrid.Add(cell, col, row);
                 _cellMap[number] = cell;
                 number++;
             }
         }
 
         UpdateCalledVisuals(vm);
+
         vm.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(vm.CalledNumbers))
@@ -67,11 +76,12 @@ public partial class FlashBoardView : ContentView
         var label = new Label
         {
             Text = number.ToString(),
-            FontSize = 14,
+            FontSize = _fontSizeService.GetFontSizes().NumberFontSize,
             HorizontalOptions = LayoutOptions.Center,
             VerticalOptions = LayoutOptions.Center,
             TextColor = Colors.Black,
-            Padding = new Thickness(6)
+            Padding = new Thickness(6),
+            FontFamily = "Consolas"
         };
 
         var border = new Border
