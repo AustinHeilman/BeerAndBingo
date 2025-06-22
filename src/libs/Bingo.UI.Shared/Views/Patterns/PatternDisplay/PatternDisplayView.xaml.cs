@@ -1,15 +1,35 @@
-﻿using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
-using System.Collections.Generic;
+﻿using Bingo.ViewModel.Patterns;
 
 namespace Bingo.UI.Shared.Views.Patterns.PatternDisplay;
 
 public partial class PatternDisplayView : ContentView
 {
+    public static readonly BindableProperty ViewModelProperty =
+        BindableProperty.Create(
+            nameof(ViewModel),
+            typeof(PatternDisplayViewModel),
+            typeof(PatternDisplayView),
+            default(PatternDisplayViewModel),
+            propertyChanged: OnViewModelChanged);
+
+    public PatternDisplayViewModel ViewModel
+    {
+        get => (PatternDisplayViewModel)GetValue(ViewModelProperty);
+        set => SetValue(ViewModelProperty, value);
+    }
+
     public PatternDisplayView()
     {
         InitializeComponent();
         BuildGrid();
+    }
+
+    private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        if (bindable is PatternDisplayView view)
+        {
+            view.BindingContext = newValue;
+        }
     }
 
     private void BuildGrid()

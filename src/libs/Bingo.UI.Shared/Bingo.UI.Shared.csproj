@@ -39,7 +39,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="FlashBoard\FlashBoardView.xaml">
+	  <MauiXaml Update="Views\FlashBoard\FlashBoardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Patterns\PatternDisplay\PatternDisplayView.xaml">

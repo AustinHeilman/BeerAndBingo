@@ -40,6 +40,11 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<EnablePreviewMsbuildFeatures>true</EnablePreviewMsbuildFeatures>
+		<EnableCompiledBindings>true</EnableCompiledBindings>
+	</PropertyGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android' Or '$(TargetFramework)' == 'net9.0-ios'">
 		<MauiSplashScreen Include="Resources\Splash\svgsplash.svg" Color="#512BD4" />
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -73,5 +78,9 @@
 	  <ProjectReference Include="..\..\libs\Bingo.Services\Bingo.Services.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.UI.Shared\Bingo.UI.Shared.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.ViewModel\Bingo.ViewModel.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Pages\" />
 	</ItemGroup>
 </Project>

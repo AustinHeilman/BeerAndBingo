@@ -10,4 +10,9 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Bingo.AppServices\Bingo.AppServices.csproj" />
+    <ProjectReference Include="..\Bingo.Services\Bingo.Services.csproj" />
+  </ItemGroup>
+
 </Project>

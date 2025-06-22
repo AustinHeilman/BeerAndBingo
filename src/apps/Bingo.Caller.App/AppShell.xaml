@@ -6,8 +6,7 @@
     xmlns:local="clr-namespace:Bingo.Caller.App"
     Title="Bingo.Caller.App">
 
-    <ShellContent
-        Title="Home"
+    <ShellContent        
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
