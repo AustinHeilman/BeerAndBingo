@@ -1,0 +1,41 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Bingo.UI.Shared.FlashBoard.FlashBoardView">
+
+    <!-- Outer container to control vertical space -->
+    <Grid x:Name="BoardGrid" VerticalOptions="Fill"
+        HeightRequest="{OnPlatform Android=400, iOS=400, WinUI=400}" 
+        BackgroundColor="{AppThemeBinding Light=White, Dark=Black}"
+        Padding="12"
+        RowSpacing="4"
+        ColumnSpacing="4">
+
+        <!-- Define rows: one for headers, five for numbers -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Define 15 columns (B = 1–15, etc.) -->
+        <Grid.ColumnDefinitions>
+            <!-- Repeat 15 times -->
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <!-- ... or use a markup extension: ColumnDefinitions="Repeat(15, *)" if supported -->
+        </Grid.ColumnDefinitions>
+
+        <!-- Header letters: B I N G O -->
+        <!-- These can span 3 columns each for visual grouping -->
+        <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="B" Style="{StaticResource FlashBoardHeaderLabel}" />
+        <Label Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="3" Text="I" Style="{StaticResource FlashBoardHeaderLabel}" />
+        <Label Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="3" Text="N" Style="{StaticResource FlashBoardHeaderLabel}" />
+        <Label Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="3" Text="G" Style="{StaticResource FlashBoardHeaderLabel}" />
+        <Label Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="3" Text="O" Style="{StaticResource FlashBoardHeaderLabel}" />
+
+        <!-- Number buttons will be injected from code-behind -->
+    </Grid>
+</ContentView>

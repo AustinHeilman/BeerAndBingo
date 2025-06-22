@@ -22,6 +22,12 @@ public class DefaultPatternRepository : IPatternRepository
         _cache = parsed?
             .Where(p =>
             {
+                logger.LogInformation("Checking pattern: \"{PatternName}\". Size={Rows}x{Cols}, HasActiveCells={HasAny}",
+                p.PatternName ?? "<unnamed>",
+                p.Pattern?.Length,
+                p.Pattern?.FirstOrDefault()?.Length ?? 0,
+                p.Pattern?.Any(r => r.Any(cell => cell)) ?? false);
+
                 bool isValid = !string.IsNullOrWhiteSpace(p.PatternName) &&
                                p.Pattern?.Length == 5 &&
                                p.Pattern.All(r => r.Length == 5) &&
@@ -40,14 +46,38 @@ public class DefaultPatternRepository : IPatternRepository
             ?? [];
     }
 
-    // Add this optional constructor
     public DefaultPatternRepository(string rawJson, ILogger<DefaultPatternRepository> logger)
     {
-        _cache = new List<BingoPattern>();
         var parsed = JsonSerializer.Deserialize<List<JsonPattern>>(rawJson);
-        // same .Where and logger logic as before...
-    }
 
+        _cache = parsed?
+            .Where(p =>
+            {
+                logger.LogInformation("Checking pattern: \"{PatternName}\". Size={Rows}x{Cols}, HasActiveCells={HasAny}",
+                    p.PatternName ?? "<unnamed>",
+                    p.Pattern?.Length,
+                    p.Pattern?.FirstOrDefault()?.Length ?? 0,
+                    p.Pattern?.Any(r => r.Any(cell => cell)) ?? false);
+
+                bool isValid = !string.IsNullOrWhiteSpace(p.PatternName) &&
+                               p.Pattern?.Length == 5 &&
+                               p.Pattern.All(r => r.Length == 5) &&
+                               p.Pattern.Any(r => r.Any(cell => cell));
+
+                if (!isValid)
+                    logger.LogWarning("Discarded invalid pattern: \"{PatternName}\" (missing name, bad grid, or no active cells)",
+                        p.PatternName ?? "<unnamed>");
+
+                return isValid;
+            })
+            .Select(p => new BingoPattern
+            {
+                Name = p.PatternName,
+                Cells = ToCellSet(p.Pattern)
+            })
+            .ToList()
+            ?? [];
+    }
 
     public Task<IEnumerable<BingoPattern>> GetAllAsync() => Task.FromResult<IEnumerable<BingoPattern>>(_cache);
 
