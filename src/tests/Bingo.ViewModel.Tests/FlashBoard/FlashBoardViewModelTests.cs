@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Bingo.ModelView.FlashBoard;
-using Xunit;
+﻿using Bingo.ModelView.FlashBoard;
 
 namespace Bingo.ViewModel.Tests.FlashBoard;
 

@@ -1,5 +1,4 @@
 ﻿using Bingo.Services.Patterns;
-using Xunit;
 
 namespace Bingo.Services.Tests.Patterns;
 

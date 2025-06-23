@@ -1,6 +1,5 @@
-﻿using Bingo.Core.Models;
-using Bingo.Core.Extensions;
-using Xunit;
+﻿using Bingo.Core.Extensions;
+using Bingo.Core.Models;
 
 namespace Bingo.Core.Tests.Models;
 

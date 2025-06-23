@@ -1,37 +1,31 @@
 ﻿using Bingo.ModelView.FlashBoard;
-using Bingo.UI.Shared.Device;
+using Bingo.UI.Shared.Services;
+using Bingo.UI.Shared.Styles;
 
 namespace Bingo.UI.Shared.Views.FlashBoard;
 
 public partial class FlashBoardView : ContentView
 {
-    public static readonly BindableProperty ViewModelProperty =
-        BindableProperty.Create(nameof(ViewModel), typeof(FlashBoardViewModel), typeof(FlashBoardView), propertyChanged: OnViewModelChanged);
+    private readonly StyleBindingService _styleBinding;
 
-    public static readonly BindableProperty IsInteractiveProperty =
-        BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), true);
+    public FlashBoardView(StyleBindingService styleBinding)
+    {
+        InitializeComponent();
+        _styleBinding = styleBinding;
+    }
 
-    private readonly FontSizeService _fontSizeService;
+    #region ViewModel Bindable Property
+
+    public static readonly BindableProperty ViewModelProperty = BindableProperty.Create(
+        nameof(ViewModel),
+        typeof(FlashBoardViewModel),
+        typeof(FlashBoardView),
+        propertyChanged: OnViewModelChanged);
 
     public FlashBoardViewModel ViewModel
     {
         get => (FlashBoardViewModel)GetValue(ViewModelProperty);
         set => SetValue(ViewModelProperty, value);
-    }
-
-    public bool IsInteractive
-    {
-        get => (bool)GetValue(IsInteractiveProperty);
-        set => SetValue(IsInteractiveProperty, value);
-    }
-
-    private readonly Dictionary<int, Border> _cellMap = new();
-
-    public FlashBoardView(FontSizeService fontSizeService)
-    {
-        InitializeComponent();
-
-        _fontSizeService = fontSizeService;
     }
 
     private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
@@ -42,75 +36,82 @@ public partial class FlashBoardView : ContentView
         }
     }
 
+    public static readonly BindableProperty IsInteractiveProperty = BindableProperty.Create(
+    nameof(IsInteractive),
+    typeof(bool),
+    typeof(FlashBoardView),
+    defaultValue: false);
+
+    #endregion
+
+    public bool IsInteractive
+    {
+        get => (bool)GetValue(IsInteractiveProperty);
+        set => SetValue(IsInteractiveProperty, value);
+    }
+
     private void BuildFlashBoard(FlashBoardViewModel vm)
     {
-        System.Diagnostics.Debug.WriteLine("⚡ FlashBoardView.BuildFlashBoard() triggered");
+        var font = _styleBinding.GetFontSet();
 
+        FlashBoardGrid.RowDefinitions.Clear();
+        FlashBoardGrid.ColumnDefinitions.Clear();
         FlashBoardGrid.Children.Clear();
-        _cellMap.Clear();
 
-        int number = 1;
+        for (int i = 0; i < 6; i++) FlashBoardGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
+        for (int i = 0; i < 5; i++) FlashBoardGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-        for (int row = 0; row < 5; row++) // B to O
+        for (int col = 0; col < 5; col++)
         {
-            for (int col = 1; col <= 15; col++) // skip col 0 (label)
+            var header = CreateHeaderCell((char)('B' + col));
+            FlashBoardGrid.Add(header, col, 0);
+        }
+
+        for (int row = 0; row < 5; row++)
+        {
+            for (int col = 0; col < 5; col++)
             {
-                var cell = CreateCell(number, vm);
-                FlashBoardGrid.Add(cell, col, row);
-                _cellMap[number] = cell;
-                number++;
+                int number = (col * 15) + row + 1;
+                var cell = CreateNumberCell(number);
+                FlashBoardGrid.Add(cell, col, row + 1);
             }
         }
+    }
 
-        UpdateCalledVisuals(vm);
+    private Border CreateHeaderCell(char letter)
+    {
+        var font = _styleBinding.GetFontSet();
+        var label = _styleBinding.CreateStyledLabel(font.Header, letter.ToString());
 
-        vm.PropertyChanged += (_, e) =>
+        label.TextColor = ThemeHelpers.GetAppColor("FlashHeaderTextColor", Colors.LightYellow);
+
+        return new Border
         {
-            if (e.PropertyName == nameof(vm.CalledNumbers))
-                UpdateCalledVisuals(vm);
+            BackgroundColor = Colors.Transparent,
+            Content = label,
+            Stroke = Colors.Black,
+            StrokeThickness = 1,
+            Margin = new Thickness(1)
         };
     }
 
-    private Border CreateCell(int number, FlashBoardViewModel vm)
+    private Border CreateNumberCell(int number)
     {
-        var label = new Label
+        var font = _styleBinding.GetFontSet();
+        var label = _styleBinding.CreateStyledLabel(font.Number, number.ToString());
+
+        label.TextColor = ThemeHelpers.GetAppColor("FlashCellTextColor", Colors.Black);
+
+        bool isCalled = false; // Placeholder for future GameService integration
+        string bgKey = isCalled ? "FlashCellBGColor_Called" : "FlashCellBGColor_Uncalled";
+
+        return new Border
         {
-            Text = number.ToString(),
-            FontSize = _fontSizeService.GetFontSizes().NumberFontSize,
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Center,
-            TextColor = Colors.Black,
-            Padding = new Thickness(6),
-            FontFamily = "Consolas"
+            BackgroundColor = ThemeHelpers.GetAppColor(bgKey, Colors.DarkGray),
+            Content = label,
+            Stroke = Colors.Black,
+            StrokeThickness = 1,
+            Margin = new Thickness(1)
         };
-
-        var border = new Border
-        {
-            StrokeThickness = 2,
-            Stroke = Colors.Transparent,
-            BackgroundColor = Colors.LightGray,
-            Content = label
-        };
-
-        if (IsInteractive)
-        {
-            var tap = new TapGestureRecognizer();
-            tap.Tapped += (_, __) => vm.ToggleCallCommand.Execute(number);
-            border.GestureRecognizers.Add(tap);
-        }
-
-        return border;
-    }
-
-    private void UpdateCalledVisuals(FlashBoardViewModel vm)
-    {
-        foreach (var kvp in _cellMap)
-        {
-            var number = kvp.Key;
-            var border = kvp.Value;
-            bool isCalled = vm.CalledNumbers.Contains(number);
-            border.BackgroundColor = isCalled ? Colors.Gold : Colors.LightGray;
-            border.Stroke = isCalled ? Colors.Yellow : Colors.Transparent;
-        }
     }
 }

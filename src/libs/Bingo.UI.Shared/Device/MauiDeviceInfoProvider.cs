@@ -1,5 +1,4 @@
-﻿using Microsoft.Maui.Devices;
-using Bingo.Core.Device;
+﻿using Bingo.Core.Device;
 
 namespace Bingo.UI.Shared.Device;
 

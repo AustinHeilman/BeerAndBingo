@@ -5,21 +5,13 @@
              x:Class="Bingo.Caller.App.MainPage"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
-    <Grid RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
+    <Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*" />
-            <!-- FlashBoard -->
             <RowDefinition Height="2*" />
-            <!-- Lower Row -->
         </Grid.RowDefinitions>
 
-        <!-- FlashBoardView -->
-        <flash:FlashBoardView
-    Grid.Row="0"
-    ViewModel="{Binding FlashBoardVM}"
-    IsInteractive="True"
-    VerticalOptions="Fill"
-    HorizontalOptions="Fill" />
+        <!-- The FlashBoardView will be added to MainGrid in code-behind -->
 
         <!-- Caller Tools + Pattern Grid -->
         <Grid Grid.Row="1" ColumnSpacing="12">
@@ -35,10 +27,7 @@
             </VerticalStackLayout>
 
             <!-- Pattern Grid -->
-            <flash:FlashBoardView
-                Grid.Row="0"
-                ViewModel="{Binding FlashBoardVM}"
-                IsInteractive="True" />
+            
         </Grid>
     </Grid>
 </ContentPage>

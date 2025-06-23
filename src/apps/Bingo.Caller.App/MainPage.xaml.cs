@@ -1,19 +1,24 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.ViewModel.MainPage.Caller;
-using Bingo.UI.Shared.Views.FlashBoard;
 
 namespace Bingo.Caller.App;
 
 public partial class MainPage : ContentPage
 {
-    private readonly FlashBoardView _flashBoardView;
-
-    public MainPage(FlashBoardView flashBoardView)
+    public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
     {
         InitializeComponent();
 
-        _flashBoardView = flashBoardView;
+        // Set up the FlashBoardView
+        flashBoardView.ViewModel = viewModel.FlashBoardVM;
+        flashBoardView.IsInteractive = true;
+        flashBoardView.VerticalOptions = LayoutOptions.Fill;
+        flashBoardView.HorizontalOptions = LayoutOptions.Fill;
 
-        BindingContext = new CallerMainPageViewModel();
+        // Add FlashBoardView to the MainGrid at row 0
+        MainGrid.Children.Add(flashBoardView);
+        Grid.SetRow(flashBoardView, 0);
+
+        BindingContext = viewModel;
     }
 }

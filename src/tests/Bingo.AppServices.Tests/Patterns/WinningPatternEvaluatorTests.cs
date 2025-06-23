@@ -1,6 +1,5 @@
-﻿using Bingo.Core.Models;
-using Bingo.AppServices.Patterns;
-using Xunit;
+﻿using Bingo.AppServices.Patterns;
+using Bingo.Core.Models;
 
 namespace Bingo.AppServices.Tests.Patterns;
 

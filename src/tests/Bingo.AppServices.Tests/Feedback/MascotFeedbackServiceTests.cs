@@ -1,5 +1,4 @@
 ﻿using Bingo.AppServices.Feedback;
-using Xunit;
 
 namespace Bingo.AppServices.Tests.Feedback;
 

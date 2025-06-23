@@ -1,10 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Bingo.Services.Patterns;
+﻿using Bingo.AppServices.Feedback;
 using Bingo.AppServices.Patterns;
-using Bingo.AppServices.Feedback;
 using Bingo.AppServices.Recognition;
 using Bingo.Services.Feedback;
+using Bingo.Services.Patterns;
 using Bingo.Services.Recognition;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bingo.AppServices.Configuration;
 

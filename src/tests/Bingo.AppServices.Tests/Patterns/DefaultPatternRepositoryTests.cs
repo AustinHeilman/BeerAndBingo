@@ -1,7 +1,5 @@
 ﻿using Bingo.AppServices.Patterns;
-using Bingo.Core.Models;
 using Microsoft.Extensions.Logging;
-using Xunit;
 
 namespace Bingo.AppServices.Tests.Patterns;
 

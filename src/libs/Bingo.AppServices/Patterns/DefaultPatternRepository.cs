@@ -34,7 +34,7 @@ public class DefaultPatternRepository : IPatternRepository
                                p.Pattern.Any(r => r.Any(cell => cell));
 
                 if (!isValid)
-                    logger.LogWarning("Discarded invalid pattern: \"{PatternName}\" (missing name, bad grid, or no active cells)", p.PatternName ?? "<unnamed>");                
+                    logger.LogWarning("Discarded invalid pattern: \"{PatternName}\" (missing name, bad grid, or no active cells)", p.PatternName ?? "<unnamed>");
 
                 return isValid;
             })
