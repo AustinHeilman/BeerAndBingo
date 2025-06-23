@@ -1,117 +1,134 @@
-﻿using Bingo.ModelView.FlashBoard;
-using Bingo.UI.Shared.Services;
-using Bingo.UI.Shared.Styles;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
+using Bingo.ViewModel.FlashBoard;
+using Bingo.Core.Domain.FlashBoard.Events;
 
-namespace Bingo.UI.Shared.Views.FlashBoard;
-
-public partial class FlashBoardView : ContentView
+namespace Bingo.UI.Shared.Views.FlashBoard
 {
-    private readonly StyleBindingService _styleBinding;
-
-    public FlashBoardView(StyleBindingService styleBinding)
+    public partial class FlashBoardView : ContentView
     {
-        InitializeComponent();
-        _styleBinding = styleBinding;
-    }
+        public bool IsInteractive { get; set; } = false;
 
-    #region ViewModel Bindable Property
-
-    public static readonly BindableProperty ViewModelProperty = BindableProperty.Create(
-        nameof(ViewModel),
-        typeof(FlashBoardViewModel),
-        typeof(FlashBoardView),
-        propertyChanged: OnViewModelChanged);
-
-    public FlashBoardViewModel ViewModel
-    {
-        get => (FlashBoardViewModel)GetValue(ViewModelProperty);
-        set => SetValue(ViewModelProperty, value);
-    }
-
-    private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is FlashBoardView view && newValue is FlashBoardViewModel vm)
+        public FlashBoardView()
         {
-            view.BuildFlashBoard(vm);
-        }
-    }
+            InitializeComponent();
+            BuildGrid();
 
-    public static readonly BindableProperty IsInteractiveProperty = BindableProperty.Create(
-    nameof(IsInteractive),
-    typeof(bool),
-    typeof(FlashBoardView),
-    defaultValue: false);
-
-    #endregion
-
-    public bool IsInteractive
-    {
-        get => (bool)GetValue(IsInteractiveProperty);
-        set => SetValue(IsInteractiveProperty, value);
-    }
-
-    private void BuildFlashBoard(FlashBoardViewModel vm)
-    {
-        var font = _styleBinding.GetFontSet();
-
-        FlashBoardGrid.RowDefinitions.Clear();
-        FlashBoardGrid.ColumnDefinitions.Clear();
-        FlashBoardGrid.Children.Clear();
-
-        for (int i = 0; i < 6; i++) FlashBoardGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
-        for (int i = 0; i < 5; i++) FlashBoardGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-
-        for (int col = 0; col < 5; col++)
-        {
-            var header = CreateHeaderCell((char)('B' + col));
-            FlashBoardGrid.Add(header, col, 0);
-        }
-
-        for (int row = 0; row < 5; row++)
-        {
-            for (int col = 0; col < 5; col++)
+            if (BindingContext is FlashBoardViewModel vm)
             {
-                int number = (col * 15) + row + 1;
-                var cell = CreateNumberCell(number);
-                FlashBoardGrid.Add(cell, col, row + 1);
+                vm.NumberCalledAnimationRequested += OnNumberCalledAnimationRequested;
             }
         }
-    }
 
-    private Border CreateHeaderCell(char letter)
-    {
-        var font = _styleBinding.GetFontSet();
-        var label = _styleBinding.CreateStyledLabel(font.Header, letter.ToString());
-
-        label.TextColor = ThemeHelpers.GetAppColor("FlashHeaderTextColor", Colors.LightYellow);
-
-        return new Border
+        private void BuildGrid()
         {
-            BackgroundColor = Colors.Transparent,
-            Content = label,
-            Stroke = Colors.Black,
-            StrokeThickness = 1,
-            Margin = new Thickness(1)
-        };
-    }
+            const int columns = 5;
+            const int rows = 15;
 
-    private Border CreateNumberCell(int number)
-    {
-        var font = _styleBinding.GetFontSet();
-        var label = _styleBinding.CreateStyledLabel(font.Number, number.ToString());
+            CellGrid.ColumnDefinitions.Clear();
+            for (int i = 0; i < columns; i++)
+                CellGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-        label.TextColor = ThemeHelpers.GetAppColor("FlashCellTextColor", Colors.Black);
+            CellGrid.RowDefinitions.Clear();
+            for (int i = 0; i < rows; i++)
+                CellGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-        bool isCalled = false; // Placeholder for future GameService integration
-        string bgKey = isCalled ? "FlashCellBGColor_Called" : "FlashCellBGColor_Uncalled";
+            if (BindingContext is not FlashBoardViewModel vm)
+                return;
 
-        return new Border
+            foreach (var cell in vm.Cells)
+            {
+                var label = new Label
+                {
+                    Text = cell.Number.ToString(),
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 16,
+                    TextColor = Colors.Black
+                };
+
+                var border = new Border
+                {
+                    Stroke = Colors.Black,
+                    StrokeThickness = 1,
+                    BackgroundColor = Colors.White,
+                    WidthRequest = 48,
+                    HeightRequest = 48,
+                    Padding = 4,
+                    Content = label,
+                    AutomationId = cell.Number.ToString()
+                };
+
+                int col = GetColumnIndex(cell);
+                int row = GetRowIndex(cell, vm);
+
+                CellGrid.Children.Add(border);
+                Grid.SetColumn(border, col);
+                Grid.SetRow(border, row);
+            }
+        }
+
+        private int GetColumnIndex(FlashBoardCellViewModel vm) => vm.Letter switch
         {
-            BackgroundColor = ThemeHelpers.GetAppColor(bgKey, Colors.DarkGray),
-            Content = label,
-            Stroke = Colors.Black,
-            StrokeThickness = 1,
-            Margin = new Thickness(1)
+            'B' => 0,
+            'I' => 1,
+            'N' => 2,
+            'G' => 3,
+            'O' => 4,
+            _ => 0
         };
+
+        private int GetRowIndex(FlashBoardCellViewModel vm, FlashBoardViewModel viewModel)
+        {
+            return viewModel.Cells
+                .Where(c => c.Letter == vm.Letter)
+                .OrderBy(c => c.Number)
+                .ToList()
+                .FindIndex(c => c.Number == vm.Number);
+        }
+
+        private void OnNumberCalledAnimationRequested(int number, FlashBoardEventSource source)
+        {
+            var border = CellGrid.Children
+                .OfType<Border>()
+                .FirstOrDefault(b => b.AutomationId == number.ToString());
+
+            if (border is not null)
+            {
+                AnimateCell(border, source);
+            }
+        }
+
+        private async void AnimateCell(Border border, FlashBoardEventSource source)
+        {
+            var flashColor = source switch
+            {
+                FlashBoardEventSource.Manual => Colors.Green,
+                FlashBoardEventSource.Random => Colors.Orange,
+                FlashBoardEventSource.Replay => Colors.Cyan,
+                FlashBoardEventSource.Undo => Colors.Gray,
+                FlashBoardEventSource.Redo => Colors.Blue,
+                _ => Colors.Yellow
+            };
+
+            var originalColor = border.BackgroundColor;
+            border.BackgroundColor = flashColor;
+
+            await border.ScaleTo(1.2, 100, Easing.CubicOut);
+            await border.ScaleTo(1.0, 100, Easing.CubicIn);
+            await Task.Delay(150);
+
+            border.BackgroundColor = originalColor;
+        }
+
+        public FlashBoardViewModel ViewModel
+        {
+            get => (FlashBoardViewModel)BindingContext;
+            set => BindingContext = value;
+        }
     }
 }

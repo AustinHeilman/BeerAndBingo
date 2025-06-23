@@ -1,41 +1,72 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Bingo.Core.Domain.FlashBoard;
+using Bingo.Core.Domain.FlashBoard.Events;
+using Bingo.Services.FlashBoard;
 using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
-namespace Bingo.ModelView.FlashBoard;
-
-public partial class FlashBoardViewModel : ObservableObject
+namespace Bingo.ViewModel.FlashBoard
 {
-    [ObservableProperty]
-    private ObservableCollection<int> calledNumbers = new();
-
-    [RelayCommand]
-    private void ToggleCall(int number)
+    public class FlashBoardViewModel
     {
-        if (CalledNumbers.Contains(number))
-            CalledNumbers.Remove(number);
-        else
-            CalledNumbers.Add(number);
+        private readonly FlashBoardService _service = new();
 
-        OnPropertyChanged(nameof(CompletedColumns));
-    }
+        public ObservableCollection<FlashBoardCellViewModel> Cells { get; } = new();
 
-    public IEnumerable<char> CompletedColumns
-    {
-        get
+        public event Action<int, FlashBoardEventSource>? NumberCalledAnimationRequested;
+        public IRelayCommand<int> ToggleCallCommand { get; }
+        public IReadOnlyList<FlashBoardGroup> Groups => _service.BoardGroups;
+
+        public FlashBoardViewModel()
         {
-            var completed = new List<char>();
-
-            for (int col = 0; col < 5; col++)
+            foreach (var group in _service.Board.Children)
             {
-                var columnNumbers = Enumerable.Range(0, 5)
-                    .Select(row => col + (row * 15) + 1);
-
-                if (columnNumbers.All(CalledNumbers.Contains))
-                    completed.Add((char)('B' + col));
+                foreach (var number in group.Cells)
+                {
+                    Cells.Add(new FlashBoardCellViewModel(number.Number, group.Letter));
+                }
             }
+            ToggleCallCommand = new RelayCommand<int>(ToggleCallNumber);
+            _service.NumberCalledChanged += OnNumberCalledChanged;
+            _service.GroupCompleted += OnGroupCompleted;
+        }
 
-            return completed;
+        public IReadOnlyList<int> CalledNumbers => _service.CalledNumbers;
+        public IEnumerable<char> CompletedColumns => _service.Board.Children
+        .Where(group => group.Cells.All(cell => cell.IsCalled))
+        .Select(group => group.Letter);
+
+        private void OnNumberCalledChanged(object? sender, FlashBoardCalledChangedEventArgs e)
+        {
+            var vm = Cells.FirstOrDefault(c => c.Number == e.Source.Number);
+            if (vm is not null)
+            {
+                vm.IsCalled = e.NewValue;
+                vm.SourceTag = e.SourceTag;
+                NumberCalledAnimationRequested?.Invoke(vm.Number, e.SourceTag);
+            }
+        }
+
+        private void OnGroupCompleted(object? sender, char letter)
+        {
+            foreach (var vm in Cells.Where(c => c.Letter == letter))
+            {
+                vm.GroupCompleted = true;
+            }
+        }
+
+        public void CallNumber(int number) => _service.CallNumber(number, FlashBoardEventSource.Manual);
+
+        public void UncallNumber(int number) => _service.UncallNumber(number);
+        public void LoadSnapshot(FlashBoardSnapshot snapshot) => _service.LoadSnapshot(snapshot);
+
+        private void ToggleCallNumber(int number)
+        {
+            if (_service.CalledNumbers.Contains(number))
+                _service.UncallNumber(number);
+            else
+                _service.CallNumber(number);
         }
     }
 }

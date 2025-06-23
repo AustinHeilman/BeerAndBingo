@@ -1,58 +1,117 @@
-﻿using Bingo.ModelView.FlashBoard;
+﻿using System.Linq;
+using Xunit;
+using Bingo.ViewModel.FlashBoard;
 
-namespace Bingo.ViewModel.Tests.FlashBoard;
-
-public class FlashBoardViewModelTests
+namespace Bingo.ViewModel.Tests.FlashBoard
 {
-    [Fact]
-    public void ToggleCallCommand_AddsNumber_WhenNotAlreadyCalled()
+    public class FlashBoardViewModelTests
     {
-        var vm = new FlashBoardViewModel();
+        [Fact]
+        public void ToggleCallCommand_AddsNumber_WhenNotAlreadyCalled()
+        {
+            var vm = new FlashBoardViewModel();
 
-        vm.ToggleCallCommand.Execute(42);
+            vm.ToggleCallCommand.Execute(42);
 
-        Assert.Contains(42, vm.CalledNumbers);
-    }
+            Assert.Contains(42, vm.CalledNumbers);
+        }
 
-    [Fact]
-    public void ToggleCallCommand_RemovesNumber_WhenAlreadyCalled()
-    {
-        var vm = new FlashBoardViewModel();
-        vm.CalledNumbers.Add(17);
+        [Fact]
+        public void ToggleCallCommand_RemovesNumber_WhenAlreadyCalled()
+        {
+            var vm = new FlashBoardViewModel();
+            vm.ToggleCallCommand.Execute(17); // Call once
+            vm.ToggleCallCommand.Execute(17); // Call again to uncall
 
-        vm.ToggleCallCommand.Execute(17);
+            Assert.DoesNotContain(17, vm.CalledNumbers);
+        }
 
-        Assert.DoesNotContain(17, vm.CalledNumbers);
-    }
+        [Fact]
+        public void CompletedColumns_ReturnsCorrectColumn_WhenAllItsNumbersAreCalled()
+        {
+            var vm = new FlashBoardViewModel();
+            var bGroup = vm.Groups.First(g => g.Letter == 'B');
 
-    [Fact]
-    public void CompletedColumns_ReturnsCorrectColumnLetter_WhenAllColumnNumbersAreCalled()
-    {
-        var vm = new FlashBoardViewModel();
+            foreach (var cell in bGroup.Cells)
+                vm.CallNumber(cell.Number);
 
-        // Complete the "B" column: 1, 16, 31, 46, 61
-        var bColumn = new[] { 1, 16, 31, 46, 61 };
-        foreach (var num in bColumn)
-            vm.CalledNumbers.Add(num);
+            var completed = vm.CompletedColumns.ToList();
 
-        var completed = vm.CompletedColumns.ToList();
+            Assert.Single(completed);
+            Assert.Contains('B', completed);
+        }
 
-        Assert.Contains('B', completed);
-        Assert.DoesNotContain('I', completed);
-        Assert.Single(completed);
-    }
+        [Fact]
+        public void CompletedColumns_Empty_WhenNoColumnIsFullyCalled()
+        {
+            var vm = new FlashBoardViewModel();
+            vm.CallNumber(3);   // Likely B-column
+            vm.CallNumber(33);  // Likely N-column
 
-    [Fact]
-    public void CompletedColumns_IsEmpty_WhenColumnsAreIncomplete()
-    {
-        var vm = new FlashBoardViewModel();
+            var completed = vm.CompletedColumns;
 
-        // Only part of "N" column
-        vm.CalledNumbers.Add(3);   // B column
-        vm.CalledNumbers.Add(33);  // N column
+            Assert.Empty(completed);
+        }
 
-        var completed = vm.CompletedColumns;
+        [Fact]
+        public void BColumnNumbers_ShouldBelongToGroupB()
+        {
+            var vm = new FlashBoardViewModel();
+            var bGroup = vm.Groups.First(g => g.Letter == 'B');
 
-        Assert.Empty(completed);
+            foreach (var cell in bGroup.Cells)
+                Assert.Equal('B', cell.Parent.Letter);
+        }
+
+        [Fact]
+        public void AllCalled_BGroup_Yields_CompletedColumnB()
+        {
+            var vm = new FlashBoardViewModel();
+            var bGroup = vm.Groups.First(g => g.Letter == 'B');
+
+            foreach (var cell in bGroup.Cells)
+                vm.CallNumber(cell.Number);
+
+            var completed = vm.CompletedColumns.ToList();
+
+            Assert.Contains('B', completed);
+        }
+
+        [Fact]
+        public void AllCalled_ThenUncall_ColumnIsNoLongerCompleted()
+        {
+            var vm = new FlashBoardViewModel();
+            var bGroup = vm.Groups.First(g => g.Letter == 'B');
+
+            foreach (var cell in bGroup.Cells)
+                vm.CallNumber(cell.Number);
+
+            // Uncall one number
+            var toUncall = bGroup.Cells.First().Number;
+            vm.UncallNumber(toUncall);
+
+            var completed = vm.CompletedColumns;
+
+            Assert.DoesNotContain('B', completed);
+        }
+
+        [Theory]
+        [InlineData('B')]
+        [InlineData('I')]
+        [InlineData('N')]
+        [InlineData('G')]
+        [InlineData('O')]
+        public void EachGroup_IsCompleted_WhenAllNumbersAreCalled(char letter)
+        {
+            var vm = new FlashBoardViewModel();
+            var group = vm.Groups.First(g => g.Letter == letter);
+
+            foreach (var cell in group.Cells)
+                vm.CallNumber(cell.Number);
+
+            var completed = vm.CompletedColumns;
+
+            Assert.Contains(letter, completed);
+        }
     }
 }

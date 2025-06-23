@@ -1,91 +1,20 @@
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView">
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView
+    x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewModel="clr-namespace:Bingo.ViewModel.FlashBoard;assembly=Bingo.ViewModel"
+    x:Name="RootControl"
+    BackgroundColor="Transparent">
 
-    <Grid VerticalOptions="Fill"
-          HeightRequest="{OnPlatform Android=400, iOS=400, WinUI=400}">
+    <ContentView.BindingContext>
+        <viewModel:FlashBoardViewModel />
+    </ContentView.BindingContext>
 
-        <!-- Layer 0: Background number grid -->
-        <Grid x:Name="FlashBoardGrid"
-      VerticalOptions="Fill"
-      HorizontalOptions="Fill"
-      Padding="12"
-      RowSpacing="4"
-      ColumnSpacing="4"
-      BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
-            
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- number cells injected in code-behind -->
-
-        </Grid>
-
-        <!-- Layer 1: BINGO headers above cells -->
-        <Grid Padding="12"
-              RowSpacing="4"
-              ColumnSpacing="4"
-              InputTransparent="True">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-            </Grid.ColumnDefinitions>
-
-            <Label Grid.Row="0" Grid.Column="0" Text="B"
-                   Style="{StaticResource FlashBoardHeaderLabel}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-
-            <Label Grid.Row="1" Grid.Column="0" Text="I"
-                   Style="{StaticResource FlashBoardHeaderLabel}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-
-            <Label Grid.Row="2" Grid.Column="0" Text="N"
-                   Style="{StaticResource FlashBoardHeaderLabel}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-
-            <Label Grid.Row="3" Grid.Column="0" Text="G"
-                   Style="{StaticResource FlashBoardHeaderLabel}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-
-            <Label Grid.Row="4" Grid.Column="0" Text="O"
-                   Style="{StaticResource FlashBoardHeaderLabel}"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center" />
-        </Grid>
+    <Grid x:Name="CellGrid"
+          Padding="8"
+          ColumnSpacing="4"
+          RowSpacing="4">
+        <!-- Cells populated in code-behind -->
     </Grid>
 </ContentView>
-<!-- Note: The code-behind will handle the dynamic creation of number cells and their interactions -->

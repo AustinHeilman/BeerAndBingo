@@ -1,5 +1,5 @@
 ﻿using Bingo.AppServices.Patterns;
-using Bingo.ModelView.FlashBoard;
+using Bingo.ViewModel.FlashBoard;
 using Bingo.ViewModel.Patterns;
 using Microsoft.Extensions.Logging.Abstractions;
 namespace Bingo.ViewModel.MainPage.Caller;
@@ -14,8 +14,8 @@ public class CallerMainPageViewModel
         PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository(NullLogger<DefaultPatternRepository>.Instance));
 
         // Just to test initial state
-        FlashBoardVM.CalledNumbers.Add(7);
-        FlashBoardVM.CalledNumbers.Add(23);
-        FlashBoardVM.CalledNumbers.Add(68);
+        FlashBoardVM.CallNumber(7);
+        FlashBoardVM.CallNumber(23);
+        FlashBoardVM.CallNumber(68);
     }
 }

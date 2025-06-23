@@ -24,11 +24,13 @@ namespace Bingo.Services.FlashBoard
 
         public IReadOnlyList<int> CalledNumbers => board.CalledNumbers.ToList();
 
-        private FlashBoardEventSource sourceTag = FlashBoardEventSource.Manual;
-        public void SetSourceTag(FlashBoardEventSource tag) => sourceTag = tag;
+        private FlashBoardEventSource gbl_sourcetag = FlashBoardEventSource.Manual;
+        public void SetSourceTag(FlashBoardEventSource tag) => gbl_sourcetag = tag;
 
         public IReadOnlyList<(string Action, int Number)> ActionHistory =>
             history.Select(h => (h.Action.ToString(), h.Number)).ToList();
+
+        public IReadOnlyList<FlashBoardGroup> BoardGroups => board.Children;
 
         public FlashBoardService()
         {
@@ -53,26 +55,31 @@ namespace Bingo.Services.FlashBoard
         {
             foreach (var num in board.CalledNumbers.ToList())
             {
-                board.UncallNumber(num, sourceTag);
+                board.UncallNumber(num, gbl_sourcetag);
             }
 
             history.Clear();
         }
 
-        public void CallNumber(int number)
+        public void CallNumber(int number, FlashBoardEventSource sourcetag)
         {
             if (!board.IsValidNumber(number)) return;
             if (board.CalledNumbers.Contains(number)) return;
 
-            board.CallNumber(number, sourceTag);
+            board.CallNumber(number, sourcetag);
             history.Add((ActionType.Call, number));
+        }
+
+        public void CallNumber(int number)
+        {
+            CallNumber(number, gbl_sourcetag);
         }
 
         public void UncallNumber(int number)
         {
             if (!board.CalledNumbers.Contains(number)) return;
 
-            board.UncallNumber(number, sourceTag);
+            board.UncallNumber(number, gbl_sourcetag);
             history.Add((ActionType.Uncall, number));
         }
 
@@ -109,19 +116,19 @@ namespace Bingo.Services.FlashBoard
 
         public void LoadSnapshot(FlashBoardSnapshot snapshot)
         {
-            sourceTag = FlashBoardEventSource.Replay;
+            gbl_sourcetag = FlashBoardEventSource.Replay;
             NewGame();
 
             foreach (int number in snapshot.CalledNumbers)
             {
                 if (board.IsValidNumber(number))
                 {
-                    board.CallNumber(number, sourceTag);
+                    board.CallNumber(number, gbl_sourcetag);
                     history.Add((ActionType.Call, number));
                 }
             }
 
-            sourceTag = FlashBoardEventSource.Manual;
+            gbl_sourcetag = FlashBoardEventSource.Manual;
         }
     }
 }
