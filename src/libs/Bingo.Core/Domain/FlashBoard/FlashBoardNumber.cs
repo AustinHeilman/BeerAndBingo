@@ -1,5 +1,5 @@
-﻿using Bingo.Core.Domain.FlashBoard.Events;
-using System;
+﻿using System;
+using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Core.Domain.FlashBoard
 {
@@ -8,31 +8,33 @@ namespace Bingo.Core.Domain.FlashBoard
         public int Number { get; }
         public FlashBoardGroup Parent { get; internal set; }
         public FlashBoardObj? Board => Parent?.Parent;
+
         public int ColumnIndex => Board?.Children.IndexOf(Parent) ?? -1;
 
         private bool _isCalled;
 
-        public event EventHandler<FlashBoardCalledChangedEventArgs>? IsCalledChanged;
+        public bool IsCalled => _isCalled;
 
-        public bool IsCalled
-        {
-            get => _isCalled;
-            set
-            {
-                if (_isCalled != value)
-                {
-                    bool oldValue = _isCalled;
-                    _isCalled = value;
-                    IsCalledChanged?.Invoke(this, new FlashBoardCalledChangedEventArgs(this, oldValue, _isCalled));
-                }
-            }
-        }
+        public event EventHandler<FlashBoardCalledChangedEventArgs>? IsCalledChanged;
 
         public FlashBoardNumber(int number, FlashBoardGroup parent)
         {
             Number = number;
             Parent = parent;
             _isCalled = false;
+        }
+
+        public void SetCalled(bool value, FlashBoardEventSource source)
+        {
+            if (_isCalled != value)
+            {
+                bool oldValue = _isCalled;
+                _isCalled = value;
+                IsCalledChanged?.Invoke(
+                    this,
+                    new FlashBoardCalledChangedEventArgs(this, oldValue, _isCalled, source)
+                );
+            }
         }
 
         public override bool Equals(object? obj) =>

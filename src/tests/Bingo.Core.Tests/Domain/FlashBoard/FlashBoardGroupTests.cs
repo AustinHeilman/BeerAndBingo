@@ -1,8 +1,8 @@
 ﻿using Xunit;
 using Bingo.Core.Domain.FlashBoard;
+using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
-
 public class FlashBoardGroupTests
 {
     [Fact]
@@ -15,7 +15,7 @@ public class FlashBoardGroupTests
         group.GroupCompleted += (_, letter) => completed = letter;
 
         foreach (var number in group.Cells)
-            number.IsCalled = true;
+            number.SetCalled(true, FlashBoardEventSource.Manual);
 
         Assert.Equal(group.Letter, completed);
     }
@@ -30,7 +30,7 @@ public class FlashBoardGroupTests
         group.GroupCompleted += (_, _) => fired = true;
 
         for (int i = 0; i < group.Cells.Count - 1; i++)
-            group.Cells[i].IsCalled = true;
+            group.Cells[i].SetCalled(true, FlashBoardEventSource.Manual);
 
         Assert.False(fired);
     }

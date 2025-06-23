@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Bingo.Core.Domain.FlashBoard.Events;
+using System.Text;
+using static Bingo.Core.Domain.FlashBoard.Events.FlashBoardCalledChangedEventArgs;
 
 namespace Bingo.Core.Domain.FlashBoard;
 
@@ -51,18 +53,16 @@ public class FlashBoardObj
 
     public IEnumerable<int> CalledNumbers => AllCells.Where(c => c.IsCalled).Select(c => c.Number);
 
-    public void CallNumber(int number)
+    public void CallNumber(int number, FlashBoardEventSource source)
     {
         var cell = AllCells.FirstOrDefault(c => c.Number == number);
-        if (cell != null)
-            cell.IsCalled = true;
+        cell?.SetCalled(true, source);
     }
 
-    public void UncallNumber(int number)
+    public void UncallNumber(int number, FlashBoardEventSource source)
     {
         var cell = AllCells.FirstOrDefault(c => c.Number == number);
-        if (cell != null)
-            cell.IsCalled = false;
+        cell?.SetCalled(false, source);
     }
 
     public IEnumerable<char> CompletedColumns()

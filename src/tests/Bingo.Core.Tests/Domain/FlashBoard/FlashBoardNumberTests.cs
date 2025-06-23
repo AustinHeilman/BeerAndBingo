@@ -7,32 +7,34 @@ namespace Bingo.Core.Tests.Domain.FlashBoard;
 public class FlashBoardNumberTests
 {
     [Fact]
-    public void IsCalled_ShouldRaiseEvent_WhenValueChanges()
+    public void SetCalled_ShouldRaiseEvent_WhenValueChanges()
     {
         var group = new FlashBoardGroup('B', 1, 15, new FlashBoardObj());
         var number = group.Cells.First();
         FlashBoardCalledChangedEventArgs? capturedEvent = null;
 
-        number.IsCalledChanged += (s, e) => capturedEvent = e;
+        number.IsCalledChanged += (_, e) => capturedEvent = e;
 
-        number.IsCalled = true;
+        number.SetCalled(true, FlashBoardEventSource.Manual);
 
         Assert.NotNull(capturedEvent);
         Assert.True(capturedEvent!.NewValue);
         Assert.False(capturedEvent.OldValue);
         Assert.Equal(number, capturedEvent.Source);
+        Assert.Equal(FlashBoardEventSource.Manual, capturedEvent.SourceTag);
     }
 
     [Fact]
-    public void IsCalled_ShouldNotRaiseEvent_WhenValueIsSame()
+    public void SetCalled_ShouldNotRaiseEvent_WhenValueIsSame()
     {
         var group = new FlashBoardGroup('B', 1, 15, new FlashBoardObj());
         var number = group.Cells.First();
-
         bool wasRaised = false;
+
         number.IsCalledChanged += (_, _) => wasRaised = true;
 
-        number.IsCalled = false; // default value
+        number.SetCalled(false, FlashBoardEventSource.Manual);
+
         Assert.False(wasRaised);
     }
 }
