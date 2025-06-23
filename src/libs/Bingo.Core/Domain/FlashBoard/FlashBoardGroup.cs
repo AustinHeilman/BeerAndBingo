@@ -1,27 +1,42 @@
-﻿namespace Bingo.Core.Domain.FlashBoard;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-public class FlashBoardGroup
+namespace Bingo.Core.Domain.FlashBoard
 {
-    public char Letter { get; }
-    public FlashBoard? Parent { get; internal set; }
-
-    public List<FlashBoardNumber> Cells { get; } = new();
-
-    public FlashBoardGroup(char letter, int start, int end, FlashBoard parent)
+    public class FlashBoardGroup
     {
-        Letter = letter;
-        Parent = parent;
+        public char Letter { get; }
+        public FlashBoardObj? Parent { get; internal set; }
+        public List<FlashBoardNumber> Cells { get; } = new();
 
-        for (int number = start; number <= end; number++)
+        public event EventHandler<char>? GroupCompleted;
+
+        public FlashBoardGroup(char letter, int start, int end, FlashBoardObj parent)
         {
-            var cell = new FlashBoardNumber(number, this);            
-            Cells.Add(cell);
+            Letter = letter;
+            Parent = parent;
+
+            for (int number = start; number <= end; number++)
+            {
+                var cell = new FlashBoardNumber(number, this);
+                cell.IsCalledChanged += (s, e) => CheckCompletion();
+                Cells.Add(cell);
+            }
         }
+
+        private void CheckCompletion()
+        {
+            if (Cells.All(c => c.IsCalled))
+            {
+                GroupCompleted?.Invoke(this, Letter);
+            }
+        }
+
+        public int Index => Parent?.Children.IndexOf(this) ?? -1;
+
+        public int GetCellIndex(FlashBoardNumber cell) => Cells.IndexOf(cell);
+
+        public int Count => Cells.Count;
     }
-
-    public int Index => Parent?.Children.IndexOf(this) ?? -1;
-
-    public int GetCellIndex(FlashBoardNumber cell) => Cells.IndexOf(cell);
-
-    public int Count => Cells.Count;
 }

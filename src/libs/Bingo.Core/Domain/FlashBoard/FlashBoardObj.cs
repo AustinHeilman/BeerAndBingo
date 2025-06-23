@@ -2,11 +2,11 @@
 
 namespace Bingo.Core.Domain.FlashBoard;
 
-public class FlashBoard
+public class FlashBoardObj
 {    
     public List<FlashBoardGroup> Children { get; private set; } = new();
 
-    public FlashBoard()
+    public FlashBoardObj()
     {
         BuildLetterGroups();
     }

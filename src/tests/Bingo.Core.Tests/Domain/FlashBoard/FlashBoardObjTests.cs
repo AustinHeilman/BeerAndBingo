@@ -2,13 +2,12 @@
 using Bingo.Core.Domain.FlashBoard;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
-
-public class FlashBoardTests
+public class FlashBoardObjTests
 {
     [Fact]
     public void FlashBoard_ShouldInitializeWithFiveLetterGroups_AndFifteenNumbersEach()
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
 
         Assert.Equal(5, board.Children.Count); // B, I, N, G, O
 
@@ -31,7 +30,7 @@ public class FlashBoardTests
     [InlineData('O', 67)]
     public void GetCell_ShouldReturnCorrectCell(char letter, int number)
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         var cell = board.GetCell(letter, number);
 
         Assert.NotNull(cell);
@@ -44,7 +43,7 @@ public class FlashBoardTests
     [InlineData('Z', 5)]
     public void GetCell_ShouldReturnNull_IfOutOfRange(char letter, int number)
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         var cell = board.GetCell(letter, number);
 
         Assert.Null(cell);
@@ -53,7 +52,7 @@ public class FlashBoardTests
     [Fact]
     public void CallAndUncallNumber_ShouldToggleIsCalledFlag()
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         int number = 12;
 
         board.CallNumber(number);
@@ -66,7 +65,7 @@ public class FlashBoardTests
     [Fact]
     public void CompletedColumns_ShouldReturnLetter_WhenGroupIsFullyCalled()
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         var group = board.Children.First(g => g.Letter == 'B');
 
         foreach (var cell in group.Cells)
@@ -82,7 +81,7 @@ public class FlashBoardTests
     [InlineData(75)]
     public void IsValidNumber_ShouldReturnTrue_ForValidValues(int number)
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         Assert.True(board.IsValidNumber(number));
     }
 
@@ -91,14 +90,14 @@ public class FlashBoardTests
     [InlineData(76)]
     public void IsValidNumber_ShouldReturnFalse_ForOutOfBounds(int number)
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         Assert.False(board.IsValidNumber(number));
     }
 
     [Fact]
     public void Contains_ShouldReturnTrue_IfCellExists()
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         var exists = board.Contains('N', 40);
         Assert.True(exists);
     }
@@ -106,7 +105,7 @@ public class FlashBoardTests
     [Fact]
     public void Contains_ShouldReturnFalse_IfCellDoesNotExist()
     {
-        var board = new Bingo.Core.Domain.FlashBoard.FlashBoard();
+        var board = new Bingo.Core.Domain.FlashBoard.FlashBoardObj();
         var exists = board.Contains('N', 99);
         Assert.False(exists);
     }
