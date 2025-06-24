@@ -1,5 +1,6 @@
 ﻿using Bingo.Core.Device;
 using Bingo.UI.Shared.Styles;
+using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Services;
 
@@ -29,7 +30,8 @@ public class FontStyleService
         }
 
         if (isTablet)
-        {
+        {   
+            Debug.WriteLine($"Tablet detected with diagonal inches: {inches}");
             if (inches >= 11)
             {
                 return (FontProfile.TabletXL, new FontSet(
@@ -37,6 +39,15 @@ public class FontStyleService
                     new(48, FontAttributes.Bold, "Consolas"),
                     new(34, FontAttributes.None, "Roboto"),
                     new(24, FontAttributes.None, "Roboto")
+                ));
+            }
+            else if ( inches >= 7.0)
+            {
+                return (FontProfile.Tablet, new FontSet(
+                    new(38, FontAttributes.Bold, "Consolas"),
+                    new(30, FontAttributes.Bold, "Consolas"),
+                    new(28, FontAttributes.None, "Roboto"),
+                    new(18, FontAttributes.None, "Roboto")
                 ));
             }
             else

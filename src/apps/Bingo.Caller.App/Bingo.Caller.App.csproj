@@ -20,7 +20,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>Bingo.Caller.App</ApplicationTitle>
+		<ApplicationTitle>Beer&amp;Bingo Caller</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.bingo.caller.app</ApplicationId>
