@@ -24,7 +24,7 @@ namespace Bingo.ViewModel.FlashBoard
             {
                 foreach (var number in group.Cells)
                 {
-                    Cells.Add(new FlashBoardCellViewModel(number.Number, group.Letter));
+                    Cells.Add(new FlashBoardCellViewModel(number));
                 }
             }
             ToggleCallCommand = new RelayCommand<int>(ToggleCallNumber);
@@ -42,8 +42,6 @@ namespace Bingo.ViewModel.FlashBoard
             var vm = Cells.FirstOrDefault(c => c.Number == e.Source.Number);
             if (vm is not null)
             {
-                vm.IsCalled = e.NewValue;
-                vm.SourceTag = e.SourceTag;
                 NumberCalledAnimationRequested?.Invoke(vm.Number, e.SourceTag);
             }
         }

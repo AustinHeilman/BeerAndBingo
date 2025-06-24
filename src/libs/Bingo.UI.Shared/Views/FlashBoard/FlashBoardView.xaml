@@ -12,9 +12,10 @@
     </ContentView.BindingContext>
 
     <Grid x:Name="CellGrid"
-          Padding="8"
-          ColumnSpacing="4"
-          RowSpacing="4">
-        <!-- Cells populated in code-behind -->
-    </Grid>
+      RowSpacing="1"
+      ColumnSpacing="1"
+      Padding="6"
+      BackgroundColor="Black" />
+
+    <!-- Cells populated in code-behind -->
 </ContentView>

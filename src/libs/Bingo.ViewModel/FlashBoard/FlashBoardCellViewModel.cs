@@ -1,20 +1,29 @@
-﻿namespace Bingo.ViewModel.FlashBoard
-{
-    using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Domain.FlashBoard;
+using Bingo.Core.Domain.FlashBoard.Events;
 
+namespace Bingo.ViewModel.FlashBoard
+{
     public class FlashBoardCellViewModel
     {
-        public int Number { get; }
-        public char Letter { get; }
+        private readonly FlashBoardNumber _model;
 
-        public bool IsCalled { get; set; }
-        public bool GroupCompleted { get; set; }
-        public FlashBoardEventSource SourceTag { get; set; }
-
-        public FlashBoardCellViewModel(int number, char letter)
+        public FlashBoardCellViewModel(FlashBoardNumber model)
         {
-            Number = number;
-            Letter = letter;
+            _model = model;
+            _model.IsCalledChanged += (s, e) =>
+            {
+                IsCalled = e.NewValue;
+                SourceTag = e.SourceTag;
+            };
         }
+
+        public int Number => _model.Number;
+        public char Letter => _model.Parent.Letter;
+
+        public bool IsCalled { get; private set; } = false;
+        public bool GroupCompleted { get; set; } = false;
+        public FlashBoardEventSource SourceTag { get; private set; } = FlashBoardEventSource.Unknown;
+
+        public FlashBoardNumber Model => _model;
     }
 }
