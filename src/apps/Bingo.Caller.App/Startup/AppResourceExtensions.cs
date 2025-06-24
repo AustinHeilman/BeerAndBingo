@@ -2,6 +2,7 @@
 using Bingo.Core.Device;
 using Microsoft.Maui.Controls;
 using Bingo.UI.Shared.Device;
+using Bingo.UI.Shared.Services;
 
 namespace Bingo.Caller.App.Startup;
 
@@ -24,7 +25,9 @@ public static class AppResourceExtensions
         // Dynamically scaled typography based on screen size + platform
         var deviceInfoProvider = new MauiDeviceInfoProvider();
         var fontService = new FontStyleService(deviceInfoProvider);
-        var fontSet = fontService.GetFontSet();
+        var (profile, fontSet) = fontService.GetFontProfile();
+        app.Resources["FlashBoardFontSet"] = fontSet;
+        app.Resources["FlashBoardFontProfile"] = profile;
 
         // Store font set as a global resource
         app.Resources["FlashBoardFontSet"] = fontSet;
@@ -34,5 +37,13 @@ public static class AppResourceExtensions
         app.Resources["FlashBoardNumberFontStyle"] = fontSet.Number;
         app.Resources["FlashBoardButtonFontStyle"] = fontSet.Button;
         app.Resources["FlashBoardLabelFontStyle"] = fontSet.Label;
+
+        app.Resources["FlashBoardNumberFontSize"] = fontSet.Number.Size;
+        app.Resources["FlashBoardNumberFontFamily"] = fontSet.Number.FontFamily;
+        app.Resources["FlashBoardNumberFontAttributes"] = fontSet.Number.Attributes;
+
+        app.Resources["FlashBoardHeaderFontSize"] = fontSet.Header.Size;
+        app.Resources["FlashBoardHeaderFontFamily"] = fontSet.Header.FontFamily;
+        app.Resources["FlashBoardHeaderFontAttributes"] = fontSet.Header.Attributes;
     }
 }

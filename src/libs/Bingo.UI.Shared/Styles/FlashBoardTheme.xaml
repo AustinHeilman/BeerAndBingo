@@ -7,9 +7,10 @@
 
     <!-- Text + Layout only -->
     <Style x:Key="FlashBoardNumberCell" TargetType="Label">
-        <Setter Property="FontFamily" Value="Consolas" />
-        <Setter Property="FontSize" Value="32" />
-        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontFamily" Value="{DynamicResource FlashBoardNumberFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource FlashBoardNumberFontSize}" />
+        <Setter Property="FontAttributes" Value="{DynamicResource FlashBoardNumberFontAttributes}" />
+
         <Setter Property="HorizontalOptions" Value="Fill" />
         <Setter Property="VerticalOptions" Value="Fill" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -20,9 +21,10 @@
 
     <!-- Header style -->
     <Style x:Key="FlashBoardHeaderLabel" TargetType="Label">
-        <Setter Property="FontFamily" Value="Consolas" />
-        <Setter Property="FontSize" Value="36" />
-        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontFamily" Value="{DynamicResource FlashBoardHeaderFontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource FlashBoardHeaderFontSize}" />
+        <Setter Property="FontAttributes" Value="{DynamicResource FlashBoardHeaderFontAttributes}" />
+
         <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />

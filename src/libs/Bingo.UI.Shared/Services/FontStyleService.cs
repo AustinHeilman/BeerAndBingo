@@ -1,5 +1,8 @@
 ﻿using Bingo.Core.Device;
 using Bingo.UI.Shared.Styles;
+using Microsoft.Maui.Devices;
+
+namespace Bingo.UI.Shared.Services;
 
 public class FontStyleService
 {
@@ -10,7 +13,7 @@ public class FontStyleService
         _deviceInfo = deviceInfo;
     }
 
-    public FontSet GetFontSet()
+    public (FontProfile Profile, FontSet FontSet) GetFontProfile()
     {
         bool isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
         bool isTablet = _deviceInfo.FormFactor == DeviceFormFactor.Tablet;
@@ -18,38 +21,51 @@ public class FontStyleService
 
         if (isWindows)
         {
-            return new FontSet(
+            return (FontProfile.Windows, new FontSet(
                 new(64, FontAttributes.Bold, "Consolas"),
                 new(56, FontAttributes.Bold, "Consolas"),
                 new(42, FontAttributes.None, "Segoe UI"),
                 new(28, FontAttributes.None, "Segoe UI")
-            );
+            ));
         }
 
         if (isTablet)
         {
-            return inches switch
+            if (inches >= 11)
             {
-                >= 11 => new FontSet(
+                return (FontProfile.TabletXL, new FontSet(
                     new(54, FontAttributes.Bold, "Consolas"),
                     new(48, FontAttributes.Bold, "Consolas"),
                     new(34, FontAttributes.None, "Roboto"),
                     new(24, FontAttributes.None, "Roboto")
-                ),
-                _ => new FontSet(
+                ));
+            }
+            else
+            {
+                return (FontProfile.Tablet, new FontSet(
                     new(48, FontAttributes.Bold, "Consolas"),
                     new(42, FontAttributes.Bold, "Consolas"),
                     new(30, FontAttributes.None, "Roboto"),
                     new(20, FontAttributes.None, "Roboto")
-                )
-            };
+                ));
+            }
         }
 
-        return new FontSet(
+        if (inches < 6.4)
+        {
+            return (FontProfile.CompactPhone, new FontSet(
+                new(30, FontAttributes.Bold, "Consolas"),
+                new(19, FontAttributes.Bold, "Consolas"),
+                new(18, FontAttributes.None, "Roboto"),
+                new(14, FontAttributes.None, "Roboto")
+            ));
+        }
+
+        return (FontProfile.Phone, new FontSet(
             new(40, FontAttributes.Bold, "Consolas"),
             new(34, FontAttributes.Bold, "Consolas"),
             new(26, FontAttributes.None, "Roboto"),
             new(18, FontAttributes.None, "Roboto")
-        );
+        ));
     }
 }

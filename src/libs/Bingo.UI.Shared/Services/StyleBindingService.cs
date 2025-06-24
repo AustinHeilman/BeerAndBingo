@@ -4,14 +4,14 @@ namespace Bingo.UI.Shared.Services;
 
 public class StyleBindingService
 {
-    private readonly FontStyleService _fontStyleService;
+    private readonly FontSet _fontSet;
 
     public StyleBindingService(FontStyleService fontStyleService)
     {
-        _fontStyleService = fontStyleService;
+        (_ /* profile */, _fontSet) = fontStyleService.GetFontProfile();
     }
 
-    public FontSet GetFontSet() => _fontStyleService.GetFontSet();
+    public FontSet GetFontSet() => _fontSet;
 
     public Label CreateStyledLabel(FontStyle style, string text, Color? textColor = null)
     {
@@ -23,7 +23,7 @@ public class StyleBindingService
             FontSize = style.Size,
             FontAttributes = style.Attributes,
             FontFamily = style.FontFamily,
-            TextColor = textColor ?? flashCellTextColor ?? Colors.Black, // Fallback to Colors.Black if null
+            TextColor = textColor ?? flashCellTextColor ?? Colors.Black,
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
             HorizontalTextAlignment = TextAlignment.Center,

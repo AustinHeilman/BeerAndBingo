@@ -58,14 +58,18 @@ namespace Bingo.UI.Shared.Views.FlashBoard
                 var group = groups[row];
 
                 // Left-side letter label (column 0)
-                var label = new Label
+                var headerLabelStyle = Application.Current?.Resources["FlashBoardHeaderLabel"] as Style;
+                if (headerLabelStyle != null)
                 {
-                    Text = group.Letter.ToString(),
-                    Style = (Style)Application.Current.Resources["FlashBoardHeaderLabel"]
-                };
-                Grid.SetRow(label, row);
-                Grid.SetColumn(label, 0);
-                CellGrid.Children.Add(label);
+                    var label = new Label
+                    {
+                        Text = group.Letter.ToString(),
+                        Style = headerLabelStyle
+                    };
+                    Grid.SetRow(label, row);
+                    Grid.SetColumn(label, 0);
+                    CellGrid.Children.Add(label);
+                }
 
                 // Number cells (columns 1–15)
                 for (int col = 0; col < group.Cells.Count; col++)
