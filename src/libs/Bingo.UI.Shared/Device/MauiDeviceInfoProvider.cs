@@ -1,41 +1,70 @@
 ﻿using Bingo.Core.Device;
 
-namespace Bingo.UI.Shared.Device;
-
 public class MauiDeviceInfoProvider : IDeviceInfoProvider
 {
-    private const double BaselineDpi = 160.0;
-    private readonly DisplayInfo _displayInfo;
-
-    public MauiDeviceInfoProvider()
-    {
-        _displayInfo = DeviceDisplay.MainDisplayInfo;
-    }
-
+    public DisplayClass DisplayClass => ResolveDisplayClass();
     public DeviceFormFactor FormFactor
     {
         get
         {
-            if (DeviceInfo.Idiom == DeviceIdiom.Phone)
-                return DeviceFormFactor.Phone;
-            if (DeviceInfo.Idiom == DeviceIdiom.Tablet)
+            var idiom = DeviceInfo.Idiom;
+
+            if (idiom == DeviceIdiom.Tablet)
                 return DeviceFormFactor.Tablet;
-            if (DeviceInfo.Idiom == DeviceIdiom.Desktop)
+            if (idiom == DeviceIdiom.Phone)
+                return DeviceFormFactor.Phone;
+            if (idiom == DeviceIdiom.Desktop)
                 return DeviceFormFactor.Desktop;
+
             return DeviceFormFactor.Unknown;
         }
     }
 
-    public double ScreenWidthInDp => _displayInfo.Width / _displayInfo.Density;
-    public double ScreenHeightInDp => _displayInfo.Height / _displayInfo.Density;
-
-    public double ScreenDiagonalInInches
+    public DevicePersona Persona => new DevicePersona
     {
-        get
-        {
-            double widthInInches = ScreenWidthInDp / BaselineDpi;
-            double heightInInches = ScreenHeightInDp / BaselineDpi;
-            return Math.Sqrt(widthInInches * widthInInches + heightInInches * heightInInches);
-        }
+        DeviceModel = DeviceModel,
+        DisplayClass = DisplayClass,
+        FormFactor = FormFactor,
+        ScreenWidthInDp = ScreenWidthInDp,
+        ScreenHeightInDp = ScreenHeightInDp,
+        DiagonalInches = ScreenDiagonalInches
+    };
+
+    public double ScreenWidthInDp => DeviceDisplay.MainDisplayInfo.Width / DeviceDisplay.MainDisplayInfo.Density;
+    public double ScreenHeightInDp => DeviceDisplay.MainDisplayInfo.Height / DeviceDisplay.MainDisplayInfo.Density;
+    public double ScreenDiagonalInches => CalculateDiagonalInInches();
+    public string DeviceModel => DeviceInfo.Model;
+
+    private DisplayClass ResolveDisplayClass()
+    {
+        var width = ScreenWidthInDp;
+        var height = ScreenHeightInDp;
+        var diagonal = ScreenDiagonalInches;
+
+        if (DeviceModel.Contains("A7 Lite", StringComparison.OrdinalIgnoreCase))
+            return DisplayClass.CompactTablet;
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+            return DisplayClass.Desktop;
+        if (diagonal >= 13)
+            return DisplayClass.Projector;
+        if (FormFactor == DeviceFormFactor.Tablet && diagonal >= 11)
+            return DisplayClass.FullTablet;
+        if (FormFactor == DeviceFormFactor.Tablet || width >= 1024)
+            return DisplayClass.CompactTablet;
+        if (diagonal < 5.5)
+            return DisplayClass.UltraCompact;
+
+        return DisplayClass.Phone;
+    }
+
+    private double CalculateDiagonalInInches()
+    {
+        var widthInPixels = DeviceDisplay.MainDisplayInfo.Width;
+        var heightInPixels = DeviceDisplay.MainDisplayInfo.Height;
+        var density = DeviceDisplay.MainDisplayInfo.Density;
+
+        double widthInInches = widthInPixels / (density * 160.0);
+        double heightInInches = heightInPixels / (density * 160.0);
+        return Math.Sqrt(widthInInches * widthInInches + heightInInches * heightInInches);
     }
 }

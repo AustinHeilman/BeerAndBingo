@@ -2,8 +2,12 @@
 
 public interface IDeviceInfoProvider
 {
+    DisplayClass DisplayClass { get; }
     DeviceFormFactor FormFactor { get; }
     double ScreenWidthInDp { get; }
     double ScreenHeightInDp { get; }
-    double ScreenDiagonalInInches { get; }
+    double ScreenDiagonalInches { get; }
+    string DeviceModel { get; }
+
+    DevicePersona Persona { get; }
 }

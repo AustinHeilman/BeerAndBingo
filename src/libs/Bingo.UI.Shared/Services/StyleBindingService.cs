@@ -1,14 +1,18 @@
-﻿using Bingo.UI.Shared.Styles;
+﻿using Bingo.Core.Device;
+using Bingo.UI.Shared.Styles;
 
 namespace Bingo.UI.Shared.Services;
 
 public class StyleBindingService
 {
     private readonly FontSet _fontSet;
+    private readonly FontProfile _fontProfile;
 
     public StyleBindingService(FontStyleService fontStyleService)
     {
-        (_ /* profile */, _fontSet) = fontStyleService.GetFontProfile();
+        var result = fontStyleService.GetFontProfile();
+        _fontSet = result.FontSet;
+        _fontProfile = result.Profile;
     }
 
     public FontSet GetFontSet() => _fontSet;

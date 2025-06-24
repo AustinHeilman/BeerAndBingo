@@ -14,17 +14,15 @@ public static class AppResourceExtensions
 
         // Load shared theme styles
         app.Resources.MergedDictionaries.Add(new FlashBoardTheme());
-
-        // Runtime-generated color resources
-        app.Resources["FlashCellTextColor"] = Colors.Black;
-        app.Resources["FlashHeaderTextColor"] = Colors.LightYellow;
-        app.Resources["FlashCellBGColor_Uncalled"] = Colors.DarkGray;
-        app.Resources["FlashCellBGColor_Called"] = Colors.Goldenrod;
+             
 
         // Dynamically scaled typography based on screen size + platform
         MauiDeviceInfoProvider deviceInfoProvider = new();
-        FontStyleService fontService = new(deviceInfoProvider);
-        (FontProfile profile, FontSet fontSet) = fontService.GetFontProfile();
+        FontStyleService fontStyleService = new(deviceInfoProvider);
+        var result = fontStyleService.GetFontProfile();
+        var profile = result.Profile;
+        var fontSet = result.FontSet;
+
         app.Resources["FlashBoardFontSet"] = fontSet;
         app.Resources["FlashBoardFontProfile"] = profile;
 
