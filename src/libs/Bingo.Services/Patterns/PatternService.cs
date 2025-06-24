@@ -14,7 +14,7 @@ public class PatternService : IPatternService
 
     public async Task<IEnumerable<string>> GetPatternNamesAsync()
     {
-        var patterns = await _repository.GetAllAsync();
+        IEnumerable<BingoPattern> patterns = await _repository.GetAllAsync();
         return patterns.Select(p => p.Name);
     }
 

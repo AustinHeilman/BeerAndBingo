@@ -1,5 +1,4 @@
-﻿using System;
-using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Core.Domain.FlashBoard
 {

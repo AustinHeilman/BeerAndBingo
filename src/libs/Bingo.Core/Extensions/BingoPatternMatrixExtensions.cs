@@ -6,8 +6,8 @@ public static class BingoPatternMatrixExtensions
 {
     public static bool[,] ToMatrix(this BingoPattern pattern, int rowCount = 5, int colCount = 15)
     {
-        var matrix = new bool[rowCount, colCount];
-        foreach (var (row, col) in pattern.Cells)
+        bool[,] matrix = new bool[rowCount, colCount];
+        foreach ((int row, int col) in pattern.Cells)
         {
             if (row >= 0 && row < rowCount && col >= 0 && col < colCount)
                 matrix[row, col] = true;
@@ -17,7 +17,7 @@ public static class BingoPatternMatrixExtensions
 
     public static BingoPattern FromMatrix(bool[,] matrix)
     {
-        var pattern = new BingoPattern();
+        BingoPattern pattern = new();
 
         int rowCount = matrix.GetLength(0);
         int colCount = matrix.GetLength(1);

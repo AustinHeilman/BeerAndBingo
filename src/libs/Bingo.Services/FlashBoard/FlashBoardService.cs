@@ -1,10 +1,6 @@
 ﻿using Bingo.Core.Domain;
 using Bingo.Core.Domain.FlashBoard;
 using Bingo.Core.Domain.FlashBoard.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using static Bingo.Core.Domain.FlashBoard.Events.FlashBoardCalledChangedEventArgs;
 
 namespace Bingo.Services.FlashBoard
 {
@@ -34,7 +30,7 @@ namespace Bingo.Services.FlashBoard
 
         public FlashBoardService()
         {
-            foreach (var number in board.AllCells)
+            foreach (FlashBoardNumber number in board.AllCells)
             {
                 number.IsCalledChanged += (s, e) =>
                 {
@@ -42,7 +38,7 @@ namespace Bingo.Services.FlashBoard
                 };
             }
 
-            foreach (var group in board.Children)
+            foreach (FlashBoardGroup group in board.Children)
             {
                 group.GroupCompleted += (s, letter) =>
                 {
@@ -53,7 +49,7 @@ namespace Bingo.Services.FlashBoard
 
         public void NewGame()
         {
-            foreach (var num in board.CalledNumbers.ToList())
+            foreach (int num in board.CalledNumbers.ToList())
             {
                 board.UncallNumber(num, gbl_sourcetag);
             }
@@ -89,7 +85,7 @@ namespace Bingo.Services.FlashBoard
 
         public IEnumerable<int> GetAvailableNumbers(IEnumerable<char> validLetters)
         {
-            var validSet = validLetters.ToHashSet();
+            HashSet<char> validSet = validLetters.ToHashSet();
 
             return board.AllCells
                         .Where(c => !c.IsCalled && validSet.Contains(c.Parent.Letter))
@@ -98,14 +94,14 @@ namespace Bingo.Services.FlashBoard
 
         public int? PickRandomAvailableNumber(IEnumerable<char>? columnScope = null)
         {
-            var pool = columnScope is null
+            IEnumerable<int> pool = columnScope is null
                 ? GetAvailableNumbers()
                 : GetAvailableNumbers(columnScope);
 
-            var list = pool.ToList();
+            List<int> list = pool.ToList();
             if (list.Count == 0) return null;
 
-            var rnd = new Random();
+            Random rnd = new();
             return list[rnd.Next(list.Count)];
         }
 

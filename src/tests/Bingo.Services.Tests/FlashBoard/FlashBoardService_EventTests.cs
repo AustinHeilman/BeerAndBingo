@@ -1,6 +1,5 @@
-﻿using Xunit;
+﻿using Bingo.Core.Domain.FlashBoard.Events;
 using Bingo.Services.FlashBoard;
-using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Services.Tests.FlashBoard;
 
@@ -9,7 +8,7 @@ public class FlashBoardService_EventTests
     [Fact]
     public void NumberCalledChanged_ShouldFire_WhenStateChanges()
     {
-        var service = new FlashBoardService();
+        FlashBoardService service = new();
         FlashBoardCalledChangedEventArgs? received = null;
 
         service.NumberCalledChanged += (_, args) => received = args;
@@ -22,13 +21,13 @@ public class FlashBoardService_EventTests
     [Fact]
     public void GroupCompleted_ShouldFire_WhenColumnIsFullyCalled()
     {
-        var service = new FlashBoardService();
+        FlashBoardService service = new();
         char? completed = null;
 
         service.GroupCompleted += (_, letter) => completed = letter;
-        var group = service.Board.Children.First();
+        Core.Domain.FlashBoard.FlashBoardGroup group = service.Board.Children.First();
 
-        foreach (var cell in group.Cells)
+        foreach (Core.Domain.FlashBoard.FlashBoardNumber cell in group.Cells)
             service.CallNumber(cell.Number);
 
         Assert.Equal(group.Letter, completed);

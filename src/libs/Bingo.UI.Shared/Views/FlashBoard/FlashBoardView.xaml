@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView
-    x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView"
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:viewModel="clr-namespace:Bingo.ViewModel.FlashBoard;assembly=Bingo.ViewModel"
-    x:Name="RootControl"
-    BackgroundColor="Transparent">
-
-    <ContentView.BindingContext>
-        <viewModel:FlashBoardViewModel />
-    </ContentView.BindingContext>
-
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:Bingo.UI.Shared.Views.FlashBoard"
+             x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView"
+             x:Name="Root">
     <Grid x:Name="CellGrid"
-      RowSpacing="1"
-      ColumnSpacing="1"
-      Padding="6"
-      BackgroundColor="Black" />
-
-    <!-- Cells populated in code-behind -->
+          ColumnSpacing="4"
+          RowSpacing="4"
+          Padding="8"
+          BackgroundColor="Black" />
 </ContentView>
+

@@ -10,16 +10,16 @@ public class PatternServiceTests
     [Fact]
     public async Task GetPatternNamesAsync_ReturnsAllNames()
     {
-        var mockRepo = new Mock<IPatternRepository>();
+        Mock<IPatternRepository> mockRepo = new();
         mockRepo.Setup(r => r.GetAllAsync()).ReturnsAsync(new[]
         {
             new BingoPattern { Name = "Flag" },
             new BingoPattern { Name = "Smiley" }
         });
 
-        var service = new PatternService(mockRepo.Object);
+        PatternService service = new(mockRepo.Object);
 
-        var names = await service.GetPatternNamesAsync();
+        IEnumerable<string> names = await service.GetPatternNamesAsync();
 
         Assert.Contains("Flag", names);
         Assert.Contains("Smiley", names);
@@ -29,13 +29,13 @@ public class PatternServiceTests
     [Fact]
     public async Task GetByNameAsync_ReturnsExpectedPattern()
     {
-        var pattern = new BingoPattern { Name = "Cup" };
+        BingoPattern pattern = new() { Name = "Cup" };
 
-        var mockRepo = new Mock<IPatternRepository>();
+        Mock<IPatternRepository> mockRepo = new();
         mockRepo.Setup(r => r.GetByNameAsync("Cup")).ReturnsAsync(pattern);
 
-        var service = new PatternService(mockRepo.Object);
-        var result = await service.GetByNameAsync("Cup");
+        PatternService service = new(mockRepo.Object);
+        BingoPattern? result = await service.GetByNameAsync("Cup");
 
         Assert.NotNull(result);
         Assert.Equal("Cup", result?.Name);

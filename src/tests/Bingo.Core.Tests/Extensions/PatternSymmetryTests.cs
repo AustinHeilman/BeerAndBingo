@@ -8,7 +8,7 @@ public class PatternSymmetryTests
     [Fact]
     public void IsSymmetrical_ReturnsTrueForMirror()
     {
-        var symmetrical = new BingoPattern
+        BingoPattern symmetrical = new()
         {
             Cells = new()
             {
@@ -24,7 +24,7 @@ public class PatternSymmetryTests
     [Fact]
     public void IsSymmetrical_ReturnsFalseForAsymmetry()
     {
-        var asymmetrical = new BingoPattern
+        BingoPattern asymmetrical = new()
         {
             Cells = new()
             {

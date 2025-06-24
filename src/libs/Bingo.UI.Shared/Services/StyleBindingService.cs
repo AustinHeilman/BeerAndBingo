@@ -15,13 +15,15 @@ public class StyleBindingService
 
     public Label CreateStyledLabel(FontStyle style, string text, Color? textColor = null)
     {
+        Color? flashCellTextColor = Application.Current?.Resources?["FlashCellTextColor"] as Color;
+
         return new Label
         {
             Text = text,
             FontSize = style.Size,
             FontAttributes = style.Attributes,
             FontFamily = style.FontFamily,
-            TextColor = textColor ?? (Color)Application.Current.Resources["FlashCellTextColor"],
+            TextColor = textColor ?? flashCellTextColor ?? Colors.Black, // Fallback to Colors.Black if null
             HorizontalOptions = LayoutOptions.Fill,
             VerticalOptions = LayoutOptions.Fill,
             HorizontalTextAlignment = TextAlignment.Center,

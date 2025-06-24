@@ -17,6 +17,13 @@ namespace Bingo.ViewModel.FlashBoard
             };
         }
 
+        public FlashBoardCellViewModel(int number, FlashBoardGroup parent)
+            : this(new FlashBoardNumber(number, parent))
+        {
+        }
+
+        public FlashBoardGroup Parent => _model.Parent;
+
         public int Number => _model.Number;
         public char Letter => _model.Parent.Letter;
 

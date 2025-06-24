@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Bingo.Core.Domain.FlashBoard;
+﻿using Bingo.Core.Domain.FlashBoard;
 using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
@@ -8,13 +7,13 @@ public class FlashBoardGroupTests
     [Fact]
     public void GroupCompleted_ShouldFire_WhenAllNumbersAreCalled()
     {
-        var board = new FlashBoardObj();
-        var group = board.Children.First();
+        FlashBoardObj board = new();
+        FlashBoardGroup group = board.Children.First();
         char? completed = null;
 
         group.GroupCompleted += (_, letter) => completed = letter;
 
-        foreach (var number in group.Cells)
+        foreach (FlashBoardNumber number in group.Cells)
             number.SetCalled(true, FlashBoardEventSource.Manual);
 
         Assert.Equal(group.Letter, completed);
@@ -23,8 +22,8 @@ public class FlashBoardGroupTests
     [Fact]
     public void GroupCompleted_ShouldNotFire_WhenNotAllNumbersAreCalled()
     {
-        var board = new FlashBoardObj();
-        var group = board.Children.First();
+        FlashBoardObj board = new();
+        FlashBoardGroup group = board.Children.First();
         bool fired = false;
 
         group.GroupCompleted += (_, _) => fired = true;

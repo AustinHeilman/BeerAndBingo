@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Bingo.Core.Domain.FlashBoard
+﻿namespace Bingo.Core.Domain.FlashBoard
 {
     public class FlashBoardSnapshot
     {

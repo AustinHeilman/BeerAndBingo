@@ -11,13 +11,13 @@ public class DefaultPatternRepository : IPatternRepository
 
     public DefaultPatternRepository(ILogger<DefaultPatternRepository> logger)
     {
-        using var stream = typeof(DefaultPatternRepository)
+        using Stream stream = typeof(DefaultPatternRepository)
             .Assembly
             .GetManifestResourceStream("Bingo.AppServices.Resources.patterns.json")!;
 
-        using var reader = new StreamReader(stream);
-        var json = reader.ReadToEnd();
-        var parsed = JsonSerializer.Deserialize<List<JsonPattern>>(json);
+        using StreamReader reader = new(stream);
+        string json = reader.ReadToEnd();
+        List<JsonPattern>? parsed = JsonSerializer.Deserialize<List<JsonPattern>>(json);
 
         _cache = parsed?
             .Where(p =>
@@ -48,7 +48,7 @@ public class DefaultPatternRepository : IPatternRepository
 
     public DefaultPatternRepository(string rawJson, ILogger<DefaultPatternRepository> logger)
     {
-        var parsed = JsonSerializer.Deserialize<List<JsonPattern>>(rawJson);
+        List<JsonPattern>? parsed = JsonSerializer.Deserialize<List<JsonPattern>>(rawJson);
 
         _cache = parsed?
             .Where(p =>
@@ -89,7 +89,7 @@ public class DefaultPatternRepository : IPatternRepository
 
     private static HashSet<(int, int)> ToCellSet(bool[][] grid)
     {
-        var set = new HashSet<(int, int)>();
+        HashSet<(int, int)> set = new();
         for (int row = 0; row < grid.Length; row++)
             for (int col = 0; col < grid[row].Length; col++)
                 if (grid[row][col])

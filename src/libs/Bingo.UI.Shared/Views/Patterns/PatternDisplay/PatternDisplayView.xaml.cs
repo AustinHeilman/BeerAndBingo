@@ -51,7 +51,7 @@ public partial class PatternDisplayView : ContentView
         {
             for (int c = 0; c < cols; c++)
             {
-                var box = new BoxView
+                BoxView box = new()
                 {
                     Color = Colors.Transparent,
                     BindingContext = (r, c)
@@ -80,7 +80,7 @@ public partial class PatternDisplayView : ContentView
 
     private void UpdatePatternVisuals()
     {
-        foreach (var child in PatternGrid.Children)
+        foreach (IView? child in PatternGrid.Children)
         {
             if (child is BoxView box && box.BindingContext is ValueTuple<int, int> pos)
             {

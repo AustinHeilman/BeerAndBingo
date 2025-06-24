@@ -10,7 +10,7 @@ public static class AppResourceExtensions
         app.Resources.MergedDictionaries.Add(new FlashBoardTheme());
 
         app.Resources["FlashCellTextColor"] = Colors.Black;
-        app.Resources["FlashHeaderTextColor"] = Colors.LightYellow;        
+        app.Resources["FlashHeaderTextColor"] = Colors.LightYellow;
         app.Resources["FlashCellBGColor_Uncalled"] = Colors.DarkGray;
         app.Resources["FlashCellBGColor_Called"] = Colors.Goldenrod;
     }

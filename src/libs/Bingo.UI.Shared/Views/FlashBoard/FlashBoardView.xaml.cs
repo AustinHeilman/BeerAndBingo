@@ -1,6 +1,4 @@
 ﻿using Bingo.ViewModel.FlashBoard;
-using Microsoft.Maui.Controls;
-using System.Linq;
 
 namespace Bingo.UI.Shared.Views.FlashBoard
 {
@@ -21,7 +19,14 @@ namespace Bingo.UI.Shared.Views.FlashBoard
             }
         }
 
-        public bool IsInteractive { get; set; } = false;
+        public static readonly BindableProperty IsInteractiveProperty =
+            BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), false);
+
+        public bool IsInteractive
+        {
+            get => (bool)GetValue(IsInteractiveProperty);
+            set => SetValue(IsInteractiveProperty, value);
+        }
 
         private void BuildGrid()
         {
@@ -29,38 +34,44 @@ namespace Bingo.UI.Shared.Views.FlashBoard
             CellGrid.RowDefinitions.Clear();
             CellGrid.ColumnDefinitions.Clear();
 
-            // Define 15 rows
-            for (int i = 0; i < 15; i++)
+            // 5 rows for B-I-N-G-O
+            for (int i = 0; i < 5; i++)
                 CellGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
 
-            // Define 5 columns
-            for (int i = 0; i < 5; i++)
+            // 6 columns (1 header + 5 number cells per row)
+            for (int i = 0; i < 6; i++)
                 CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-            if (ViewModel?.Cells == null)
+            if (ViewModel?.Groups == null)
                 return;
 
-            // Group by letter if available
-            var groups = ViewModel.Cells
-                .GroupBy(c => c.Letter)
-                .OrderBy(g => "BINGO".IndexOf(g.Key));
-
-            int col = 0;
-            foreach (var group in groups)
+            for (int row = 0; row < ViewModel.Groups.Count; row++)
             {
-                var cells = group.OrderBy(c => c.Number).ToList();
-                for (int row = 0; row < cells.Count && row < 15; row++)
+                // Add B-I-N-G-O header
+                Label letter = new()
                 {
-                    var cellView = new FlashBoardCellView
-                    {
-                        BindingContext = cells[row]
-                    };
+                    Text = ViewModel.Groups[row].Letter.ToString(),
+                    TextColor = Colors.White,
+                    FontSize = 22,
+                    FontAttributes = FontAttributes.Bold,
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                Grid.SetRow(letter, row);
+                Grid.SetColumn(letter, 0);
+                CellGrid.Children.Add(letter);
 
-                    Grid.SetColumn(cellView, col);
+                // Add number cells
+                for (int col = 0; col < ViewModel.Groups[row].Cells.Count; col++)
+                {
+                    FlashBoardCellView cellView = new()
+                    {
+                        BindingContext = ViewModel.Groups[row].Cells[col]
+                    };
                     Grid.SetRow(cellView, row);
+                    Grid.SetColumn(cellView, col + 1); // +1 to offset letter
                     CellGrid.Children.Add(cellView);
                 }
-                col++;
             }
         }
     }

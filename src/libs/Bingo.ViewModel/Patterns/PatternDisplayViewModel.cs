@@ -17,13 +17,13 @@ public class PatternDisplayViewModel
 
     public async Task LoadPatternAsync(string name)
     {
-        var pattern = await _repository.GetByNameAsync(name);
+        Core.Models.BingoPattern? pattern = await _repository.GetByNameAsync(name);
         if (pattern is null)
             return;
 
         PatternCells.Clear();
 
-        foreach (var (row, col) in pattern.Cells)
+        foreach ((int row, int col) in pattern.Cells)
         {
             PatternCells.Add(new PatternCell
             {

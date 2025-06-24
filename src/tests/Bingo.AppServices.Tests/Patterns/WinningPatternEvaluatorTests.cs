@@ -10,13 +10,14 @@ public class WinningPatternEvaluatorTests
     [Fact]
     public void IsWinning_ReturnsTrue_WhenAllPatternCellsAreMarked()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Name = "Line",
             Cells = new HashSet<(int, int)> { (0, 0), (0, 1), (0, 2) }
         };
 
-        var marked = new HashSet<(int, int)> { (0, 0), (0, 1), (0, 2), (1, 3) };
+        HashSet<(int, int)> marked = new()
+        { (0, 0), (0, 1), (0, 2), (1, 3) };
 
         Assert.True(_evaluator.IsWinning(pattern, marked));
     }
@@ -24,13 +25,14 @@ public class WinningPatternEvaluatorTests
     [Fact]
     public void IsWinning_ReturnsFalse_WhenSomeCellsAreMissing()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Name = "L",
             Cells = new HashSet<(int, int)> { (0, 0), (1, 0), (2, 0) }
         };
 
-        var marked = new HashSet<(int, int)> { (1, 0), (2, 0) };
+        HashSet<(int, int)> marked = new()
+        { (1, 0), (2, 0) };
 
         Assert.False(_evaluator.IsWinning(pattern, marked));
     }

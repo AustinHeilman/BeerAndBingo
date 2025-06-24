@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Bingo.Core.Domain;
+﻿using Bingo.Core.Domain;
 
 namespace Bingo.Core.Tests.Domain;
 
@@ -40,7 +39,7 @@ public class BingoBoardConfigTests
     [InlineData(4, 61, 75)]
     public void GetNumbersInBoardIndex_ShouldReturnExpectedRange(int index, int expectedStart, int expectedEnd)
     {
-        var range = FlashBoardConfig.GetNumbersInBoardIndex(index).ToList();
+        List<int> range = FlashBoardConfig.GetNumbersInBoardIndex(index).ToList();
 
         Assert.Equal(15, range.Count);
         Assert.Equal(expectedStart, range.First());
@@ -59,7 +58,7 @@ public class BingoBoardConfigTests
     [InlineData('O', 61, 75)]
     public void GetNumbersInBoardLetter_ShouldReturnExpectedRange(char letter, int expectedStart, int expectedEnd)
     {
-        var range = FlashBoardConfig.GetNumbersInBoardLetter(letter).ToList();
+        List<int> range = FlashBoardConfig.GetNumbersInBoardLetter(letter).ToList();
 
         Assert.Equal(15, range.Count);
         Assert.Equal(expectedStart, range.First());

@@ -8,7 +8,7 @@ public class BingoPatternMatrixTests
     [Fact]
     public void ToMatrix_CorrectlyMapsCells()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Cells = new()
             {
@@ -16,7 +16,7 @@ public class BingoPatternMatrixTests
             }
         };
 
-        var matrix = pattern.ToMatrix();
+        bool[,] matrix = pattern.ToMatrix();
 
         Assert.True(matrix[0, 0]);
         Assert.True(matrix[2, 5]);
@@ -27,7 +27,7 @@ public class BingoPatternMatrixTests
     [Fact]
     public void FromMatrix_ReconstructsSamePattern()
     {
-        var original = new BingoPattern
+        BingoPattern original = new()
         {
             Cells = new()
             {
@@ -35,8 +35,8 @@ public class BingoPatternMatrixTests
             }
         };
 
-        var matrix = original.ToMatrix();
-        var reconstructed = BingoPatternMatrixExtensions.FromMatrix(matrix);
+        bool[,] matrix = original.ToMatrix();
+        BingoPattern reconstructed = BingoPatternMatrixExtensions.FromMatrix(matrix);
 
         Assert.Equal(original.Cells, reconstructed.Cells);
     }

@@ -8,7 +8,7 @@ public class DefaultPatternRepositoryTests
     [Fact]
     public async Task LoadsOnlyValidPatterns_WhenMalformedIncluded()
     {
-        var json = """
+        string json = """
         [
             { "PatternName": "Valid", "Pattern": [
                 [ true, false, false, false, true ],
@@ -28,15 +28,15 @@ public class DefaultPatternRepositoryTests
         ]
         """;
 
-        var logger = new TestLogger<DefaultPatternRepository>();
-        using var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json));
-        using var reader = new StreamReader(stream);
-        var jsonText = reader.ReadToEnd();
+        TestLogger<DefaultPatternRepository> logger = new();
+        using MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(json));
+        using StreamReader reader = new(stream);
+        string jsonText = reader.ReadToEnd();
 
         // Inject the JSON stream manually
-        var repository = new TestableDefaultPatternRepository(jsonText, logger);
+        TestableDefaultPatternRepository repository = new(jsonText, logger);
 
-        var all = (await repository.GetAllAsync()).ToList();
+        List<Core.Models.BingoPattern> all = (await repository.GetAllAsync()).ToList();
 
         Assert.Single(all); // Only "Valid" should remain
         Assert.Equal("Valid", all[0].Name);

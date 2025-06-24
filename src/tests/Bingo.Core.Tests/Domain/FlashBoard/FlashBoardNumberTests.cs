@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Bingo.Core.Domain.FlashBoard;
+﻿using Bingo.Core.Domain.FlashBoard;
 using Bingo.Core.Domain.FlashBoard.Events;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
@@ -9,8 +8,8 @@ public class FlashBoardNumberTests
     [Fact]
     public void SetCalled_ShouldRaiseEvent_WhenValueChanges()
     {
-        var group = new FlashBoardGroup('B', 1, 15, new FlashBoardObj());
-        var number = group.Cells.First();
+        FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj());
+        FlashBoardNumber number = group.Cells.First();
         FlashBoardCalledChangedEventArgs? capturedEvent = null;
 
         number.IsCalledChanged += (_, e) => capturedEvent = e;
@@ -27,8 +26,8 @@ public class FlashBoardNumberTests
     [Fact]
     public void SetCalled_ShouldNotRaiseEvent_WhenValueIsSame()
     {
-        var group = new FlashBoardGroup('B', 1, 15, new FlashBoardObj());
-        var number = group.Cells.First();
+        FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj());
+        FlashBoardNumber number = group.Cells.First();
         bool wasRaised = false;
 
         number.IsCalledChanged += (_, _) => wasRaised = true;

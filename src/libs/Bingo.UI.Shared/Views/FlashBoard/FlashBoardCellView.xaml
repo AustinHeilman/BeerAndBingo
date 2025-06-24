@@ -2,10 +2,10 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardCellView">
-    <Border Stroke="LightGray"
+    <Border Stroke="Gray"
             BackgroundColor="{Binding IsCalled, Converter={StaticResource BoolToCellBackgroundConverter}}"
-            StrokeThickness="1"
-            StrokeShape="RoundRectangle 4">
+            StrokeShape="RoundRectangle 4"
+            StrokeThickness="1">
         <Label Text="{Binding Number}"
                FontAttributes="Bold"
                FontSize="22"

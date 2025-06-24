@@ -4,7 +4,7 @@ public static class ThemeHelpers
 {
     public static Color GetAppColor(string key, Color fallback)
     {
-        return Application.Current?.Resources.TryGetValue(key, out var value) == true
+        return Application.Current?.Resources.TryGetValue(key, out object? value) == true
             ? (Color)value
             : fallback;
     }

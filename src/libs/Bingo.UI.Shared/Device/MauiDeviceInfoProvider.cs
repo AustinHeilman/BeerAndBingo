@@ -33,8 +33,8 @@ public class MauiDeviceInfoProvider : IDeviceInfoProvider
     {
         get
         {
-            var widthInInches = ScreenWidthInDp / BaselineDpi;
-            var heightInInches = ScreenHeightInDp / BaselineDpi;
+            double widthInInches = ScreenWidthInDp / BaselineDpi;
+            double heightInInches = ScreenHeightInDp / BaselineDpi;
             return Math.Sqrt(widthInInches * widthInInches + heightInInches * heightInInches);
         }
     }

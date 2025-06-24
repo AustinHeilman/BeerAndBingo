@@ -10,8 +10,8 @@ public partial class App : Application
     {
         InitializeComponent();
         _serviceProvider = serviceProvider;
-        
-        if ( Application.Current != null && Application.Current is App app )
+
+        if (Application.Current != null && Application.Current is App app)
         {
             Application.Current.UserAppTheme = AppTheme.Dark;
 
@@ -21,12 +21,12 @@ public partial class App : Application
             {
                 (Application.Current as App)?.AddCustomResources(); // Reapply styles
             };
-        }        
+        }
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        var mainPage = _serviceProvider.GetRequiredService<MainPage>();
+        MainPage mainPage = _serviceProvider.GetRequiredService<MainPage>();
         Window window = new(mainPage);
         return window;
     }
@@ -37,7 +37,7 @@ public partial class App : Application
         {
             // To-do: Install the default patterns if not already installed
         }
-        
+
         await Task.Delay(1);
     }
 }

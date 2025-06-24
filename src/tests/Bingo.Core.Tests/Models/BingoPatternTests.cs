@@ -8,7 +8,7 @@ public class BingoPatternTests
     [Fact]
     public void GetUsedColumns_ReturnsCorrectColumns()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Cells = new()
             {
@@ -16,7 +16,7 @@ public class BingoPatternTests
             }
         };
 
-        var used = pattern.GetUsedColumns();
+        HashSet<int> used = pattern.GetUsedColumns();
 
         Assert.Contains(0, used);
         Assert.Contains(2, used);
@@ -27,7 +27,7 @@ public class BingoPatternTests
     [Fact]
     public void Rotate90_RotatesPatternCorrectly()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Cells = new()
             {
@@ -36,7 +36,7 @@ public class BingoPatternTests
             }
         };
 
-        var rotated = pattern.Rotate90();
+        HashSet<(int Row, int Col)> rotated = pattern.Rotate90();
 
         Assert.Contains((0, 4), rotated); // originally (0,0)
         Assert.Contains((14, 0), rotated); // originally (4,14)
@@ -46,7 +46,7 @@ public class BingoPatternTests
     [Fact]
     public void Matches_ReturnsTrueForCompleteMatch()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Cells = new()
             {
@@ -54,7 +54,8 @@ public class BingoPatternTests
             }
         };
 
-        var playerMarks = new HashSet<(int, int)> { (1, 1), (2, 2), (3, 3) };
+        HashSet<(int, int)> playerMarks = new()
+        { (1, 1), (2, 2), (3, 3) };
 
         Assert.True(pattern.Matches(playerMarks));
     }
@@ -62,7 +63,7 @@ public class BingoPatternTests
     [Fact]
     public void Matches_ReturnsFalseIfAnyCellMissing()
     {
-        var pattern = new BingoPattern
+        BingoPattern pattern = new()
         {
             Cells = new()
             {
@@ -70,7 +71,8 @@ public class BingoPatternTests
             }
         };
 
-        var playerMarks = new HashSet<(int, int)> { (1, 1) };
+        HashSet<(int, int)> playerMarks = new()
+        { (1, 1) };
 
         Assert.False(pattern.Matches(playerMarks));
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Bingo.Core.Domain.FlashBoard
+﻿namespace Bingo.Core.Domain.FlashBoard
 {
     public class FlashBoardGroup
     {
@@ -19,7 +15,7 @@ namespace Bingo.Core.Domain.FlashBoard
 
             for (int number = start; number <= end; number++)
             {
-                var cell = new FlashBoardNumber(number, this);
+                FlashBoardNumber cell = new(number, this);
                 cell.IsCalledChanged += (s, e) => CheckCompletion();
                 Cells.Add(cell);
             }

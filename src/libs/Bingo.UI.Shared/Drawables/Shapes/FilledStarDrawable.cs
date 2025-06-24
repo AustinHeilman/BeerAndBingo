@@ -9,7 +9,7 @@
         float cy = dirtyRect.Center.Y;
         float radius = Math.Min(dirtyRect.Width, dirtyRect.Height) * 0.4f;
 
-        var path = new PathF();
+        PathF path = new();
         for (int i = 0; i < 10; i++)
         {
             double angle = Math.PI / 2 + i * Math.PI / 5;

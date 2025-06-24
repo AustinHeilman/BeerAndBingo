@@ -1,11 +1,10 @@
 ﻿using Bingo.Core.Domain.FlashBoard.Events;
 using System.Text;
-using static Bingo.Core.Domain.FlashBoard.Events.FlashBoardCalledChangedEventArgs;
 
 namespace Bingo.Core.Domain.FlashBoard;
 
 public class FlashBoardObj
-{    
+{
     public List<FlashBoardGroup> Children { get; private set; } = new();
 
     public FlashBoardObj()
@@ -16,13 +15,13 @@ public class FlashBoardObj
     private void BuildLetterGroups()
     {
         Children = new();
-        foreach (var letter in FlashBoardConfig.GameLetters)
+        foreach (char letter in FlashBoardConfig.GameLetters)
         {
-            var numbers = FlashBoardConfig.GetNumbersInBoardLetter(letter);
+            IEnumerable<int> numbers = FlashBoardConfig.GetNumbersInBoardLetter(letter);
             int start = numbers.First();
             int end = numbers.Last();
 
-            var group = new FlashBoardGroup(letter, start, end, this);
+            FlashBoardGroup group = new(letter, start, end, this);
             Children.Add(group);
         }
 
@@ -33,10 +32,10 @@ public class FlashBoardObj
     public string ToTextBoard()
     {
         StringBuilder sb = new();
-        foreach ( var group in Children )
+        foreach (FlashBoardGroup group in Children)
         {
             sb.Append($"{group.Letter}: ");
-            foreach (var cell in group.Cells)
+            foreach (FlashBoardNumber cell in group.Cells)
             {
                 sb.Append(cell.IsCalled ? $"{cell.Number}* " : $"{cell.Number} ");
             }
@@ -55,19 +54,19 @@ public class FlashBoardObj
 
     public void CallNumber(int number, FlashBoardEventSource source)
     {
-        var cell = AllCells.FirstOrDefault(c => c.Number == number);
+        FlashBoardNumber? cell = AllCells.FirstOrDefault(c => c.Number == number);
         cell?.SetCalled(true, source);
     }
 
     public void UncallNumber(int number, FlashBoardEventSource source)
     {
-        var cell = AllCells.FirstOrDefault(c => c.Number == number);
+        FlashBoardNumber? cell = AllCells.FirstOrDefault(c => c.Number == number);
         cell?.SetCalled(false, source);
     }
 
     public IEnumerable<char> CompletedColumns()
     {
-        foreach (var group in Children)
+        foreach (FlashBoardGroup group in Children)
         {
             if (group.Cells.All(c => c.IsCalled))
                 yield return group.Letter;

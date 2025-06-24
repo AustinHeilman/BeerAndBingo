@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Bingo.Core.Domain;
+﻿namespace Bingo.Core.Domain;
 
 /// <summary>
 /// Provides configuration and helper methods for a standard Bingo board.

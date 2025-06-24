@@ -7,13 +7,13 @@ public class PatternRotationServiceTests
     [Fact]
     public void Rotate90_RotatesCoordinatesClockwise()
     {
-        var original = new HashSet<(int row, int col)>
+        HashSet<(int row, int col)> original = new()
         {
             (0, 0), // top-left
             (4, 14) // bottom-right
         };
 
-        var rotated = PatternRotationService.Rotate90(original, 5, 15);
+        ISet<(int row, int col)> rotated = PatternRotationService.Rotate90(original, 5, 15);
 
         Assert.Contains((0, 4), rotated);   // (0,0) ➜ (0,4)
         Assert.Contains((14, 0), rotated);  // (4,14) ➜ (14,0)
@@ -23,15 +23,15 @@ public class PatternRotationServiceTests
     [Fact]
     public void Rotate180_IsEquivalentToTwo90s()
     {
-        var original = new HashSet<(int, int)>
+        HashSet<(int, int)> original = new()
         {
             (1, 2), (3, 5)
         };
 
-        var once = PatternRotationService.Rotate90(original, 5, 15);
-        var twice = PatternRotationService.Rotate90(once, 15, 5);
+        ISet<(int row, int col)> once = PatternRotationService.Rotate90(original, 5, 15);
+        ISet<(int row, int col)> twice = PatternRotationService.Rotate90(once, 15, 5);
 
-        var rotated180 = PatternRotationService.Rotate180(original, 5, 15);
+        ISet<(int row, int col)> rotated180 = PatternRotationService.Rotate180(original, 5, 15);
 
         Assert.Equal(rotated180, twice);
     }
@@ -39,16 +39,16 @@ public class PatternRotationServiceTests
     [Fact]
     public void Rotate270_IsEquivalentToThree90s()
     {
-        var original = new HashSet<(int, int)>
+        HashSet<(int, int)> original = new()
         {
             (2, 1), (4, 0)
         };
 
-        var once = PatternRotationService.Rotate90(original, 5, 15);
-        var twice = PatternRotationService.Rotate90(once, 15, 5);
-        var thrice = PatternRotationService.Rotate90(twice, 5, 15);
+        ISet<(int row, int col)> once = PatternRotationService.Rotate90(original, 5, 15);
+        ISet<(int row, int col)> twice = PatternRotationService.Rotate90(once, 15, 5);
+        ISet<(int row, int col)> thrice = PatternRotationService.Rotate90(twice, 5, 15);
 
-        var rotated270 = PatternRotationService.Rotate270(original, 5, 15);
+        ISet<(int row, int col)> rotated270 = PatternRotationService.Rotate270(original, 5, 15);
 
         Assert.Equal(rotated270, thrice);
     }
@@ -56,13 +56,13 @@ public class PatternRotationServiceTests
     [Fact]
     public void RotatingTwiceReturnsToOriginal_With180And180()
     {
-        var original = new HashSet<(int, int)>
+        HashSet<(int, int)> original = new()
         {
             (0, 3), (4, 11)
         };
 
-        var rotated180 = PatternRotationService.Rotate180(original, 5, 15);
-        var rotatedBack = PatternRotationService.Rotate180(rotated180, 5, 15);
+        ISet<(int row, int col)> rotated180 = PatternRotationService.Rotate180(original, 5, 15);
+        ISet<(int row, int col)> rotatedBack = PatternRotationService.Rotate180(rotated180, 5, 15);
 
         Assert.Equal(original, rotatedBack);
     }

@@ -20,9 +20,9 @@ public class FontStyleService
 
     public FontSizes GetFontSizes()
     {
-        var isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
-        var isTablet = _info.FormFactor == DeviceFormFactor.Tablet;
-        var inches = _info.ScreenDiagonalInInches;
+        bool isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
+        bool isTablet = _info.FormFactor == DeviceFormFactor.Tablet;
+        double inches = _info.ScreenDiagonalInInches;
 
         if (isWindows)
         {

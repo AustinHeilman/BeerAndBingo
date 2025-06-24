@@ -12,9 +12,9 @@ public class FontStyleService
 
     public FontSet GetFontSet()
     {
-        var isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
-        var isTablet = _deviceInfo.FormFactor == DeviceFormFactor.Tablet;
-        var inches = _deviceInfo.ScreenDiagonalInInches;
+        bool isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
+        bool isTablet = _deviceInfo.FormFactor == DeviceFormFactor.Tablet;
+        double inches = _deviceInfo.ScreenDiagonalInInches;
 
         if (isWindows)
         {
