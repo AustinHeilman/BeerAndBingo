@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using Microsoft.Maui.Controls;
 
 namespace Bingo.UI.Shared.Converters
 {
@@ -11,7 +10,7 @@ namespace Bingo.UI.Shared.Converters
 
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            var result = value is true ? TrueValue : FalseValue;
+            T? result = value is true ? TrueValue : FalseValue;
 
             if (result == null)
             {

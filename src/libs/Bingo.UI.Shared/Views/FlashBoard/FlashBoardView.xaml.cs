@@ -1,8 +1,6 @@
 ﻿using Bingo.UI.Shared.Device;
 using Bingo.UI.Shared.Services;
 using Bingo.ViewModel.FlashBoard;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace Bingo.UI.Shared.Views.FlashBoard
 {
@@ -48,20 +46,20 @@ namespace Bingo.UI.Shared.Views.FlashBoard
             for (int i = 0; i < 16; i++)
                 CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-            var fontSet = _styleService.GetFontSet();
-            var groups = ViewModel?.Groups;
+            Styles.FontSet fontSet = _styleService.GetFontSet();
+            System.Collections.ObjectModel.ObservableCollection<FlashBoardGroupViewModel>? groups = ViewModel?.Groups;
             if (groups is null)
                 return;
 
             for (int row = 0; row < groups.Count; row++)
             {
-                var group = groups[row];
+                FlashBoardGroupViewModel group = groups[row];
 
                 // Left-side letter label (column 0)
-                var headerLabelStyle = Application.Current?.Resources["FlashBoardHeaderLabel"] as Style;
+                Style? headerLabelStyle = Application.Current?.Resources["FlashBoardHeaderLabel"] as Style;
                 if (headerLabelStyle != null)
                 {
-                    var label = new Label
+                    Label label = new()
                     {
                         Text = group.Letter.ToString(),
                         Style = headerLabelStyle
@@ -74,16 +72,16 @@ namespace Bingo.UI.Shared.Views.FlashBoard
                 // Number cells (columns 1–15)
                 for (int col = 0; col < group.Cells.Count; col++)
                 {
-                    var cellView = new FlashBoardCellView
+                    FlashBoardCellView cellView = new()
                     {
                         BindingContext = group.Cells[col]
                     };
 
                     if (IsInteractive)
                     {
-                        var tap = new TapGestureRecognizer
+                        TapGestureRecognizer tap = new()
                         {
-                            Command = ViewModel?.ToggleCallCommand, // Safely access ViewModel
+                            Command = ViewModel?.ToggleCallCommand,
                             CommandParameter = group.Cells[col].Number
                         };
                         cellView.GestureRecognizers.Add(tap);

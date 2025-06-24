@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
-using Bingo.Core.Domain.FlashBoard;
+﻿using Bingo.Core.Domain.FlashBoard;
 using Bingo.Core.Domain.FlashBoard.Events;
+using System.ComponentModel;
 
 namespace Bingo.ViewModel.FlashBoard
 {

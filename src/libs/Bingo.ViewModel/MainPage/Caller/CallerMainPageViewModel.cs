@@ -11,11 +11,6 @@ public class CallerMainPageViewModel
 
     public CallerMainPageViewModel()
     {
-        PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository(NullLogger<DefaultPatternRepository>.Instance));
-
-        // Just to test initial state
-        FlashBoardVM.CallNumber(7);
-        FlashBoardVM.CallNumber(23);
-        FlashBoardVM.CallNumber(68);
+        PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository(NullLogger<DefaultPatternRepository>.Instance));       
     }
 }

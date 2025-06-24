@@ -17,12 +17,13 @@
 
             <!-- Global converters using the new BoolToValueConverterBase<T> -->
             <conv:BoolToCellBackgroundConverter x:Key="CellBackgroundConverter"
-                TrueValue="{StaticResource FlashBoardCalledCellBackgroundBrush}"
-                FalseValue="{StaticResource FlashboardNumberCellBackgroundBrush}" />
+                TrueValue="{StaticResource FlashBoardCellBGBrush_Called}"
+                FalseValue="{StaticResource FlashBoardCellBGBrush_Uncalled}" />
 
             <conv:BoolToCellTextColorConverter x:Key="CellTextColorConverter"
-                TrueValue="{StaticResource FlashBoardCalledCellTextColor}"
-                FalseValue="{StaticResource FlashBoardUncalledCellTextColor}" />
+                TrueValue="{StaticResource FlashBoardCellTextColor_Called}"
+                FalseValue="{StaticResource FlashBoardCellTextColor_Uncalled}" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

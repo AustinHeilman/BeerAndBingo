@@ -1,8 +1,7 @@
-﻿using Bingo.UI.Shared.Styles;
-using Bingo.Core.Device;
-using Microsoft.Maui.Controls;
+﻿using Bingo.Core.Device;
 using Bingo.UI.Shared.Device;
 using Bingo.UI.Shared.Services;
+using Bingo.UI.Shared.Styles;
 
 namespace Bingo.Caller.App.Startup;
 
@@ -15,7 +14,7 @@ public static class AppResourceExtensions
 
         // Load shared theme styles
         app.Resources.MergedDictionaries.Add(new FlashBoardTheme());
-        
+
         // Runtime-generated color resources
         app.Resources["FlashCellTextColor"] = Colors.Black;
         app.Resources["FlashHeaderTextColor"] = Colors.LightYellow;
@@ -23,9 +22,9 @@ public static class AppResourceExtensions
         app.Resources["FlashCellBGColor_Called"] = Colors.Goldenrod;
 
         // Dynamically scaled typography based on screen size + platform
-        var deviceInfoProvider = new MauiDeviceInfoProvider();
-        var fontService = new FontStyleService(deviceInfoProvider);
-        var (profile, fontSet) = fontService.GetFontProfile();
+        MauiDeviceInfoProvider deviceInfoProvider = new();
+        FontStyleService fontService = new(deviceInfoProvider);
+        (FontProfile profile, FontSet fontSet) = fontService.GetFontProfile();
         app.Resources["FlashBoardFontSet"] = fontSet;
         app.Resources["FlashBoardFontProfile"] = profile;
 

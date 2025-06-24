@@ -5,7 +5,7 @@
              x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardView"
              xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters"
              x:Name="Root">
-    <Grid x:Name="CellGrid"
+    <Grid x:Name="CellGrid"          
           Background="{StaticResource FlashBoardBackgroundBrush}"
           ColumnSpacing="4"
           RowSpacing="4"

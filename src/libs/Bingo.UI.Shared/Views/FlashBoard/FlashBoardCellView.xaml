@@ -4,7 +4,7 @@
              x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardCellView"
              xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters">
 
-    <Border Stroke="{AppThemeBinding Light=LightGray, Dark=DimGray}"
+    <Border x:Name="CellBorder" Stroke="{AppThemeBinding Light=LightGray, Dark=DimGray}"
         StrokeShape="RoundRectangle 2"
         StrokeThickness="0.5"
         BackgroundColor="{Binding IsCalled, Converter={StaticResource CellBackgroundConverter}}">

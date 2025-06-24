@@ -5,26 +5,32 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters">
 
-    <!-- Text + Layout only -->
+    <!-- 🔤 Typography + Layout: Number Cell -->
     <Style x:Key="FlashBoardNumberCell" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource FlashBoardNumberFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource FlashBoardNumberFontSize}" />
         <Setter Property="FontAttributes" Value="{DynamicResource FlashBoardNumberFontAttributes}" />
-
         <Setter Property="HorizontalOptions" Value="Fill" />
         <Setter Property="VerticalOptions" Value="Fill" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
         <Setter Property="VerticalTextAlignment" Value="Center" />
         <Setter Property="LineBreakMode" Value="NoWrap" />
         <Setter Property="Padding" Value="4" />
+        <Setter Property="TextColor" Value="{DynamicResource FlashBoardCellTextColor_Uncalled}" />
+
+        <Style.Triggers>
+            <DataTrigger TargetType="Label" Binding="{Binding IsCalled}" Value="True">
+                <Setter Property="TextColor" Value="{DynamicResource FlashBoardCellTextColor_Called}" />
+                <Setter Property="BackgroundColor" Value="{DynamicResource FlashBoardCellBGColor_Called}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
-    <!-- Header style -->
+    <!-- 🔠 Typography: Header Cell -->
     <Style x:Key="FlashBoardHeaderLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="{DynamicResource FlashBoardHeaderFontFamily}" />
         <Setter Property="FontSize" Value="{DynamicResource FlashBoardHeaderFontSize}" />
         <Setter Property="FontAttributes" Value="{DynamicResource FlashBoardHeaderFontAttributes}" />
-
         <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
@@ -34,26 +40,25 @@
         <Setter Property="Padding" Value="8,0" />
     </Style>
 
-    <!-- Color resources -->
+    <!-- 🎨 Color Resources -->
     <Color x:Key="FlashBoardBackgroundColor">Transparent</Color>
     <SolidColorBrush x:Key="FlashBoardBackgroundBrush" Color="{StaticResource FlashBoardBackgroundColor}" />
 
-    <Color x:Key="FlashboardNumberCell">#707070</Color>
-    <SolidColorBrush x:Key="FlashboardNumberCellBackgroundBrush" Color="{StaticResource FlashboardNumberCell}" />
+    <Color x:Key="FlashBoardCellBGColor_Uncalled">#707070</Color>
+    <Color x:Key="FlashBoardCellBGColor_Called">#FFD700</Color>
 
-    <Color x:Key="FlashBoardCalledCell">#FFD700</Color>
-    <SolidColorBrush x:Key="FlashBoardCalledCellBackgroundBrush" Color="{StaticResource FlashBoardCalledCell}" />
+    <Color x:Key="FlashBoardCellTextColor_Uncalled">Gray</Color>
+    <Color x:Key="FlashBoardCellTextColor_Called">Black</Color>
 
-    <Color x:Key="FlashBoardUncalledCellTextColor">Gray</Color>
-    <Color x:Key="FlashBoardCalledCellTextColor">Black</Color>
+    <SolidColorBrush x:Key="FlashBoardCellBGBrush_Uncalled" Color="{StaticResource FlashBoardCellBGColor_Uncalled}" />
+    <SolidColorBrush x:Key="FlashBoardCellBGBrush_Called" Color="{StaticResource FlashBoardCellBGColor_Called}" />
 
-    <!-- Converters -->
+    <!-- 🔁 Converters -->
     <converters:BoolToCellBackgroundConverter x:Key="CellBackgroundConverter"
-    TrueValue="{StaticResource FlashBoardCalledCellBackgroundBrush}"
-    FalseValue="{StaticResource FlashboardNumberCellBackgroundBrush}" />
+        TrueValue="{StaticResource FlashBoardCellBGBrush_Called}"
+        FalseValue="{StaticResource FlashBoardCellBGBrush_Uncalled}" />
 
     <converters:BoolToCellTextColorConverter x:Key="CellTextColorConverter"
-    TrueValue="{StaticResource FlashBoardCalledCellTextColor}"
-    FalseValue="{StaticResource FlashBoardUncalledCellTextColor}" />
-
+        TrueValue="{StaticResource FlashBoardCellTextColor_Called}"
+        FalseValue="{StaticResource FlashBoardCellTextColor_Uncalled}" />
 </ResourceDictionary>

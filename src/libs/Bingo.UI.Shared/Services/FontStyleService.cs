@@ -1,6 +1,5 @@
 ﻿using Bingo.Core.Device;
 using Bingo.UI.Shared.Styles;
-using Microsoft.Maui.Devices;
 
 namespace Bingo.UI.Shared.Services;
 
