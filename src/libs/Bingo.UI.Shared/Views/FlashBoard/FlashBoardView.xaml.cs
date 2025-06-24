@@ -1,12 +1,27 @@
-﻿using Bingo.ViewModel.FlashBoard;
+﻿using Bingo.UI.Shared.Device;
+using Bingo.UI.Shared.Services;
+using Bingo.ViewModel.FlashBoard;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Bingo.UI.Shared.Views.FlashBoard
 {
     public partial class FlashBoardView : ContentView
     {
+        private readonly StyleBindingService _styleService = new(new FontStyleService(new MauiDeviceInfoProvider()));
+
         public FlashBoardView()
         {
             InitializeComponent();
+        }
+
+        public static readonly BindableProperty IsInteractiveProperty =
+            BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), false);
+
+        public bool IsInteractive
+        {
+            get => (bool)GetValue(IsInteractiveProperty);
+            set => SetValue(IsInteractiveProperty, value);
         }
 
         public FlashBoardViewModel ViewModel
@@ -19,57 +34,59 @@ namespace Bingo.UI.Shared.Views.FlashBoard
             }
         }
 
-        public static readonly BindableProperty IsInteractiveProperty =
-            BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), false);
-
-        public bool IsInteractive
-        {
-            get => (bool)GetValue(IsInteractiveProperty);
-            set => SetValue(IsInteractiveProperty, value);
-        }
-
         private void BuildGrid()
         {
             CellGrid.Children.Clear();
             CellGrid.RowDefinitions.Clear();
             CellGrid.ColumnDefinitions.Clear();
 
-            // 5 rows for B-I-N-G-O
+            // 5 rows: B, I, N, G, O
             for (int i = 0; i < 5; i++)
                 CellGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
 
-            // 6 columns (1 header + 5 number cells per row)
-            for (int i = 0; i < 6; i++)
+            // 16 columns: 1 for label + 15 numbers
+            for (int i = 0; i < 16; i++)
                 CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-            if (ViewModel?.Groups == null)
+            var fontSet = _styleService.GetFontSet();
+            var groups = ViewModel?.Groups;
+            if (groups is null)
                 return;
 
-            for (int row = 0; row < ViewModel.Groups.Count; row++)
+            for (int row = 0; row < groups.Count; row++)
             {
-                // Add B-I-N-G-O header
-                Label letter = new()
-                {
-                    Text = ViewModel.Groups[row].Letter.ToString(),
-                    TextColor = Colors.White,
-                    FontSize = 22,
-                    FontAttributes = FontAttributes.Bold,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center
-                };
-                Grid.SetRow(letter, row);
-                Grid.SetColumn(letter, 0);
-                CellGrid.Children.Add(letter);
+                var group = groups[row];
 
-                // Add number cells
-                for (int col = 0; col < ViewModel.Groups[row].Cells.Count; col++)
+                // Left-side letter label (column 0)
+                var label = new Label
                 {
-                    FlashBoardCellView cellView = new()
+                    Text = group.Letter.ToString(),
+                    Style = (Style)Application.Current.Resources["FlashBoardHeaderLabel"]
+                };
+                Grid.SetRow(label, row);
+                Grid.SetColumn(label, 0);
+                CellGrid.Children.Add(label);
+
+                // Number cells (columns 1–15)
+                for (int col = 0; col < group.Cells.Count; col++)
+                {
+                    var cellView = new FlashBoardCellView
                     {
-                        BindingContext = ViewModel.Groups[row].Cells[col]
+                        BindingContext = group.Cells[col]
                     };
+
+                    if (IsInteractive)
+                    {
+                        var tap = new TapGestureRecognizer
+                        {
+                            Command = ViewModel?.ToggleCallCommand, // Safely access ViewModel
+                            CommandParameter = group.Cells[col].Number
+                        };
+                        cellView.GestureRecognizers.Add(tap);
+                    }
+
                     Grid.SetRow(cellView, row);
-                    Grid.SetColumn(cellView, col + 1); // +1 to offset letter
+                    Grid.SetColumn(cellView, col + 1);
                     CellGrid.Children.Add(cellView);
                 }
             }

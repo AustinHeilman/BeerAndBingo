@@ -2,16 +2,56 @@
 <ResourceDictionary
     x:Class="Bingo.UI.Shared.Styles.FlashBoardTheme"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters">
 
+    <!-- Text + Layout only -->
+    <Style x:Key="FlashBoardNumberCell" TargetType="Label">
+        <Setter Property="FontFamily" Value="Consolas" />
+        <Setter Property="FontSize" Value="32" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Fill" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+        <Setter Property="Padding" Value="4" />
+    </Style>
+
+    <!-- Header style -->
     <Style x:Key="FlashBoardHeaderLabel" TargetType="Label">
         <Setter Property="FontFamily" Value="Consolas" />
-        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontSize" Value="36" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="TextColor" Value="{AppThemeBinding Light=Black, Dark=White}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="LineBreakMode" Value="NoWrap" />
+        <Setter Property="Padding" Value="8,0" />
     </Style>
 
+    <!-- Color resources -->
+    <Color x:Key="FlashBoardBackgroundColor">Transparent</Color>
+    <SolidColorBrush x:Key="FlashBoardBackgroundBrush" Color="{StaticResource FlashBoardBackgroundColor}" />
+
+    <Color x:Key="FlashboardNumberCell">#707070</Color>
+    <SolidColorBrush x:Key="FlashboardNumberCellBackgroundBrush" Color="{StaticResource FlashboardNumberCell}" />
+
+    <Color x:Key="FlashBoardCalledCell">#FFD700</Color>
+    <SolidColorBrush x:Key="FlashBoardCalledCellBackgroundBrush" Color="{StaticResource FlashBoardCalledCell}" />
+
+    <Color x:Key="FlashBoardUncalledCellTextColor">Gray</Color>
+    <Color x:Key="FlashBoardCalledCellTextColor">Black</Color>
+
+    <!-- Converters -->
+    <converters:BoolToCellBackgroundConverter x:Key="CellBackgroundConverter"
+    TrueValue="{StaticResource FlashBoardCalledCellBackgroundBrush}"
+    FalseValue="{StaticResource FlashboardNumberCellBackgroundBrush}" />
+
+    <converters:BoolToCellTextColorConverter x:Key="CellTextColorConverter"
+    TrueValue="{StaticResource FlashBoardCalledCellTextColor}"
+    FalseValue="{StaticResource FlashBoardUncalledCellTextColor}" />
 
 </ResourceDictionary>

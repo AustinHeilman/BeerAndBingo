@@ -18,6 +18,10 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
+	<PropertyGroup>
+		<EnableCompiledBindings>true</EnableCompiledBindings>
+	</PropertyGroup>
+
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\*" />	  
 	</ItemGroup>

@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardCellView">
-    <Border Stroke="Gray"
-            BackgroundColor="{Binding IsCalled, Converter={StaticResource BoolToCellBackgroundConverter}}"
-            StrokeShape="RoundRectangle 4"
-            StrokeThickness="1">
+             x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardCellView"
+             xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters">
+
+    <Border Stroke="{AppThemeBinding Light=LightGray, Dark=DimGray}"
+        StrokeShape="RoundRectangle 2"
+        StrokeThickness="0.5"
+        BackgroundColor="{Binding IsCalled, Converter={StaticResource CellBackgroundConverter}}">
+
         <Label Text="{Binding Number}"
-               FontAttributes="Bold"
-               FontSize="22"
-               TextColor="{Binding IsCalled, Converter={StaticResource BoolToCellTextColorConverter}}"
-               HorizontalOptions="Center"
-               VerticalOptions="Center"
-               HorizontalTextAlignment="Center"
-               VerticalTextAlignment="Center"/>
+           Style="{StaticResource FlashBoardNumberCell}"
+           TextColor="{Binding IsCalled, Converter={StaticResource CellTextColorConverter}}" />
     </Border>
 </ContentView>

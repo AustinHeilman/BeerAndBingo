@@ -1,20 +1,28 @@
-﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Bingo.Caller.App"
+             xmlns:styles="clr-namespace:Bingo.UI.Shared.Styles;assembly=Bingo.UI.Shared"
              xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.App">
 
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Load theme first so resources are ready for converters -->
+                <styles:FlashBoardTheme />
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <!-- Converters go here outside of MergedDictionaries -->
-            <conv:BoolToCellBackgroundConverter x:Key="BoolToCellBackgroundConverter" />
-            <conv:BoolToCellTextColorConverter x:Key="BoolToCellTextColorConverter" />
+            <!-- Global converters using the new BoolToValueConverterBase<T> -->
+            <conv:BoolToCellBackgroundConverter x:Key="CellBackgroundConverter"
+                TrueValue="{StaticResource FlashBoardCalledCellBackgroundBrush}"
+                FalseValue="{StaticResource FlashboardNumberCellBackgroundBrush}" />
+
+            <conv:BoolToCellTextColorConverter x:Key="CellTextColorConverter"
+                TrueValue="{StaticResource FlashBoardCalledCellTextColor}"
+                FalseValue="{StaticResource FlashBoardUncalledCellTextColor}" />
         </ResourceDictionary>
     </Application.Resources>
-
 </Application>
