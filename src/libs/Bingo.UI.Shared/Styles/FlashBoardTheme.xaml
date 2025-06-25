@@ -21,7 +21,7 @@
         <Style.Triggers>
             <DataTrigger TargetType="Label" Binding="{Binding IsCalled}" Value="True">
                 <Setter Property="TextColor" Value="{DynamicResource FlashBoardCellTextColor_Called}" />
-                <Setter Property="BackgroundColor" Value="{DynamicResource FlashBoardCellBGColor_Called}" />
+                <!-- <Setter Property="BackgroundColor" Value="{DynamicResource FlashBoardCellBGColor_Called}" /> -->
             </DataTrigger>
         </Style.Triggers>
     </Style>
