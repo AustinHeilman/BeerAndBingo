@@ -14,13 +14,13 @@ namespace Bingo.UI.Shared.Converters
 
             if (result == null)
             {
-                Debug.WriteLine($"[BoolToValueConverterBase] Null value for targetType {targetType}, returning UnsetValue");
+                //Debug.WriteLine($"[BoolToValueConverterBase] Null value for targetType {targetType}, returning UnsetValue");
                 return BindableProperty.UnsetValue;
             }
 
             if (targetType == typeof(Color) && result is SolidColorBrush sb)
             {
-                Debug.WriteLine($"[BoolToValueConverterBase] Unwrapping SolidColorBrush → {sb.Color}");
+                //Debug.WriteLine($"[BoolToValueConverterBase] Unwrapping SolidColorBrush → {sb.Color}");
                 return sb.Color;
             }
 

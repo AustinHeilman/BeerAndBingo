@@ -17,84 +17,69 @@ public class FontStyleService
 
     public FontProfileResult GetFontProfile()
     {
-        var info = DeviceDisplay.MainDisplayInfo;
-        double inches = _deviceInfo.ScreenDiagonalInches;
-        bool isWindows = DeviceInfo.Platform == DevicePlatform.WinUI;
+        var persona = _deviceInfo.Persona;
 
-        DisplayClass displayClass;
         FontProfile profile;
         FontSet fontSet;
 
-        if (isWindows)
+        switch (persona.DisplayClass)
         {
-            displayClass = DisplayClass.Desktop;
-            profile = FontProfile.Windows;
-            fontSet = new FontSet(
-                new(64, FontAttributes.Bold, "Consolas"),
-                new(56, FontAttributes.Bold, "Consolas"),
-                new(42, FontAttributes.None, "Segoe UI"),
-                new(28, FontAttributes.None, "Segoe UI")
-            );
-        }
-        else if (_deviceInfo.DeviceModel.Contains("A7 Lite", StringComparison.OrdinalIgnoreCase) ||
-                 info.Width <= 1340 || inches < 9.0)
-        {
-            displayClass = DisplayClass.CompactTablet;
-            profile = FontProfile.Tablet;
-            fontSet = new FontSet(
-                new(38, FontAttributes.Bold, "Consolas"),
-                new(30, FontAttributes.Bold, "Consolas"),
-                new(26, FontAttributes.None, "Roboto"),
-                new(18, FontAttributes.None, "Roboto")
-            );
-        }
-        else if (_deviceInfo.FormFactor == DeviceFormFactor.Tablet && inches >= 11)
-        {
-            displayClass = DisplayClass.FullTablet;
-            profile = FontProfile.TabletXL;
-            fontSet = new FontSet(
-                new(54, FontAttributes.Bold, "Consolas"),
-                new(48, FontAttributes.Bold, "Consolas"),
-                new(34, FontAttributes.None, "Roboto"),
-                new(24, FontAttributes.None, "Roboto")
-            );
-        }
-        else if (_deviceInfo.FormFactor == DeviceFormFactor.Tablet)
-        {
-            displayClass = DisplayClass.FullTablet;
-            profile = FontProfile.Tablet;
-            fontSet = new FontSet(
-                new(48, FontAttributes.Bold, "Consolas"),
-                new(42, FontAttributes.Bold, "Consolas"),
-                new(30, FontAttributes.None, "Roboto"),
-                new(20, FontAttributes.None, "Roboto")
-            );
-        }
-        else if (inches < 6.4)
-        {
-            displayClass = DisplayClass.UltraCompact;
-            profile = FontProfile.CompactPhone;
-            fontSet = new FontSet(
-                new(30, FontAttributes.Bold, "Consolas"),
-                new(19, FontAttributes.Bold, "Consolas"),
-                new(18, FontAttributes.None, "Roboto"),
-                new(14, FontAttributes.None, "Roboto")
-            );
-        }
-        else
-        {
-            displayClass = DisplayClass.Phone;
-            profile = FontProfile.Phone;
-            fontSet = new FontSet(
-                new(40, FontAttributes.Bold, "Consolas"),
-                new(34, FontAttributes.Bold, "Consolas"),
-                new(26, FontAttributes.None, "Roboto"),
-                new(18, FontAttributes.None, "Roboto")
-            );
+            case DisplayClass.Desktop:
+                profile = FontProfile.Windows;
+                fontSet = new FontSet(
+                    new(64, FontAttributes.Bold, "Consolas"),
+                    new(56, FontAttributes.Bold, "Consolas"),
+                    new(42, FontAttributes.None, "Segoe UI"),
+                    new(28, FontAttributes.None, "Segoe UI")
+                );
+                break;
+
+            case DisplayClass.Projector:
+            case DisplayClass.FullTablet:
+                profile = FontProfile.TabletXL;
+                fontSet = new FontSet(
+                    new(54, FontAttributes.Bold, "Consolas"),
+                    new(48, FontAttributes.Bold, "Consolas"),
+                    new(34, FontAttributes.None, "Roboto"),
+                    new(24, FontAttributes.None, "Roboto")
+                );
+                break;
+
+            case DisplayClass.CompactTablet:
+                profile = FontProfile.Tablet;
+                fontSet = new FontSet(
+                    new(30, FontAttributes.Bold, "Consolas"),
+                    new(28, FontAttributes.Bold, "Consolas"),
+                    new(14, FontAttributes.None, "Roboto"),
+                    new(14, FontAttributes.None, "Roboto")
+                );
+                break;
+
+            case DisplayClass.UltraCompact:
+                profile = FontProfile.CompactPhone;
+                fontSet = new FontSet(
+                    new(20, FontAttributes.Bold, "Consolas"),
+                    new(14, FontAttributes.Bold, "Consolas"),
+                    new(10, FontAttributes.None, "Roboto"),
+                    new(10, FontAttributes.None, "Roboto")
+                );
+                break;
+
+            default:
+            case DisplayClass.Phone:
+                profile = FontProfile.Phone;
+                fontSet = new FontSet(
+                    new(28, FontAttributes.Bold, "Consolas"),
+                    new(19, FontAttributes.Bold, "Consolas"),
+                    new(14, FontAttributes.None, "Roboto"),
+                    new(14, FontAttributes.None, "Roboto")
+                );
+                break;
         }
 
-        Debug.WriteLine($"Font profile: {profile}, display class: {displayClass}, diagonal: {inches:F2}\"");
+        Debug.WriteLine($"Font profile: {profile}, display class: {persona.DisplayClass}, model: {persona.DeviceModel}");
 
-        return new FontProfileResult(profile, fontSet, displayClass);
+        return new FontProfileResult(profile, fontSet, persona.DisplayClass);
     }
+
 }
