@@ -1,4 +1,5 @@
-﻿using Bingo.Core.Device;
+﻿using Bingo.Core.Device.Fonts;
+using Bingo.UI.Shared.Extensions;
 using Bingo.UI.Shared.Styles;
 
 namespace Bingo.UI.Shared.Services;
@@ -25,7 +26,7 @@ public class StyleBindingService
         {
             Text = text,
             FontSize = style.Size,
-            FontAttributes = style.Attributes,
+            FontAttributes = style.Weight.ToFontAttributes(),
             FontFamily = style.FontFamily,
             TextColor = textColor ?? flashCellTextColor ?? Colors.Black,
             HorizontalOptions = LayoutOptions.Fill,

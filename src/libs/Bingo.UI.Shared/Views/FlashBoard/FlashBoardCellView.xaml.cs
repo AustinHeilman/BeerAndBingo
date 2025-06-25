@@ -55,7 +55,9 @@ public partial class FlashBoardCellView : ContentView
         this.SetValue(Microsoft.Maui.Controls.Layout.ZIndexProperty, 1);
 
         Color shimmerColor = Colors.Goldenrod.WithAlpha(0.6f);
-        Color settledColor = (Color)Application.Current.Resources["FlashBoardCellBGColor_Called"];
+        Color settledColor = Application.Current?.Resources?.TryGetValue("FlashBoardCellBGColor_Called", out var color) == true && color is Color validColor
+            ? validColor
+            : Colors.Transparent;
 
         uint scaleUp = (uint)(150 * scale);
         uint fade = (uint)(120 * scale);
@@ -87,7 +89,7 @@ public partial class FlashBoardCellView : ContentView
         CellBorder.Opacity = 1.0;
         this.SetValue(Microsoft.Maui.Controls.Layout.ZIndexProperty, 0);
 
-        if (Application.Current.Resources.TryGetValue("FlashBoardCellBGColor_Uncalled", out var fallback) &&
+        if (Application.Current?.Resources?.TryGetValue("FlashBoardCellBGColor_Uncalled", out var fallback) == true &&
             fallback is Color reset)
         {
             CellBorder.BackgroundColor = reset;

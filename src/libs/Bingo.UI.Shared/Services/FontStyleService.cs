@@ -1,7 +1,5 @@
 ﻿using Bingo.Core.Device;
-using Bingo.UI.Shared.Device;
-using Bingo.UI.Shared.Styles;
-using Microsoft.Maui.Devices;
+using Bingo.Core.Device.Fonts;
 using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Services;
@@ -27,10 +25,10 @@ public class FontStyleService
             case DisplayClass.Desktop:
                 profile = FontProfile.Windows;
                 fontSet = new FontSet(
-                    new(64, FontAttributes.Bold, "Consolas"),
-                    new(56, FontAttributes.Bold, "Consolas"),
-                    new(42, FontAttributes.None, "Segoe UI"),
-                    new(28, FontAttributes.None, "Segoe UI")
+                    new(64, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(56, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(42, Core.Device.Fonts.FontWeight.Normal, "Segoe UI"),
+                    new(28, Core.Device.Fonts.FontWeight.Normal, "Segoe UI")
                 );
                 break;
 
@@ -38,30 +36,30 @@ public class FontStyleService
             case DisplayClass.FullTablet:
                 profile = FontProfile.TabletXL;
                 fontSet = new FontSet(
-                    new(54, FontAttributes.Bold, "Consolas"),
-                    new(48, FontAttributes.Bold, "Consolas"),
-                    new(34, FontAttributes.None, "Roboto"),
-                    new(24, FontAttributes.None, "Roboto")
+                    new(54, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(48, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(34, Core.Device.Fonts.FontWeight.Normal, "Roboto"),
+                    new(24, Core.Device.Fonts.FontWeight.Normal, "Roboto")
                 );
                 break;
 
             case DisplayClass.CompactTablet:
                 profile = FontProfile.Tablet;
                 fontSet = new FontSet(
-                    new(30, FontAttributes.Bold, "Consolas"),
-                    new(28, FontAttributes.Bold, "Consolas"),
-                    new(14, FontAttributes.None, "Roboto"),
-                    new(14, FontAttributes.None, "Roboto")
+                    new(30, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(28, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(14, Core.Device.Fonts.FontWeight.Normal, "Roboto"),
+                    new(14, Core.Device.Fonts.FontWeight.Normal, "Roboto")
                 );
                 break;
 
             case DisplayClass.UltraCompact:
                 profile = FontProfile.CompactPhone;
                 fontSet = new FontSet(
-                    new(20, FontAttributes.Bold, "Consolas"),
-                    new(14, FontAttributes.Bold, "Consolas"),
-                    new(10, FontAttributes.None, "Roboto"),
-                    new(10, FontAttributes.None, "Roboto")
+                    new(20, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(14, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(10, Core.Device.Fonts.FontWeight.Normal, "Roboto"),
+                    new(10, Core.Device.Fonts.FontWeight.Normal, "Roboto")
                 );
                 break;
 
@@ -69,10 +67,10 @@ public class FontStyleService
             case DisplayClass.Phone:
                 profile = FontProfile.Phone;
                 fontSet = new FontSet(
-                    new(28, FontAttributes.Bold, "Consolas"),
-                    new(19, FontAttributes.Bold, "Consolas"),
-                    new(14, FontAttributes.None, "Roboto"),
-                    new(14, FontAttributes.None, "Roboto")
+                    new(28, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(19, Core.Device.Fonts.FontWeight.Bold, "Consolas"),
+                    new(14, Core.Device.Fonts.FontWeight.Normal, "Roboto"),
+                    new(14, Core.Device.Fonts.FontWeight.Normal, "Roboto")
                 );
                 break;
         }

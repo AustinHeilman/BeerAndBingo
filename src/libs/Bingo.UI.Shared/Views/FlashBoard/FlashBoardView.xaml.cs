@@ -1,6 +1,6 @@
-﻿using Bingo.UI.Shared.Device;
-using Bingo.UI.Shared.Services;
+﻿using Bingo.UI.Shared.Services;
 using Bingo.ViewModel.FlashBoard;
+using Bingo.Core.Device.Fonts;
 
 namespace Bingo.UI.Shared.Views.FlashBoard
 {
@@ -46,7 +46,7 @@ namespace Bingo.UI.Shared.Views.FlashBoard
             for (int i = 0; i < 16; i++)
                 CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
-            Styles.FontSet fontSet = _styleService.GetFontSet();
+            var fontSet = _styleService.GetFontSet();
             System.Collections.ObjectModel.ObservableCollection<FlashBoardGroupViewModel>? groups = ViewModel?.Groups;
             if (groups is null)
                 return;

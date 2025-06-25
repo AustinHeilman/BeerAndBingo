@@ -37,10 +37,10 @@ public static class AppResourceExtensions
 
         app.Resources["FlashBoardNumberFontSize"] = fontSet.Number.Size;
         app.Resources["FlashBoardNumberFontFamily"] = fontSet.Number.FontFamily;
-        app.Resources["FlashBoardNumberFontAttributes"] = fontSet.Number.Attributes;
+        app.Resources["FlashBoardNumberFontAttributes"] = fontSet.Number.Weight;
 
         app.Resources["FlashBoardHeaderFontSize"] = fontSet.Header.Size;
         app.Resources["FlashBoardHeaderFontFamily"] = fontSet.Header.FontFamily;
-        app.Resources["FlashBoardHeaderFontAttributes"] = fontSet.Header.Attributes;
+        app.Resources["FlashBoardHeaderFontAttributes"] = fontSet.Header.Weight;
     }
 }

@@ -1,7 +1,4 @@
-﻿using Bingo.Core.Device;
-using Bingo.UI.Shared.Styles;
-
-namespace Bingo.UI.Shared.Device;
+﻿namespace Bingo.Core.Device.Fonts;
 
 public record FontProfileResult(
     FontProfile Profile,

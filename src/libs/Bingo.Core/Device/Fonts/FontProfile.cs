@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Device;
+﻿namespace Bingo.Core.Device.Fonts;
 
 public enum FontProfile
 {

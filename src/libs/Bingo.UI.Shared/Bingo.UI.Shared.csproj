@@ -19,6 +19,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
+		<EnablePreviewMsbuildFeatures>true</EnablePreviewMsbuildFeatures>
 		<EnableCompiledBindings>true</EnableCompiledBindings>
 	</PropertyGroup>
 
