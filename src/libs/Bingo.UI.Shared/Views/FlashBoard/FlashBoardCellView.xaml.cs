@@ -40,7 +40,7 @@ public partial class FlashBoardCellView : ContentView
             try
             {
                 await AnimateInAsync(animationScale, cts.Token);
-                HapticFeedback.Default.Perform(HapticFeedbackType.Click);
+                //Diable for now - Causes crash: HapticFeedback.Default.Perform(HapticFeedbackType.Click);
             }
             catch (OperationCanceledException) { /* Swallowed safely */ }
         }
@@ -48,7 +48,13 @@ public partial class FlashBoardCellView : ContentView
         {
             await AnimateOutAsync();
         }
-    }
+
+		//StateSymbolOverlay.Text = isCalled ? "✔" : "✖";
+		StateSymbolOverlay.Text = isCalled ? "" : "✖";
+		await StateSymbolOverlay.FadeTo(1.0, 100);
+		await Task.Delay(500);
+		await StateSymbolOverlay.FadeTo(0.0, 200);
+	}
 
     private async Task AnimateInAsync(double scale, CancellationToken token)
     {

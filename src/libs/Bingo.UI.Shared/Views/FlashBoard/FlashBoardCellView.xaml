@@ -4,13 +4,32 @@
              x:Class="Bingo.UI.Shared.Views.FlashBoard.FlashBoardCellView"
              xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters">
 
-    <Border x:Name="CellBorder" Stroke="{AppThemeBinding Light=LightGray, Dark=DimGray}"
-        StrokeShape="RoundRectangle 2"
-        StrokeThickness="0.5"
-        BackgroundColor="{Binding IsCalled, Converter={StaticResource CellBackgroundConverter}}">
+	<AbsoluteLayout>
 
-        <Label Text="{Binding Number}"
-           Style="{StaticResource FlashBoardNumberCell}"
-           TextColor="{Binding IsCalled, Converter={StaticResource CellTextColorConverter}}" />
-    </Border>
+		<!-- Background and number -->
+		<Border x:Name="CellBorder"
+            Stroke="{AppThemeBinding Light=LightGray, Dark=DimGray}"
+            StrokeShape="RoundRectangle 2"
+            StrokeThickness="0.5"
+            BackgroundColor="{Binding IsCalled, Converter={StaticResource CellBackgroundConverter}}"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+			<Label Text="{Binding Number}"
+               Style="{StaticResource FlashBoardNumberCell}"
+               TextColor="{Binding IsCalled, Converter={StaticResource CellTextColorConverter}}" />
+		</Border>
+
+		<!-- Transient overlay symbol (✔ or ✖) -->
+		<Label x:Name="StateSymbolOverlay"
+           Text=""
+           FontSize="22"
+           TextColor="White"
+           Opacity="0"
+           InputTransparent="True"
+           HorizontalOptions="Center"
+           VerticalOptions="Center"
+           AbsoluteLayout.LayoutBounds="0.5,0.5,AutoSize,AutoSize"
+           AbsoluteLayout.LayoutFlags="PositionProportional" />
+
+	</AbsoluteLayout>
 </ContentView>
