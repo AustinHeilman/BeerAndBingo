@@ -4,24 +4,71 @@ public class BingoPattern
 {
 	public string Name { get; set; } = string.Empty;
 
-	// Which cells are part of this pattern (row: 0-4, column: 0-14)
-	public HashSet<(int Row, int Col)> Cells { get; set; } = new();
+	// Core pattern cells
+	public HashSet<PatternCell> Cells { get; set; } = new();
 
-	// Optional: Used to determine which bingo columns are needed for calling
+	// Quick-access: (row, col) -> cell
+	public Dictionary<(int, int), PatternCell> CellMap =>
+		Cells.ToDictionary(c => (c.Row, c.Col));
+
+	// Get only active cells (readonly)
+	public IEnumerable<PatternCell> GetActiveCells() =>
+		Cells.Where(c => c.IsActive);
+
+	// Toggle IsActive at a given cell (adds it if missing)
+	public void ToggleCell(int row, int col)
+	{
+		var match = Cells.FirstOrDefault(c => c.Row == row && c.Col == col);
+		if (match is not null)
+		{
+			match.IsActive = !match.IsActive;
+		}
+		else
+		{
+			Cells.Add(new PatternCell
+			{
+				Row = row,
+				Col = col,
+				IsActive = true
+			});
+		}
+	}
+
+	// Deep clone: copies all metadata and cell state
+	public BingoPattern Clone()
+	{
+		return new BingoPattern
+		{
+			Name = this.Name,
+			Cells = this.Cells
+				.Select(c => new PatternCell
+				{
+					Row = c.Row,
+					Col = c.Col,
+					IsActive = c.IsActive
+				})
+				.ToHashSet()
+		};
+	}
+
+	// Used for caller preview optimization
 	public HashSet<int> GetUsedColumns() =>
-		Cells.Select(c => c.Col).ToHashSet();
+		GetActiveCells().Select(c => c.Col).ToHashSet();
 
 	public static BingoPattern EmptyPattern => new()
 	{
 		Name = "None",
-		Cells = new HashSet<(int Row, int Col)>
-		{
-			// Create the 5x5 grid: all cells (row 0-4, col 0-4)
-			(0, 0), (0, 1), (0, 2), (0, 3), (0, 4),
-			(1, 0), (1, 1), (1, 2), (1, 3), (1, 4),
-			(2, 0), (2, 1), (2, 2), (2, 3), (2, 4),
-			(3, 0), (3, 1), (3, 2), (3, 3), (3, 4),
-			(4, 0), (4, 1), (4, 2), (4, 3), (4, 4)
-		}
+		Cells = new HashSet<PatternCell>
+		(
+			Enumerable.Range(0, PatternGridSettings.PatternRowCount)
+				.SelectMany(row => Enumerable.Range(0, PatternGridSettings.PatternColCount)
+					.Select(col => new PatternCell
+					{
+						Row = row,
+						Col = col,
+						IsActive = Random.Shared.Next(2) == 0 // 50/50 chance
+					})
+			)
+		)
 	};
 }

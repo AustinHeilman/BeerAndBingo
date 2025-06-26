@@ -1,43 +1,53 @@
-﻿using Bingo.Core.Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 using Bingo.Core.Patterns;
+using Bingo.Core.Extensions;
 
-namespace Bingo.Core.Tests.Extensions;
-
-public class BingoPatternMatrixTests
+namespace Bingo.Core.Tests.Extensions
 {
-	[Fact]
-	public void ToMatrix_CorrectlyMapsCells()
+	public class BingoPatternMatrixTests
 	{
-		BingoPattern pattern = new()
+		[Fact]
+		public void ToMatrix_Creates_Expected_Grid()
 		{
-			Cells = new()
+			var pattern = new BingoPattern
 			{
-				(0, 0), (2, 5), (4, 14)
-			}
-		};
+				Cells = new HashSet<PatternCell>
+				{
+					new() { Row = 0, Col = 0, IsActive = true },
+					new() { Row = 1, Col = 1, IsActive = true },
+					new() { Row = 2, Col = 2, IsActive = true }
+				}
+			};
 
-		bool[,] matrix = pattern.ToMatrix();
+			bool[,] matrix = pattern.ToMatrix();
 
-		Assert.True(matrix[0, 0]);
-		Assert.True(matrix[2, 5]);
-		Assert.True(matrix[4, 14]);
-		Assert.False(matrix[1, 1]);
-	}
+			Assert.True(matrix[0, 0]);
+			Assert.True(matrix[1, 1]);
+			Assert.True(matrix[2, 2]);
+			Assert.False(matrix[0, 1]);
+		}
 
-	[Fact]
-	public void FromMatrix_ReconstructsSamePattern()
-	{
-		BingoPattern original = new()
+		[Fact]
+		public void FromMatrix_Creates_Expected_Cells()
 		{
-			Cells = new()
+			bool[,] input =
 			{
-				(1, 1), (2, 2)
-			}
-		};
+				{ true,  false },
+				{ false, true }
+			};
 
-		bool[,] matrix = original.ToMatrix();
-		BingoPattern reconstructed = BingoPatternMatrixExtensions.FromMatrix(matrix);
+			BingoPattern pattern = BingoPatternMatrixExtensions.FromMatrix(input);
 
-		Assert.Equal(original.Cells, reconstructed.Cells);
+			// 🟣 New checks — full 2×2 grid
+			Assert.Equal(4, pattern.Cells.Count);
+			Assert.Equal(2, pattern.GetActiveCells().Count());
+
+			Assert.Contains(pattern.Cells, c => c.Row == 0 && c.Col == 0 && c.IsActive);
+			Assert.Contains(pattern.Cells, c => c.Row == 1 && c.Col == 1 && c.IsActive);
+			Assert.Contains(pattern.Cells, c => c.Row == 0 && c.Col == 1 && !c.IsActive);
+			Assert.Contains(pattern.Cells, c => c.Row == 1 && c.Col == 0 && !c.IsActive);
+		}
 	}
 }

@@ -30,13 +30,13 @@ public class PatternDisplayViewModel
 	{
 		PatternCells.Clear();
 
-		foreach ((int row, int col) in pattern.Cells)
+		foreach (var cell in pattern.Cells)
 		{
 			PatternCells.Add(new PatternCell
 			{
-				Row = row,
-				Col = col,
-				IsActive = true
+				Row = cell.Row,
+				Col = cell.Col,
+				IsActive = cell.IsActive
 			});
 		}
 	}

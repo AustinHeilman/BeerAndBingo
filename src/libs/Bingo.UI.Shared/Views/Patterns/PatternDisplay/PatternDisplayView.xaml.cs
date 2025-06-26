@@ -1,6 +1,6 @@
 ﻿using Bingo.Core.Patterns;
 using Bingo.ViewModel.Patterns;
-using System.Diagnostics;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace Bingo.UI.Shared.Views.Patterns.PatternDisplay;
 
@@ -9,28 +9,21 @@ public partial class PatternDisplayView : ContentView
 	public static readonly BindableProperty PatternCellsProperty =
 		BindableProperty.Create(
 			nameof(PatternCells),
-			typeof(ISet<(int, int)>),
+			typeof(IEnumerable<PatternCell>),
 			typeof(PatternDisplayView),
-			new HashSet<(int, int)>(),
+			defaultValue: Enumerable.Empty<PatternCell>(),
 			propertyChanged: (bindable, oldVal, newVal) =>
 			{
-				if (bindable is PatternDisplayView view && newVal is ISet<(int, int)> cells)
+				if (bindable is PatternDisplayView view && newVal is IEnumerable<PatternCell> cells)
 				{
-					view.PatternCells = cells;
+					view.SetPatternCells(cells);
 				}
 			});
 
-	public ISet<(int, int)> PatternCells
+	public IEnumerable<PatternCell> PatternCells
 	{
-		get => (ISet<(int, int)>)GetValue(PatternCellsProperty);
-		set
-		{
-			if (value is null)
-				return;
-
-			SetValue(PatternCellsProperty, value);
-			UpdatePatternVisuals();
-		}
+		get => (IEnumerable<PatternCell>)GetValue(PatternCellsProperty);
+		set => SetValue(PatternCellsProperty, value);
 	}
 
 	public static readonly BindableProperty ViewModelProperty =
@@ -47,13 +40,12 @@ public partial class PatternDisplayView : ContentView
 		set => SetValue(ViewModelProperty, value);
 	}
 
-	// 📌 Fast-access lookup for grid performance
-	private readonly Dictionary<(int Row, int Col), BoxView> _boxMap = new();
+	private readonly Dictionary<(int, int), Border> _borderMap = new();
+	private readonly Dictionary<(int, int), PatternCell> _cellMap = new();
 
 	public PatternDisplayView()
 	{
 		InitializeComponent();
-		PatternCells = new HashSet<(int, int)>();
 		BuildGrid();
 	}
 
@@ -63,17 +55,17 @@ public partial class PatternDisplayView : ContentView
 			return;
 
 		view.BindingContext = vm;
+		view.SetPatternCells(vm.PatternCells);
+		vm.PatternCells.CollectionChanged += (_, __) => view.SetPatternCells(vm.PatternCells);
+	}
 
-		view.PatternCells = vm.PatternCells
-			.Select(cell => (cell.Row, cell.Col))
-			.ToHashSet();
+	private void SetPatternCells(IEnumerable<PatternCell> cells)
+	{
+		_cellMap.Clear();
+		foreach (var cell in cells)
+			_cellMap[(cell.Row, cell.Col)] = cell;
 
-		vm.PatternCells.CollectionChanged += (_, __) =>
-		{
-			view.PatternCells = vm.PatternCells
-				.Select(cell => (cell.Row, cell.Col))
-				.ToHashSet();
-		};
+		UpdatePatternVisuals();
 	}
 
 	private void BuildGrid()
@@ -84,7 +76,10 @@ public partial class PatternDisplayView : ContentView
 		PatternGrid.RowDefinitions.Clear();
 		PatternGrid.ColumnDefinitions.Clear();
 		PatternGrid.Children.Clear();
-		_boxMap.Clear();
+		_borderMap.Clear();
+
+		PatternGrid.RowSpacing = 1;
+		PatternGrid.ColumnSpacing = 1;
 
 		for (int r = 0; r < rows; r++)
 			PatternGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
@@ -96,40 +91,85 @@ public partial class PatternDisplayView : ContentView
 		{
 			for (int c = 0; c < cols; c++)
 			{
-				var box = new BoxView
+				var border = new Border
 				{
-					Color = Colors.LightGray,
-					BindingContext = (r, c),
-					CornerRadius = 3,
-					Margin = 1
+					Padding = 0,
+					Margin = new Thickness(0),
+					Stroke = Colors.Black,
+					StrokeThickness = 1,
+					Background = Colors.LightGray,
+					StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(1) },
+					HorizontalOptions = LayoutOptions.Fill,
+					VerticalOptions = LayoutOptions.Fill,
+					BindingContext = (r, c)
 				};
 
-				PatternGrid.Children.Add(box);
-				Grid.SetRow(box, r);
-				Grid.SetColumn(box, c);
-				_boxMap[(r, c)] = box;
+				PatternGrid.Children.Add(border);
+				Grid.SetRow(border, r);
+				Grid.SetColumn(border, c);
+				_borderMap[(r, c)] = border;
+
+				AddLetter(c, r);
 			}
 		}
 
+		CreateStarInCenter();
 		UpdatePatternVisuals();
+	}
+
+	private void AddLetter(int col, int row)
+	{
+		var columnLetter = "BINGO"[col].ToString();
+
+		var label = new Label
+		{
+			Text = columnLetter,
+			TextColor = Color.FromArgb("#303030"),
+			FontSize = 16,
+			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35, // Star/center
+			FontAttributes = FontAttributes.None,
+			HorizontalOptions = LayoutOptions.Center,
+			VerticalOptions = LayoutOptions.Center,
+			//InputTransparent = true,			
+		};
+
+		Grid.SetRow(label, row);
+		Grid.SetColumn(label, col);
+		PatternGrid.Children.Add(label);
+	}
+
+	private void CreateStarInCenter()
+	{
+		var starView = new GraphicsView
+		{
+			Drawable = new StarDrawable(),
+			HorizontalOptions = LayoutOptions.Fill,
+			VerticalOptions = LayoutOptions.Fill,
+			Margin = new Thickness(4),
+			InputTransparent = true
+		};
+
+		Grid.SetRow(starView, 2);
+		Grid.SetColumn(starView, 2);
+		PatternGrid.Children.Add(starView);
 	}
 
 	private void UpdatePatternVisuals()
 	{
-		Color fallbackColor = (PatternCells == null || PatternCells.Count == 0)
-			? Colors.Gray
-			: Colors.LightGray;
-
-		foreach (var pos in _boxMap.Keys)
+		foreach (var pos in _borderMap.Keys)
 		{
-			if (PatternCells == null)
-			{
-				Debug.WriteLine($"PatternCells is null, skipping update for {pos}");
-				continue;
-			}
-			_boxMap[pos].Color = PatternCells.Contains(pos)
-				? Colors.MediumPurple
-				: fallbackColor;
+			bool isActive = _cellMap.TryGetValue(pos, out var cell) && cell.IsActive;
+			_borderMap[pos].Background = isActive
+				? Colors.Goldenrod
+				: Colors.LightGray;
 		}
+	}
+
+	protected override void OnSizeAllocated(double width, double height)
+	{
+		base.OnSizeAllocated(width, height);
+		double size = Math.Min(width, height);
+		this.WidthRequest = size;
+		this.HeightRequest = size;
 	}
 }

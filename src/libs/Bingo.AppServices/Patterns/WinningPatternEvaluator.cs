@@ -1,12 +1,12 @@
 ﻿using Bingo.Core.Patterns;
-using Bingo.Services.Patterns;
 
 namespace Bingo.AppServices.Patterns;
 
-public class WinningPatternEvaluator : IWinningPatternEvaluator
+public static class WinningPatternEvaluator
 {
-	public bool IsWinning(BingoPattern pattern, IReadOnlySet<(int row, int col)> markedCells)
+	public static bool IsWinning(this BingoPattern pattern, HashSet<(int, int)> marked)
 	{
-		return pattern.Cells.All(cell => markedCells.Contains(cell));
+		return pattern.GetActiveCells()
+			.All(c => marked.Contains((c.Row, c.Col)));
 	}
 }

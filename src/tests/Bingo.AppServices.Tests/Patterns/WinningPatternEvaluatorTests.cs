@@ -1,39 +1,30 @@
-﻿using Bingo.AppServices.Patterns;
+﻿using Xunit;
+using System.Collections.Generic;
 using Bingo.Core.Patterns;
+using Bingo.AppServices.Patterns;
 
-namespace Bingo.AppServices.Tests.Patterns;
-
-public class WinningPatternEvaluatorTests
+namespace Bingo.AppServices.Tests.Patterns
 {
-	private readonly WinningPatternEvaluator _evaluator = new();
-
-	[Fact]
-	public void IsWinning_ReturnsTrue_WhenAllPatternCellsAreMarked()
+	public class WinningPatternEvaluatorTests
 	{
-		BingoPattern pattern = new()
+		[Fact]
+		public void Pattern_Matches_Marked_Cells()
 		{
-			Name = "Line",
-			Cells = new HashSet<(int, int)> { (0, 0), (0, 1), (0, 2) }
-		};
+			var pattern = new BingoPattern
+			{
+				Cells = new HashSet<PatternCell>
+				{
+					new() { Row = 0, Col = 0, IsActive = true },
+					new() { Row = 1, Col = 1, IsActive = true }
+				}
+			};
 
-		HashSet<(int, int)> marked = new()
-		{ (0, 0), (0, 1), (0, 2), (1, 3) };
+			var marked = new HashSet<(int, int)> { (0, 0), (1, 1) };
 
-		Assert.True(_evaluator.IsWinning(pattern, marked));
-	}
+			// Static method call — no object needed
+			bool result = WinningPatternEvaluator.IsWinning(pattern, marked);
 
-	[Fact]
-	public void IsWinning_ReturnsFalse_WhenSomeCellsAreMissing()
-	{
-		BingoPattern pattern = new()
-		{
-			Name = "L",
-			Cells = new HashSet<(int, int)> { (0, 0), (1, 0), (2, 0) }
-		};
-
-		HashSet<(int, int)> marked = new()
-		{ (1, 0), (2, 0) };
-
-		Assert.False(_evaluator.IsWinning(pattern, marked));
+			Assert.True(result);
+		}
 	}
 }

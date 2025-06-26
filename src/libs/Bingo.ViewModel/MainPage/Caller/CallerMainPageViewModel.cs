@@ -11,7 +11,8 @@ public class CallerMainPageViewModel
 
 	public CallerMainPageViewModel()
 	{
-		DefaultPatternRepository repo = new(NullLogger<DefaultPatternRepository>.Instance);
+		DefaultPatternRepository repo = new();
+
 		PatternVM = new PatternDisplayViewModel(repo);
 
 		// Ensure a visible grid with no active cells on launch

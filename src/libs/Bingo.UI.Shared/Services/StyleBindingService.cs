@@ -1,4 +1,5 @@
-﻿using Bingo.Core.Device.Fonts;
+﻿using Bingo.Core.Device;
+using Bingo.Core.Device.Fonts;
 using Bingo.UI.Shared.Extensions;
 
 namespace Bingo.UI.Shared.Services;
@@ -8,9 +9,10 @@ public class StyleBindingService
 	private readonly FontSet _fontSet;
 	private readonly FontProfile _fontProfile;
 
-	public StyleBindingService(FontStyleService fontStyleService)
+	public StyleBindingService(IDeviceInfoProvider deviceInfoProvider)
 	{
-		FontProfileResult result = fontStyleService.GetFontProfile();
+		var persona = deviceInfoProvider.Persona;
+		FontProfileResult result = FontProfileResolver.Resolve(persona);
 		_fontSet = result.FontSet;
 		_fontProfile = result.Profile;
 	}
@@ -19,7 +21,7 @@ public class StyleBindingService
 
 	public Label CreateStyledLabel(FontStyle style, string text, Color? textColor = null)
 	{
-		Color? flashCellTextColor = Application.Current?.Resources?["FlashCellTextColor"] as Color;
+		Color? themedColor = Application.Current?.Resources?["FlashCellTextColor"] as Color;
 
 		return new Label
 		{
@@ -27,7 +29,7 @@ public class StyleBindingService
 			FontSize = style.Size,
 			FontAttributes = style.Weight.ToFontAttributes(),
 			FontFamily = style.FontFamily,
-			TextColor = textColor ?? flashCellTextColor ?? Colors.Black,
+			TextColor = textColor ?? themedColor ?? Colors.Black,
 			HorizontalOptions = LayoutOptions.Fill,
 			VerticalOptions = LayoutOptions.Fill,
 			HorizontalTextAlignment = TextAlignment.Center,

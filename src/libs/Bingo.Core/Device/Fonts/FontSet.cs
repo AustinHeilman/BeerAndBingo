@@ -4,5 +4,6 @@ public record FontSet(
 	FontStyle Header,
 	FontStyle Number,
 	FontStyle Button,
-	FontStyle Label
+	FontStyle Label,
+	FontStyle MicroLabel // for ghosted, embedded, or secondary glyphs
 );

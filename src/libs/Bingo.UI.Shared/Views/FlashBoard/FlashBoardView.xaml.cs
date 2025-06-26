@@ -6,7 +6,7 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 {
 	public partial class FlashBoardView : ContentView
 	{
-		private readonly StyleBindingService _styleService = new(new FontStyleService(new MauiDeviceInfoProvider()));
+		private readonly StyleBindingService _styleService = new(new MauiDeviceInfoProvider());
 
 		public FlashBoardView()
 		{

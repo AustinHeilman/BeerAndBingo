@@ -16,7 +16,7 @@
 		<!-- FlashBoardView will be injected in code-behind into row 0 -->
 
 		<!-- Caller Tools + Pattern Grid -->
-		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Green">
+		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="3*" />
@@ -38,7 +38,7 @@
 				Grid.Column="1"
 				VerticalOptions="Fill"
 				HorizontalOptions="Fill"
-				BackgroundColor="Blue"
+				BackgroundColor="Transparent"
 				ViewModel="{Binding PatternVM}" />
 		</Grid>
 	</Grid>
