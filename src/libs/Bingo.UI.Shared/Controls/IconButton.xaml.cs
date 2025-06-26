@@ -1,5 +1,4 @@
 using Bingo.UI.Shared.Helpers;
-using Microsoft.Maui.Controls;
 using System.Windows.Input;
 
 namespace Bingo.UI.Shared.Controls;
@@ -55,7 +54,7 @@ public partial class IconButton : ContentView
 
 		// Begin long press detection
 		_longPressCts = new CancellationTokenSource();
-		var token = _longPressCts.Token;
+		CancellationToken token = _longPressCts.Token;
 
 		bool longPressFired = false;
 

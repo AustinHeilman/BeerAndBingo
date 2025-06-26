@@ -2,7 +2,7 @@
 
 public class PatternCell
 {
-    public int Row { get; set; }
-    public int Col { get; set; }
-    public bool IsActive { get; set; }
+	public int Row { get; set; }
+	public int Col { get; set; }
+	public bool IsActive { get; set; }
 }

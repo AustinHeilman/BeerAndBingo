@@ -1,33 +1,45 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:flash="clr-namespace:Bingo.UI.Shared.Views.FlashBoard;assembly=Bingo.UI.Shared"
              xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
+             xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.MainPage"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
-    <Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3*" />
-            <RowDefinition Height="2*" />
-        </Grid.RowDefinitions>
+	<Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="3*" />
+			<RowDefinition Height="2*" />
+		</Grid.RowDefinitions>
 
-        <!-- The FlashBoardView will be added to MainGrid in code-behind -->
+		<!-- FlashBoardView will be injected in code-behind into row 0 -->
 
-        <!-- Caller Tools + Pattern Grid -->
-        <Grid Grid.Row="1" ColumnSpacing="12">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
+		<!-- Caller Tools + Pattern Grid -->
+		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Green">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*" />
+				<ColumnDefinition Width="3*" />
+			</Grid.ColumnDefinitions>
 
-            <!-- Tools Panel -->
-            <VerticalStackLayout Grid.Column="0" Spacing="8">
-                <Label Text="Caller Tools" FontAttributes="Bold" />
-                <!-- Add toggle buttons, win checkers, etc. -->
-            </VerticalStackLayout>
+			<!-- Tools Panel -->
+			<VerticalStackLayout Grid.Column="0" Spacing="8" BackgroundColor="red">
+				<!-- Future: toggle buttons, win checkers, etc. -->
 
-            <!-- Pattern Grid -->
-            
-        </Grid>
-    </Grid>
+				<HorizontalStackLayout Spacing="12">
+					<controls:IconButton IconName="next_call" Command="{Binding NextCallCommand}" />
+					<controls:IconButton IconName="replay" Command="{Binding ReplayCommand}" />
+					<controls:IconButton IconName="undo" Command="{Binding UndoCommand}" />
+				</HorizontalStackLayout>
+			</VerticalStackLayout>
+
+			<!-- Pattern Grid -->
+			<pattern:PatternDisplayView
+				Grid.Column="1"
+				VerticalOptions="Fill"
+				HorizontalOptions="Fill"
+				BackgroundColor="Blue"
+				ViewModel="{Binding PatternVM}" />
+		</Grid>
+	</Grid>
 </ContentPage>

@@ -1,91 +1,135 @@
-﻿using Bingo.ViewModel.Patterns;
+﻿using Bingo.Core.Patterns;
+using Bingo.ViewModel.Patterns;
+using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Views.Patterns.PatternDisplay;
 
 public partial class PatternDisplayView : ContentView
 {
-    public static readonly BindableProperty ViewModelProperty =
-        BindableProperty.Create(
-            nameof(ViewModel),
-            typeof(PatternDisplayViewModel),
-            typeof(PatternDisplayView),
-            default(PatternDisplayViewModel),
-            propertyChanged: OnViewModelChanged);
+	public static readonly BindableProperty PatternCellsProperty =
+		BindableProperty.Create(
+			nameof(PatternCells),
+			typeof(ISet<(int, int)>),
+			typeof(PatternDisplayView),
+			new HashSet<(int, int)>(),
+			propertyChanged: (bindable, oldVal, newVal) =>
+			{
+				if (bindable is PatternDisplayView view && newVal is ISet<(int, int)> cells)
+				{
+					view.PatternCells = cells;
+				}
+			});
 
-    public PatternDisplayViewModel ViewModel
-    {
-        get => (PatternDisplayViewModel)GetValue(ViewModelProperty);
-        set => SetValue(ViewModelProperty, value);
-    }
+	public ISet<(int, int)> PatternCells
+	{
+		get => (ISet<(int, int)>)GetValue(PatternCellsProperty);
+		set
+		{
+			if (value is null)
+				return;
 
-    public PatternDisplayView()
-    {
-        InitializeComponent();
-        BuildGrid();
-    }
+			SetValue(PatternCellsProperty, value);
+			UpdatePatternVisuals();
+		}
+	}
 
-    private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
-    {
-        if (bindable is PatternDisplayView view)
-        {
-            view.BindingContext = newValue;
-        }
-    }
+	public static readonly BindableProperty ViewModelProperty =
+		BindableProperty.Create(
+			nameof(ViewModel),
+			typeof(PatternDisplayViewModel),
+			typeof(PatternDisplayView),
+			default(PatternDisplayViewModel),
+			propertyChanged: OnViewModelChanged);
 
-    private void BuildGrid()
-    {
-        const int rows = 5;
-        const int cols = 15;
+	public PatternDisplayViewModel ViewModel
+	{
+		get => (PatternDisplayViewModel)GetValue(ViewModelProperty);
+		set => SetValue(ViewModelProperty, value);
+	}
 
-        PatternGrid.RowDefinitions.Clear();
-        PatternGrid.ColumnDefinitions.Clear();
-        PatternGrid.Children.Clear();
+	// 📌 Fast-access lookup for grid performance
+	private readonly Dictionary<(int Row, int Col), BoxView> _boxMap = new();
 
-        for (int r = 0; r < rows; r++)
-            PatternGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+	public PatternDisplayView()
+	{
+		InitializeComponent();
+		PatternCells = new HashSet<(int, int)>();
+		BuildGrid();
+	}
 
-        for (int c = 0; c < cols; c++)
-            PatternGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+	private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is not PatternDisplayView view || newValue is not PatternDisplayViewModel vm)
+			return;
 
-        for (int r = 0; r < rows; r++)
-        {
-            for (int c = 0; c < cols; c++)
-            {
-                BoxView box = new()
-                {
-                    Color = Colors.Transparent,
-                    BindingContext = (r, c)
-                };
-                PatternGrid.Children.Add(box);
-                Grid.SetRow(box, r);
-                Grid.SetColumn(box, c);
-            }
-        }
+		view.BindingContext = vm;
 
-        UpdatePatternVisuals();
-    }
+		view.PatternCells = vm.PatternCells
+			.Select(cell => (cell.Row, cell.Col))
+			.ToHashSet();
 
-    public static readonly BindableProperty PatternCellsProperty =
-        BindableProperty.Create(nameof(PatternCells), typeof(ISet<(int, int)>), typeof(PatternDisplayView), new HashSet<(int, int)>(), propertyChanged: (_, __, ___) => { });
+		vm.PatternCells.CollectionChanged += (_, __) =>
+		{
+			view.PatternCells = vm.PatternCells
+				.Select(cell => (cell.Row, cell.Col))
+				.ToHashSet();
+		};
+	}
 
-    public ISet<(int Row, int Col)> PatternCells
-    {
-        get => (ISet<(int, int)>)GetValue(PatternCellsProperty);
-        set
-        {
-            SetValue(PatternCellsProperty, value);
-            UpdatePatternVisuals();
-        }
-    }
+	private void BuildGrid()
+	{
+		int rows = PatternGridSettings.PatternRowCount;
+		int cols = PatternGridSettings.PatternColCount;
 
-    private void UpdatePatternVisuals()
-    {
-        foreach (IView? child in PatternGrid.Children)
-        {
-            if (child is BoxView box && box.BindingContext is ValueTuple<int, int> pos)
-            {
-                box.Color = PatternCells?.Contains(pos) == true ? Colors.MediumPurple : Colors.Transparent;
-            }
-        }
-    }
+		PatternGrid.RowDefinitions.Clear();
+		PatternGrid.ColumnDefinitions.Clear();
+		PatternGrid.Children.Clear();
+		_boxMap.Clear();
+
+		for (int r = 0; r < rows; r++)
+			PatternGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+
+		for (int c = 0; c < cols; c++)
+			PatternGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+
+		for (int r = 0; r < rows; r++)
+		{
+			for (int c = 0; c < cols; c++)
+			{
+				var box = new BoxView
+				{
+					Color = Colors.LightGray,
+					BindingContext = (r, c),
+					CornerRadius = 3,
+					Margin = 1
+				};
+
+				PatternGrid.Children.Add(box);
+				Grid.SetRow(box, r);
+				Grid.SetColumn(box, c);
+				_boxMap[(r, c)] = box;
+			}
+		}
+
+		UpdatePatternVisuals();
+	}
+
+	private void UpdatePatternVisuals()
+	{
+		Color fallbackColor = (PatternCells == null || PatternCells.Count == 0)
+			? Colors.Gray
+			: Colors.LightGray;
+
+		foreach (var pos in _boxMap.Keys)
+		{
+			if (PatternCells == null)
+			{
+				Debug.WriteLine($"PatternCells is null, skipping update for {pos}");
+				continue;
+			}
+			_boxMap[pos].Color = PatternCells.Contains(pos)
+				? Colors.MediumPurple
+				: fallbackColor;
+		}
+	}
 }

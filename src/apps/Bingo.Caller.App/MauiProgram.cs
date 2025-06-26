@@ -4,16 +4,16 @@ namespace Bingo.Caller.App;
 
 public static class MauiProgram
 {
-    public static MauiApp CreateMauiApp()
-    {
-        MauiAppBuilder builder = MauiApp.CreateBuilder();
+	public static MauiApp CreateMauiApp()
+	{
+		MauiAppBuilder builder = MauiApp.CreateBuilder();
 
-        builder
-            .UseMauiApp<App>()
-            .AddCustomFonts()
-            .AddDebugLogging()
-            .AddBeerAndBingoServices();
+		builder
+			.UseMauiApp<App>()
+			.AddCustomFonts()
+			.AddDebugLogging()
+			.AddBeerAndBingoServices();
 
-        return builder.Build();
-    }
+		return builder.Build();
+	}
 }

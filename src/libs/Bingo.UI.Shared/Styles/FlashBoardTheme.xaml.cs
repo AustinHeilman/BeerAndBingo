@@ -2,8 +2,8 @@
 
 public partial class FlashBoardTheme : ResourceDictionary
 {
-    public FlashBoardTheme()
-    {
-        InitializeComponent();
-    }
+	public FlashBoardTheme()
+	{
+		InitializeComponent();
+	}
 }

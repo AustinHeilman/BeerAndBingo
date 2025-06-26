@@ -1,36 +1,42 @@
-﻿using Bingo.Core.Models;
+﻿using Bingo.Core.Patterns;
 
 namespace Bingo.Core.Extensions;
 
 public static class BingoPatternMatrixExtensions
 {
-    public static bool[,] ToMatrix(this BingoPattern pattern, int rowCount = 5, int colCount = 15)
-    {
-        bool[,] matrix = new bool[rowCount, colCount];
-        foreach ((int row, int col) in pattern.Cells)
-        {
-            if (row >= 0 && row < rowCount && col >= 0 && col < colCount)
-                matrix[row, col] = true;
-        }
-        return matrix;
-    }
+	public static bool[,] ToMatrix(this BingoPattern pattern, int rowCount, int colCount)
+	{
+		bool[,] matrix = new bool[rowCount, colCount];
+		foreach ((int row, int col) in pattern.Cells)
+		{
+			if (row >= 0 && row < rowCount && col >= 0 && col < colCount)
+				matrix[row, col] = true;
+		}
+		return matrix;
+	}
 
-    public static BingoPattern FromMatrix(bool[,] matrix)
-    {
-        BingoPattern pattern = new();
+	public static bool[,] ToMatrix(this BingoPattern pattern)
+	{
+		return pattern.ToMatrix(PatternGridSettings.PatternRowCount, PatternGridSettings.PatternColCount);
+	}
 
-        int rowCount = matrix.GetLength(0);
-        int colCount = matrix.GetLength(1);
+	public static BingoPattern FromMatrix(bool[,] matrix)
+	{
+		BingoPattern pattern = new();
 
-        for (int r = 0; r < rowCount; r++)
-        {
-            for (int c = 0; c < colCount; c++)
-            {
-                if (matrix[r, c])
-                    pattern.Cells.Add((r, c));
-            }
-        }
+		int rowCount = PatternGridSettings.PatternRowCount;
+		int colCount = PatternGridSettings.PatternColCount;
 
-        return pattern;
-    }
+		for (int r = 0; r < rowCount; r++)
+		{
+			for (int c = 0; c < colCount; c++)
+			{
+				// Ensure we don't go out of bounds if the matrix is smaller
+				if (r < matrix.GetLength(0) && c < matrix.GetLength(1) && matrix[r, c])
+					pattern.Cells.Add((r, c));
+			}
+		}
+
+		return pattern;
+	}
 }

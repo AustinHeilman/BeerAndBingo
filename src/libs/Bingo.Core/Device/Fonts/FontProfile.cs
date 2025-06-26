@@ -2,9 +2,9 @@
 
 public enum FontProfile
 {
-    CompactPhone,
-    Phone,
-    Tablet,
-    TabletXL,
-    Windows
+	CompactPhone,
+	Phone,
+	Tablet,
+	TabletXL,
+	Windows
 }
