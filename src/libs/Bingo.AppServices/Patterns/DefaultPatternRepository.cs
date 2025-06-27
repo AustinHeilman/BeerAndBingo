@@ -1,101 +1,74 @@
-﻿using Bingo.Core.Models;
+﻿using Bingo.Core.Patterns;
 using Bingo.Services.Patterns;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
 
 namespace Bingo.AppServices.Patterns;
 
 public class DefaultPatternRepository : IPatternRepository
 {
-    private readonly List<BingoPattern> _cache;
+	private readonly List<BingoPattern> _patterns = new()
+	{
+		new BingoPattern
+		{
+			Name = "4 Corners",
+			Cells = new HashSet<PatternCell>(
+				new[]
+				{
+					(0, 0), (0, 4),
+					(4, 0), (4, 4)
+				}
+				.Select(pos => new PatternCell
+				{
+					Row = pos.Item1,
+					Col = pos.Item2,
+					IsActive = true
+				}))
+		},
 
-    public DefaultPatternRepository(ILogger<DefaultPatternRepository> logger)
-    {
-        using Stream stream = typeof(DefaultPatternRepository)
-            .Assembly
-            .GetManifestResourceStream("Bingo.AppServices.Resources.patterns.json")!;
+		new BingoPattern
+		{
+			Name = "X Pattern",
+			Cells = new HashSet<PatternCell>(
+				Enumerable.Range(0, 5)
+				.SelectMany(i => new[]
+				{
+					(i, i), (i, 4 - i)
+				})
+				.Select(pos => new PatternCell
+				{
+					Row = pos.Item1,
+					Col = pos.Item2,
+					IsActive = true
+				}))
+		}
+	};
 
-        using StreamReader reader = new(stream);
-        string json = reader.ReadToEnd();
-        List<JsonPattern>? parsed = JsonSerializer.Deserialize<List<JsonPattern>>(json);
+	public Task<BingoPattern?> GetByNameAsync(string name)
+	{
+		var pattern = _patterns.FirstOrDefault(p => p.Name == name);
+		return Task.FromResult(pattern);
+	}
 
-        _cache = parsed?
-            .Where(p =>
-            {
-                logger.LogInformation("Checking pattern: \"{PatternName}\". Size={Rows}x{Cols}, HasActiveCells={HasAny}",
-                p.PatternName ?? "<unnamed>",
-                p.Pattern?.Length,
-                p.Pattern?.FirstOrDefault()?.Length ?? 0,
-                p.Pattern?.Any(r => r.Any(cell => cell)) ?? false);
+	public Task<IEnumerable<BingoPattern>> GetAllAsync()
+	{
+		return Task.FromResult<IEnumerable<BingoPattern>>(_patterns);
+	}
 
-                bool isValid = !string.IsNullOrWhiteSpace(p.PatternName) &&
-                               p.Pattern?.Length == 5 &&
-                               p.Pattern.All(r => r.Length == 5) &&
-                               p.Pattern.Any(r => r.Any(cell => cell));
+	public Task SaveAsync(BingoPattern pattern)
+	{
+		var existing = _patterns.FirstOrDefault(p => p.Name == pattern.Name);
+		if (existing is not null)
+			_patterns.Remove(existing);
 
-                if (!isValid)
-                    logger.LogWarning("Discarded invalid pattern: \"{PatternName}\" (missing name, bad grid, or no active cells)", p.PatternName ?? "<unnamed>");
+		_patterns.Add(pattern);
+		return Task.CompletedTask;
+	}
 
-                return isValid;
-            })
-            .Select(p => new BingoPattern
-            {
-                Name = p.PatternName,
-                Cells = ToCellSet(p.Pattern)
-            }).ToList()
-            ?? [];
-    }
+	public Task DeleteAsync(string name)
+	{
+		var toDelete = _patterns.FirstOrDefault(p => p.Name == name);
+		if (toDelete is not null)
+			_patterns.Remove(toDelete);
 
-    public DefaultPatternRepository(string rawJson, ILogger<DefaultPatternRepository> logger)
-    {
-        List<JsonPattern>? parsed = JsonSerializer.Deserialize<List<JsonPattern>>(rawJson);
-
-        _cache = parsed?
-            .Where(p =>
-            {
-                logger.LogInformation("Checking pattern: \"{PatternName}\". Size={Rows}x{Cols}, HasActiveCells={HasAny}",
-                    p.PatternName ?? "<unnamed>",
-                    p.Pattern?.Length,
-                    p.Pattern?.FirstOrDefault()?.Length ?? 0,
-                    p.Pattern?.Any(r => r.Any(cell => cell)) ?? false);
-
-                bool isValid = !string.IsNullOrWhiteSpace(p.PatternName) &&
-                               p.Pattern?.Length == 5 &&
-                               p.Pattern.All(r => r.Length == 5) &&
-                               p.Pattern.Any(r => r.Any(cell => cell));
-
-                if (!isValid)
-                    logger.LogWarning("Discarded invalid pattern: \"{PatternName}\" (missing name, bad grid, or no active cells)",
-                        p.PatternName ?? "<unnamed>");
-
-                return isValid;
-            })
-            .Select(p => new BingoPattern
-            {
-                Name = p.PatternName,
-                Cells = ToCellSet(p.Pattern)
-            })
-            .ToList()
-            ?? [];
-    }
-
-    public Task<IEnumerable<BingoPattern>> GetAllAsync() => Task.FromResult<IEnumerable<BingoPattern>>(_cache);
-
-    public Task<BingoPattern?> GetByNameAsync(string name)
-        => Task.FromResult(_cache.FirstOrDefault(p => p.Name == name));
-
-    public Task SaveAsync(BingoPattern pattern) => Task.CompletedTask; // Immutable
-    public Task DeleteAsync(string name) => Task.CompletedTask;        // Immutable
-
-    private static HashSet<(int, int)> ToCellSet(bool[][] grid)
-    {
-        HashSet<(int, int)> set = new();
-        for (int row = 0; row < grid.Length; row++)
-            for (int col = 0; col < grid[row].Length; col++)
-                if (grid[row][col])
-                    set.Add((row, col));
-        return set;
-    }
-
-    private record JsonPattern(string PatternName, bool[][] Pattern);
+		return Task.CompletedTask;
+	}
 }

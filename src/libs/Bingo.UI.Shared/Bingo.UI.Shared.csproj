@@ -35,15 +35,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Views\Patterns\PatternList\" />
-	  <Folder Include="Views\Patterns\PatternEditor\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\Bingo.ViewModel\Bingo.ViewModel.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Controls\IconButton.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Styles\FlashBoardTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -53,7 +51,16 @@
 	  <MauiXaml Update="Views\FlashBoard\FlashBoardView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Controls\IconImage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Patterns\PatternDisplay\PatternDisplayView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Patterns\PatternEditor\PatternEditor.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Patterns\PatternList\PatternList.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

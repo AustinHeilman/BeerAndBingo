@@ -2,8 +2,8 @@
 
 public enum DeviceFormFactor
 {
-    Phone,
-    Tablet,
-    Desktop,
-    Unknown
+	Phone,
+	Tablet,
+	Desktop,
+	Unknown
 }

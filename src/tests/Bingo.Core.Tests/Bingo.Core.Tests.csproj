@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>    
-    <ProjectReference Include="..\..\libs\Bingo.Core\Bingo.Core.csproj" />
+    <ProjectReference Include="..\..\libs\Bingo.Core\Bingo.Core.csproj" />    
+    <ProjectReference Include="..\..\libs\Bingo.Services\Bingo.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

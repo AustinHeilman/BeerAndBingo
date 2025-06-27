@@ -10,15 +10,13 @@ namespace Bingo.AppServices.Configuration;
 
 public static class AppServiceRegistration
 {
-    public static IServiceCollection AddAppServices(this IServiceCollection services)
-    {
-        services.AddSingleton<IPatternService, PatternService>();
-        services.AddSingleton<IWinningPatternEvaluator, WinningPatternEvaluator>();
-        services.AddSingleton<IPatternRepository, DefaultPatternRepository>();
+	public static IServiceCollection AddAppServices(this IServiceCollection services)
+	{
+		services.AddSingleton<IPatternService, PatternService>();		
+		services.AddSingleton<IPatternRepository, DefaultPatternRepository>();
+		services.AddSingleton<IMascotFeedbackService, MascotFeedbackService>();
+		services.AddSingleton<ICardRecognitionService, CardRecognitionService>();
 
-        services.AddSingleton<IMascotFeedbackService, MascotFeedbackService>();
-        services.AddSingleton<ICardRecognitionService, CardRecognitionService>();
-
-        return services;
-    }
+		return services;
+	}
 }

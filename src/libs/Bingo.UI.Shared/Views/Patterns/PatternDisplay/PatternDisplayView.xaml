@@ -5,15 +5,14 @@
     x:Class="Bingo.UI.Shared.Views.Patterns.PatternDisplay.PatternDisplayView"
     x:Name="Root">
 
-    <Grid
-        x:Name="PatternGrid"
-        RowSpacing="2"
-        ColumnSpacing="2"
-        Padding="4"
-        VerticalOptions="Center"
-        HorizontalOptions="Center">
+	<Grid
+    x:Name="PatternGrid"
+    VerticalOptions="Fill"
+    HorizontalOptions="Fill"
+    MinimumHeightRequest="200"
+    MinimumWidthRequest="200"
+	RowSpacing="1"
+    ColumnSpacing="1"
+    BackgroundColor="Transparent" />
 
-        <!-- We’ll populate cells in code-behind -->
-
-    </Grid>
 </ContentView>

@@ -2,6 +2,6 @@
 
 public interface IMascotFeedbackService
 {
-    string GetResponseForInvalidPattern();
-    string GetResponseForSuccessfulWin(string patternName);
+	string GetResponseForInvalidPattern();
+	string GetResponseForSuccessfulWin(string patternName);
 }

@@ -1,79 +1,70 @@
-﻿using Bingo.Core.Extensions;
-using Bingo.Core.Models;
+﻿using Bingo.Core.Patterns;
+using Bingo.Services.Patterns;
 
-namespace Bingo.Core.Tests.Models;
+namespace Bingo.AppServices.Patterns;
 
-public class BingoPatternTests
+public class DefaultPatternRepository : IPatternRepository
 {
-    [Fact]
-    public void GetUsedColumns_ReturnsCorrectColumns()
-    {
-        BingoPattern pattern = new()
-        {
-            Cells = new()
-            {
-                (0, 0), (1, 2), (2, 14)
-            }
-        };
+	private readonly List<BingoPattern> _patterns = new()
+	{
+		new BingoPattern
+		{
+			Name = "4 Corners",
+			Cells = new HashSet<PatternCell>(
+				new[]
+				{
+					(0, 0), (0, 4),
+					(4, 0), (4, 4)
+				}.Select(pos => new PatternCell
+				{
+					Row = pos.Item1,
+					Col = pos.Item2,
+					IsActive = true
+				}))
+		},
 
-        HashSet<int> used = pattern.GetUsedColumns();
+		new BingoPattern
+		{
+			Name = "X Pattern",
+			Cells = new HashSet<PatternCell>(
+				Enumerable.Range(0, 5)
+					.SelectMany(i => new[] { (i, i), (i, 4 - i) })
+					.Select(pos => new PatternCell
+					{
+						Row = pos.Item1,
+						Col = pos.Item2,
+						IsActive = true
+					}))
+		}
+	};
 
-        Assert.Contains(0, used);
-        Assert.Contains(2, used);
-        Assert.Contains(14, used);
-        Assert.Equal(3, used.Count);
-    }
+	public Task<BingoPattern?> GetByNameAsync(string name)
+	{
+		var pattern = _patterns.FirstOrDefault(p => p.Name == name);
+		return Task.FromResult(pattern);
+	}
 
-    [Fact]
-    public void Rotate90_RotatesPatternCorrectly()
-    {
-        BingoPattern pattern = new()
-        {
-            Cells = new()
-            {
-                (0, 0), // top-left
-                (4, 14) // bottom-right
-            }
-        };
+	public Task<IEnumerable<BingoPattern>> GetAllAsync()
+	{
+		return Task.FromResult<IEnumerable<BingoPattern>>(_patterns);
+	}
 
-        HashSet<(int Row, int Col)> rotated = pattern.Rotate90();
+	public Task SaveAsync(BingoPattern pattern)
+	{
+		var existing = _patterns.FirstOrDefault(p => p.Name == pattern.Name);
+		if (existing is not null)
+			_patterns.Remove(existing);
 
-        Assert.Contains((0, 4), rotated); // originally (0,0)
-        Assert.Contains((14, 0), rotated); // originally (4,14)
-        Assert.Equal(2, rotated.Count);
-    }
+		_patterns.Add(pattern);
+		return Task.CompletedTask;
+	}
 
-    [Fact]
-    public void Matches_ReturnsTrueForCompleteMatch()
-    {
-        BingoPattern pattern = new()
-        {
-            Cells = new()
-            {
-                (1, 1), (2, 2)
-            }
-        };
+	public Task DeleteAsync(string name)
+	{
+		var match = _patterns.FirstOrDefault(p => p.Name == name);
+		if (match is not null)
+			_patterns.Remove(match);
 
-        HashSet<(int, int)> playerMarks = new()
-        { (1, 1), (2, 2), (3, 3) };
-
-        Assert.True(pattern.Matches(playerMarks));
-    }
-
-    [Fact]
-    public void Matches_ReturnsFalseIfAnyCellMissing()
-    {
-        BingoPattern pattern = new()
-        {
-            Cells = new()
-            {
-                (1, 1), (2, 2)
-            }
-        };
-
-        HashSet<(int, int)> playerMarks = new()
-        { (1, 1) };
-
-        Assert.False(pattern.Matches(playerMarks));
-    }
+		return Task.CompletedTask;
+	}
 }

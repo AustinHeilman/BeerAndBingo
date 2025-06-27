@@ -2,7 +2,7 @@
 
 public enum FontWeight
 {
-    Normal,
-    Bold,
-    Italic
+	Normal,
+	Bold,
+	Italic
 }

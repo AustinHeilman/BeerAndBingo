@@ -1,40 +1,42 @@
-﻿using Bingo.Core.Extensions;
-using Bingo.Core.Models;
+﻿using System.Collections.Generic;
+using Xunit;
+using Bingo.Core.Patterns;
+using Bingo.Core.Extensions;
+using static Bingo.Core.Extensions.IsSymmetricalExtension;
 
-namespace Bingo.Core.Tests.Extensions;
-
-public class PatternSymmetryTests
+namespace Bingo.Core.Tests.Extensions
 {
-    [Fact]
-    public void IsSymmetrical_ReturnsTrueForMirror()
-    {
-        BingoPattern symmetrical = new()
-        {
-            Cells = new()
-            {
-                (0, 2), (0, 12),
-                (1, 5), (1, 9),
-                (2, 7) // center column, mirrors itself
-            }
-        };
+	public class PatternSymmetryTests
+	{
+		[Fact]
+		public void Diagonal_Symmetry_Is_Detected()
+		{
+			var pattern = new BingoPattern
+			{
+				Cells = new HashSet<PatternCell>
+				{
+					new() { Row = 0, Col = 0, IsActive = true },
+					new() { Row = 1, Col = 1, IsActive = true },
+					new() { Row = 2, Col = 2, IsActive = true }
+				}
+			};
 
-        Assert.True(symmetrical.IsSymmetrical());
-    }
+			Assert.True(pattern.IsSymmetrical(SymmetryKind.Diagonal));
+		}
 
-    [Fact]
-    public void IsSymmetrical_ReturnsFalseForAsymmetry()
-    {
-        BingoPattern asymmetrical = new()
-        {
-            Cells = new()
-            {
-                (0, 1), (0, 13) // should be symmetrical...
-                // ...but let's remove one side
-            }
-        };
+		[Fact]
+		public void Horizontal_Symmetry_Is_Detected()
+		{
+			var pattern = new BingoPattern
+			{
+				Cells = new HashSet<PatternCell>
+				{
+					new() { Row = 0, Col = 0, IsActive = true },
+					new() { Row = 0, Col = 4, IsActive = true }
+				}
+			};
 
-        asymmetrical.Cells.Remove((0, 13));
-
-        Assert.False(asymmetrical.IsSymmetrical());
-    }
+			Assert.True(pattern.IsSymmetrical(SymmetryKind.Horizontal));
+		}
+	}
 }

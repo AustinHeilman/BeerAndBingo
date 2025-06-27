@@ -2,5 +2,5 @@
 
 public interface ICardRecognitionService
 {
-    Task<HashSet<(int Row, int Col)>> RecognizeStampedCellsAsync(Stream image);
+	Task<HashSet<(int Row, int Col)>> RecognizeStampedCellsAsync(Stream image);
 }
