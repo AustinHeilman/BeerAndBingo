@@ -5,6 +5,7 @@
              xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
              xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
+             xmlns:converters="clr-namespace:Bingo.Caller.App.Converters;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.MainPage"             
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
@@ -13,58 +14,104 @@
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Padding" Value="4,2"/>
         </Style>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
 
-	<Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="3*" />
-			<RowDefinition Height="2*" />
-		</Grid.RowDefinitions>
+    <Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
 
-		<!-- FlashBoardView will be injected in code-behind into row 0 -->
+        <!-- FlashBoardView will be injected in code-behind into row 0 -->
 
-		<!-- Caller Tools + Pattern Grid + Game Info Panel -->
-		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="2*" />
-				<ColumnDefinition Width="2*" />
-				<ColumnDefinition Width="3*" />
-			</Grid.ColumnDefinitions>
+        <!-- Main Content in row 1 -->
+        <Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
 
-			<!-- Tools Panel -->
-			<VerticalStackLayout Grid.Column="0"
-                                 Spacing="8"
-                                 BackgroundColor="red"
-                                 IsVisible="{Binding IsToolsPanelVisible}">
-				<!-- Future: toggle buttons, win checkers, etc. -->
+            <!-- New Game Icon Button (left of info panel) -->
+            <controls:IconButton
+                Grid.Column="0"
+                IconName="button_next_pick"
+                Command="{Binding NewGameCommand}"
+                IconSize="200"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Margin="0,0,8,0" />
 
-				<HorizontalStackLayout Spacing="12">
-					<controls:IconButton IconName="next_call" Command="{Binding NextCallCommand}" />
-					<controls:IconButton IconName="replay" Command="{Binding ReplayCommand}" />
-					<controls:IconButton IconName="undo" Command="{Binding UndoCommand}" />
-				</HorizontalStackLayout>
-			</VerticalStackLayout>
+            <!-- Game Info Panel -->
+            <gameinfo:GameInfoPanel Grid.Column="1"
+                VerticalOptions="Center"
+                HorizontalOptions="Fill" />
 
-            <!-- Expand/Collapse Button -->
-            <Button Grid.Column="0"
-                    VerticalOptions="Start"
+            <!-- Pattern Grid -->
+            <pattern:PatternDisplayView
+                Grid.Column="2"
+                VerticalOptions="Fill"
+                HorizontalOptions="Fill"
+                BackgroundColor="Transparent"
+                ViewModel="{Binding PatternVM}" />
+        </Grid>
+
+        <!-- Overlay Layer: Tools Panel (overlays only row 1) -->
+        <Grid
+            Grid.Row="1"
+            IsVisible="{Binding IsToolsPanelVisible}"
+            BackgroundColor="#80000000"
+            InputTransparent="False"
+            ZIndex="10">
+            <Grid
+                VerticalOptions="Fill"
+                HorizontalOptions="Start"
+                Padding="24"
+                BackgroundColor="DarkSlateGray"
+                RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Collapse Button: Vertically centered, right-aligned -->
+                <controls:IconButton
+                    Grid.Row="1"
+                    IconName="{Binding ToolsPanelToggleIcon}"
+                    Command="{Binding ToggleToolsPanelCommand}"
+					IconSize="50"
                     HorizontalOptions="End"
-                    Margin="0,0,0,8"
-                    Text="{Binding ToolsPanelToggleText}"
-                    Command="{Binding ToggleToolsPanelCommand}" />
+                    VerticalOptions="Center"
+                    Margin="0,0,-16,0" />
 
-			<!-- Game Info Panel -->
-			<gameinfo:GameInfoPanel Grid.Column="1"
-				VerticalOptions="Center"
-				HorizontalOptions="Fill" />
+                <!-- Tool Buttons: At the bottom -->
+                <HorizontalStackLayout
+                    Grid.Row="2"
+                    Spacing="12"
+                    VerticalOptions="End">
+					<controls:IconButton IconName="button_new_game" IconSize="100" Command="{Binding NextCallCommand}" />
+					<controls:IconButton IconName="button_patterns" IconSize="100" Command="{Binding PatternsCommand}" />
+					<controls:IconButton IconName="button_undo_pick" IconSize="100" Command="{Binding UndoPickCommand}" />
+					<controls:IconButton IconName="button_redo_pick" IconSize="100" Command="{Binding RedoPickCommand}" />
+					<controls:IconButton IconName="button_replay" IconSize="100" Command="{Binding ReplayCommand}" />
+					<controls:IconButton IconName="button_settings" IconSize="100" Command="{Binding SettingsCommand}" />
+                </HorizontalStackLayout>
+                <!-- Add more tools here -->
+            </Grid>
+        </Grid>
 
-			<!-- Pattern Grid -->
-			<pattern:PatternDisplayView
-				Grid.Column="2"
-				VerticalOptions="Fill"
-				HorizontalOptions="Fill"
-				BackgroundColor="Transparent"
-				ViewModel="{Binding PatternVM}" />
-		</Grid>
-	</Grid>
+        <!-- Expand IconButton (when collapsed) -->
+        <controls:IconButton
+            Grid.Row="1"
+            IconName="{Binding ToolsPanelToggleIcon}"
+            Command="{Binding ToggleToolsPanelCommand}"
+			IconSize="50"
+            HorizontalOptions="Start"
+            VerticalOptions="Center"
+            Margin="0,0,0,0"
+            IsVisible="{Binding IsToolsPanelVisible, Converter={StaticResource InverseBoolConverter}}" />
+    </Grid>
 </ContentPage>

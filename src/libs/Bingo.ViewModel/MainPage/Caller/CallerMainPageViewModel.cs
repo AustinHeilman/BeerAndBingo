@@ -24,11 +24,15 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
                 _isToolsPanelVisible = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ToolsPanelToggleText));
+                OnPropertyChanged(nameof(ToolsPanelToggleSymbol));
+                OnPropertyChanged(nameof(ToolsPanelToggleIcon));
             }
         }
     }
 
     public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
+    public string ToolsPanelToggleSymbol => IsToolsPanelVisible ? "<<" : ">>";
+    public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
     public ICommand ToggleToolsPanelCommand { get; }
 

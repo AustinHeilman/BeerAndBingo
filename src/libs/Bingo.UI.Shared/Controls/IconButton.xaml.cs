@@ -29,7 +29,7 @@ public partial class IconButton : ContentView
 	}
 
 	public static readonly BindableProperty IconSizeProperty =
-		BindableProperty.Create(nameof(IconSize), typeof(double), typeof(IconButton), 48.0);
+		BindableProperty.Create(nameof(IconSize), typeof(double), typeof(IconButton), 24.0);
 
 	public double IconSize
 	{
