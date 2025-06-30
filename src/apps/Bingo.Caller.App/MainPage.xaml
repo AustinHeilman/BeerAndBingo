@@ -4,8 +4,16 @@
              xmlns:flash="clr-namespace:Bingo.UI.Shared.Views.FlashBoard;assembly=Bingo.UI.Shared"
              xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
              xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-             x:Class="Bingo.Caller.App.MainPage"
+             xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
+             x:Class="Bingo.Caller.App.MainPage"             
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="4,2"/>
+        </Style>
+    </ContentPage.Resources>
 
 	<Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
 		<Grid.RowDefinitions>
@@ -15,15 +23,19 @@
 
 		<!-- FlashBoardView will be injected in code-behind into row 0 -->
 
-		<!-- Caller Tools + Pattern Grid -->
+		<!-- Caller Tools + Pattern Grid + Game Info Panel -->
 		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
 			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="3*" />
 			</Grid.ColumnDefinitions>
 
 			<!-- Tools Panel -->
-			<VerticalStackLayout Grid.Column="0" Spacing="8" BackgroundColor="red">
+			<VerticalStackLayout Grid.Column="0"
+                                 Spacing="8"
+                                 BackgroundColor="red"
+                                 IsVisible="{Binding IsToolsPanelVisible}">
 				<!-- Future: toggle buttons, win checkers, etc. -->
 
 				<HorizontalStackLayout Spacing="12">
@@ -33,9 +45,22 @@
 				</HorizontalStackLayout>
 			</VerticalStackLayout>
 
+            <!-- Expand/Collapse Button -->
+            <Button Grid.Column="0"
+                    VerticalOptions="Start"
+                    HorizontalOptions="End"
+                    Margin="0,0,0,8"
+                    Text="{Binding ToolsPanelToggleText}"
+                    Command="{Binding ToggleToolsPanelCommand}" />
+
+			<!-- Game Info Panel -->
+			<gameinfo:GameInfoPanel Grid.Column="1"
+				VerticalOptions="Center"
+				HorizontalOptions="Fill" />
+
 			<!-- Pattern Grid -->
 			<pattern:PatternDisplayView
-				Grid.Column="1"
+				Grid.Column="2"
 				VerticalOptions="Fill"
 				HorizontalOptions="Fill"
 				BackgroundColor="Transparent"

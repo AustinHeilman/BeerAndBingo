@@ -54,6 +54,9 @@
 	  <MauiXaml Update="Controls\IconImage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\GameInfoPanel\GameInfoPanel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Patterns\PatternDisplay\PatternDisplayView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
