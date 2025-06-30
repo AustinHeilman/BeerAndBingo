@@ -1,6 +1,6 @@
-﻿using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.FlashBoard.Events;
 
-namespace Bingo.Core.Domain.FlashBoard
+namespace Bingo.Core.FlashBoard
 {
 	public class FlashBoardNumber
 	{

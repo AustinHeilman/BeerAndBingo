@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Domain;
+﻿namespace Bingo.Core.FlashBoard;
 
 /// <summary>
 /// Provides configuration and helper methods for a standard Bingo board.
@@ -19,7 +19,7 @@ public static class FlashBoardConfig
 	/// </summary>
 	public static int GetNumberForCell(int row, int column)
 	{
-		return (column * Rows) + row + 1;
+		return column * Rows + row + 1;
 	}
 
 	/// <summary>

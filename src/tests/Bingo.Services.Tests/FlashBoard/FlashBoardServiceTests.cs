@@ -1,4 +1,4 @@
-﻿using Bingo.Core.Domain;
+﻿using Bingo.Core.FlashBoard;
 using Bingo.Services.FlashBoard;
 
 namespace Bingo.Tests.Services.FlashBoard;

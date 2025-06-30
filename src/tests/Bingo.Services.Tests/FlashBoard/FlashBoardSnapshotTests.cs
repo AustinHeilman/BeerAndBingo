@@ -1,4 +1,5 @@
-﻿using Bingo.Services.FlashBoard;
+﻿using Bingo.Core.FlashBoard;
+using Bingo.Services.FlashBoard;
 
 namespace Bingo.Services.Tests.FlashBoard;
 
@@ -11,7 +12,7 @@ public class FlashBoardSnapshotTests
 		service.CallNumber(5);
 		service.CallNumber(7);
 
-		Core.Domain.FlashBoard.FlashBoardSnapshot snapshot = service.GetSnapshot();
+		FlashBoardSnapshot snapshot = service.GetSnapshot();
 
 		Assert.Contains(5, snapshot.CalledNumbers);
 		Assert.Contains(7, snapshot.CalledNumbers);
@@ -23,7 +24,7 @@ public class FlashBoardSnapshotTests
 	{
 		FlashBoardService service = new();
 		service.CallNumber(30);
-		Core.Domain.FlashBoard.FlashBoardSnapshot snapshot = service.GetSnapshot();
+		FlashBoardSnapshot snapshot = service.GetSnapshot();
 
 		service.UncallNumber(30);
 

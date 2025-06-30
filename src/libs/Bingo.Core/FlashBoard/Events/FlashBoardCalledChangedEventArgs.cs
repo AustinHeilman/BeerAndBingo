@@ -1,4 +1,6 @@
-﻿namespace Bingo.Core.Domain.FlashBoard.Events
+﻿using Bingo.Core.FlashBoard;
+
+namespace Bingo.Core.FlashBoard.Events
 {
 	public class FlashBoardCalledChangedEventArgs : EventArgs
 	{

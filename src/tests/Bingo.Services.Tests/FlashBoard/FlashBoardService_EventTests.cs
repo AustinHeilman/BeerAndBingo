@@ -1,4 +1,5 @@
-﻿using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.FlashBoard;
+using Bingo.Core.FlashBoard.Events;
 using Bingo.Services.FlashBoard;
 
 namespace Bingo.Services.Tests.FlashBoard;
@@ -25,9 +26,9 @@ public class FlashBoardService_EventTests
 		char? completed = null;
 
 		service.GroupCompleted += (_, letter) => completed = letter;
-		Core.Domain.FlashBoard.FlashBoardGroup group = service.Board.Children.First();
+		FlashBoardGroup group = service.Board.Children.First();
 
-		foreach (Core.Domain.FlashBoard.FlashBoardNumber cell in group.Cells)
+		foreach (FlashBoardNumber cell in group.Cells)
 			service.CallNumber(cell.Number);
 
 		Assert.Equal(group.Letter, completed);

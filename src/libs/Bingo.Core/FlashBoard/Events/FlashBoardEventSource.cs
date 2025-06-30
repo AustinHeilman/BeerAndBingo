@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Domain.FlashBoard.Events
+﻿namespace Bingo.Core.FlashBoard.Events
 {
 	public enum FlashBoardEventSource
 	{

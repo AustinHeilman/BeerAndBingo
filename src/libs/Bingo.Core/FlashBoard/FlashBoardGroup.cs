@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Domain.FlashBoard
+﻿namespace Bingo.Core.FlashBoard
 {
 	public class FlashBoardGroup
 	{
