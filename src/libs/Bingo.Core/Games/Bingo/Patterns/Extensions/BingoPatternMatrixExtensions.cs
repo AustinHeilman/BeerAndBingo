@@ -1,6 +1,4 @@
-﻿using Bingo.Core.Patterns;
-
-namespace Bingo.Core.Extensions;
+﻿namespace Bingo.Core.Games.Bingo.Patterns.Extensions;
 
 public static class BingoPatternMatrixExtensions
 {
@@ -10,7 +8,7 @@ public static class BingoPatternMatrixExtensions
 		int cols = PatternGridSettings.PatternColCount;
 		bool[,] matrix = new bool[rows, cols];
 
-		foreach (var cell in pattern.Cells)
+		foreach (PatternCell cell in pattern.Cells)
 		{
 			matrix[cell.Row, cell.Col] = cell.IsActive;
 		}
@@ -20,7 +18,7 @@ public static class BingoPatternMatrixExtensions
 
 	public static BingoPattern FromMatrix(bool[,] matrix)
 	{
-		var result = new BingoPattern();
+		BingoPattern result = new();
 
 		for (int r = 0; r < matrix.GetLength(0); r++)
 		{

@@ -1,12 +1,12 @@
-﻿using Bingo.Core.Domain;
-using Bingo.Core.Domain.FlashBoard;
-using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Games.Bingo.FlashBoard;
+using Bingo.Core.Games.Bingo.FlashBoard.Events;
 
 namespace Bingo.Services.FlashBoard
 {
 	public class FlashBoardService
 	{
-		private readonly FlashBoardObj board = new();
+		private readonly FlashBoardConfig boardconfig = new();
+		private readonly FlashBoardObj board;
 		private readonly List<(ActionType Action, int Number)> history = new();
 
 		#region Events
@@ -30,6 +30,7 @@ namespace Bingo.Services.FlashBoard
 
 		public FlashBoardService()
 		{
+			board = new FlashBoardObj(boardconfig);
 			foreach (FlashBoardNumber number in board.AllCells)
 			{
 				number.IsCalledChanged += (s, e) =>
@@ -80,7 +81,7 @@ namespace Bingo.Services.FlashBoard
 		}
 
 		public IEnumerable<int> GetAvailableNumbers() =>
-			Enumerable.Range(1, FlashBoardConfig.TotalNumbers)
+			Enumerable.Range(1, boardconfig.TotalNumbers)
 					  .Where(n => !board.CalledNumbers.Contains(n));
 
 		public IEnumerable<int> GetAvailableNumbers(IEnumerable<char> validLetters)

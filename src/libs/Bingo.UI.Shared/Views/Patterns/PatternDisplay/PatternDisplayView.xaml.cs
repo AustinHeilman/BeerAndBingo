@@ -1,11 +1,18 @@
-﻿using Bingo.Core.Patterns;
+﻿using Bingo.Core.Device.Fonts;
+using Bingo.Core.Games.Bingo.Patterns;
+using Bingo.UI.Shared.Extensions;
 using Bingo.ViewModel.Patterns;
 using Microsoft.Maui.Controls.Shapes;
+using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Views.Patterns.PatternDisplay;
 
 public partial class PatternDisplayView : ContentView
 {
+	private readonly FontSet _fontSet;
+	private Size _lastSize;
+	private readonly Dictionary<(int, int), Label> _letterMap = new();
+
 	public static readonly BindableProperty PatternCellsProperty =
 		BindableProperty.Create(
 			nameof(PatternCells),
@@ -43,10 +50,18 @@ public partial class PatternDisplayView : ContentView
 	private readonly Dictionary<(int, int), Border> _borderMap = new();
 	private readonly Dictionary<(int, int), PatternCell> _cellMap = new();
 
-	public PatternDisplayView()
+	public PatternDisplayView() : this(new MauiDeviceInfoProvider()) { }
+
+	public PatternDisplayView(IDeviceInfoProvider deviceInfoProvider)
 	{
 		InitializeComponent();
+
+		DevicePersona persona = deviceInfoProvider.Persona;
+		_fontSet = FontProfileResolver.Resolve(persona).FontSet;
+
 		BuildGrid();
+
+		this.SizeChanged += (_, _) => OnResize(Width, Height);
 	}
 
 	private static void OnViewModelChanged(BindableObject bindable, object oldValue, object newValue)
@@ -62,7 +77,7 @@ public partial class PatternDisplayView : ContentView
 	private void SetPatternCells(IEnumerable<PatternCell> cells)
 	{
 		_cellMap.Clear();
-		foreach (var cell in cells)
+		foreach (PatternCell cell in cells)
 			_cellMap[(cell.Row, cell.Col)] = cell;
 
 		UpdatePatternVisuals();
@@ -91,7 +106,7 @@ public partial class PatternDisplayView : ContentView
 		{
 			for (int c = 0; c < cols; c++)
 			{
-				var border = new Border
+				Border border = new()
 				{
 					Padding = 0,
 					Margin = new Thickness(0),
@@ -119,28 +134,29 @@ public partial class PatternDisplayView : ContentView
 
 	private void AddLetter(int col, int row)
 	{
-		var columnLetter = "BINGO"[col].ToString();
+		string columnLetter = "BINGO"[col].ToString();
 
-		var label = new Label
+		Label label = new()
 		{
 			Text = columnLetter,
 			TextColor = Color.FromArgb("#303030"),
-			FontSize = 16,
-			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35, // Star/center
-			FontAttributes = FontAttributes.None,
+			FontSize = _fontSet.MicroLabel.Size,
+			FontAttributes = _fontSet.MicroLabel.Weight.ToFontAttributes(),
+			FontFamily = _fontSet.MicroLabel.FontFamily,
+			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35,
 			HorizontalOptions = LayoutOptions.Center,
-			VerticalOptions = LayoutOptions.Center,
-			//InputTransparent = true,			
+			VerticalOptions = LayoutOptions.Center
 		};
 
 		Grid.SetRow(label, row);
 		Grid.SetColumn(label, col);
 		PatternGrid.Children.Add(label);
+		_letterMap[(row, col)] = label;
 	}
 
 	private void CreateStarInCenter()
 	{
-		var starView = new GraphicsView
+		GraphicsView starView = new()
 		{
 			Drawable = new StarDrawable(),
 			HorizontalOptions = LayoutOptions.Fill,
@@ -156,9 +172,9 @@ public partial class PatternDisplayView : ContentView
 
 	private void UpdatePatternVisuals()
 	{
-		foreach (var pos in _borderMap.Keys)
+		foreach ((int, int) pos in _borderMap.Keys)
 		{
-			bool isActive = _cellMap.TryGetValue(pos, out var cell) && cell.IsActive;
+			bool isActive = _cellMap.TryGetValue(pos, out PatternCell? cell) && cell.IsActive;
 			_borderMap[pos].Background = isActive
 				? Colors.Goldenrod
 				: Colors.LightGray;
@@ -168,8 +184,29 @@ public partial class PatternDisplayView : ContentView
 	protected override void OnSizeAllocated(double width, double height)
 	{
 		base.OnSizeAllocated(width, height);
+
+		Size newSize = new(width, height);
+		if (_lastSize != newSize)
+		{
+			_lastSize = newSize;
+			OnResize(width, height);
+		}
+	}
+
+	private void OnResize(double width, double height)
+	{
+		Debug.WriteLine($"PatternDisplayView resized to {width}x{height}");
 		double size = Math.Min(width, height);
 		this.WidthRequest = size;
 		this.HeightRequest = size;
+
+		double cellSize = Math.Floor(size / PatternGridSettings.PatternColCount);
+		double fontSize = Math.Max(cellSize * 0.25, 10);
+
+		foreach (Label label in _letterMap.Values)
+		{
+			label.FontSize = fontSize;
+		}
 	}
+
 }

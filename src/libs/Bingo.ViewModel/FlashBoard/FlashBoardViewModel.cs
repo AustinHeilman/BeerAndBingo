@@ -1,5 +1,5 @@
-﻿using Bingo.Core.Domain.FlashBoard;
-using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Games.Bingo.FlashBoard;
+using Bingo.Core.Games.Bingo.FlashBoard.Events;
 using Bingo.Services.FlashBoard;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;

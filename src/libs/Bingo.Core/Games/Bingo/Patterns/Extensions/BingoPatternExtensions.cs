@@ -1,6 +1,4 @@
-﻿using Bingo.Core.Patterns;
-
-namespace Bingo.Core.Extensions;
+﻿namespace Bingo.Core.Games.Bingo.Patterns.Extensions;
 
 public static class BingoPatternExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Patterns;
+﻿namespace Bingo.Core.Games.Bingo.Patterns;
 
 public class BingoPattern
 {
@@ -18,7 +18,7 @@ public class BingoPattern
 	// Toggle IsActive at a given cell (adds it if missing)
 	public void ToggleCell(int row, int col)
 	{
-		var match = Cells.FirstOrDefault(c => c.Row == row && c.Col == col);
+		PatternCell? match = Cells.FirstOrDefault(c => c.Row == row && c.Col == col);
 		if (match is not null)
 		{
 			match.IsActive = !match.IsActive;
@@ -39,8 +39,8 @@ public class BingoPattern
 	{
 		return new BingoPattern
 		{
-			Name = this.Name,
-			Cells = this.Cells
+			Name = Name,
+			Cells = Cells
 				.Select(c => new PatternCell
 				{
 					Row = c.Row,

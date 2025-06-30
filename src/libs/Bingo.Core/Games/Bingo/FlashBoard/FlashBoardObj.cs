@@ -1,23 +1,28 @@
-﻿using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Games.Bingo.BoardRules;
+using Bingo.Core.Games.Bingo.FlashBoard.Events;
+using System.Data;
 using System.Text;
 
-namespace Bingo.Core.Domain.FlashBoard;
+namespace Bingo.Core.Games.Bingo.FlashBoard;
 
 public class FlashBoardObj
 {
 	public List<FlashBoardGroup> Children { get; private set; } = new();
+	
+	private readonly IBingoBoardRules rules;
 
-	public FlashBoardObj()
+	public FlashBoardObj(IBingoBoardRules rules)
 	{
+		this.rules = rules;
 		BuildLetterGroups();
 	}
 
 	private void BuildLetterGroups()
 	{
 		Children = new();
-		foreach (char letter in FlashBoardConfig.GameLetters)
+		foreach (char letter in rules.GameLetters)
 		{
-			IEnumerable<int> numbers = FlashBoardConfig.GetNumbersInBoardLetter(letter);
+			IEnumerable<int> numbers = rules.GetNumbersInLetter(letter);
 			int start = numbers.First();
 			int end = numbers.Last();
 
@@ -74,7 +79,7 @@ public class FlashBoardObj
 	}
 
 	public bool IsValidNumber(int number) =>
-		number >= 1 && number <= FlashBoardConfig.TotalNumbers;
+		number >= 1 && number <= rules.TotalNumbers;
 
 	public bool Contains(char letter, int number) =>
 		GetCell(letter, number) is not null;

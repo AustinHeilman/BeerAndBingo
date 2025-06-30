@@ -103,12 +103,4 @@ public partial class FlashBoardCellView : ContentView
 			CellBorder.BackgroundColor = Colors.Transparent;
 		}
 	}
-
-
-	private async Task SafeAnimateAsync(int token, Func<Task> animationBlock)
-	{
-		await animationBlock();
-		if (_animationToken != token)
-			throw new OperationCanceledException("Animation superseded");
-	}
 }

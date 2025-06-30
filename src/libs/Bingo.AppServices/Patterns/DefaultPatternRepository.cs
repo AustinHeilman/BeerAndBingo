@@ -1,4 +1,4 @@
-﻿using Bingo.Core.Patterns;
+﻿using Bingo.Core.Games.Bingo.Patterns;
 using Bingo.Services.Patterns;
 
 namespace Bingo.AppServices.Patterns;
@@ -44,7 +44,7 @@ public class DefaultPatternRepository : IPatternRepository
 
 	public Task<BingoPattern?> GetByNameAsync(string name)
 	{
-		var pattern = _patterns.FirstOrDefault(p => p.Name == name);
+		BingoPattern? pattern = _patterns.FirstOrDefault(p => p.Name == name);
 		return Task.FromResult(pattern);
 	}
 
@@ -55,7 +55,7 @@ public class DefaultPatternRepository : IPatternRepository
 
 	public Task SaveAsync(BingoPattern pattern)
 	{
-		var existing = _patterns.FirstOrDefault(p => p.Name == pattern.Name);
+		BingoPattern? existing = _patterns.FirstOrDefault(p => p.Name == pattern.Name);
 		if (existing is not null)
 			_patterns.Remove(existing);
 
@@ -65,7 +65,7 @@ public class DefaultPatternRepository : IPatternRepository
 
 	public Task DeleteAsync(string name)
 	{
-		var toDelete = _patterns.FirstOrDefault(p => p.Name == name);
+		BingoPattern? toDelete = _patterns.FirstOrDefault(p => p.Name == name);
 		if (toDelete is not null)
 			_patterns.Remove(toDelete);
 

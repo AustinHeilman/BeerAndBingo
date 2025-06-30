@@ -1,45 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:flash="clr-namespace:Bingo.UI.Shared.Views.FlashBoard;assembly=Bingo.UI.Shared"
              xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
+             xmlns:game="clr-namespace:Bingo.UI.Shared.Views.GameInfo;assembly=Bingo.UI.Shared"
              xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.MainPage"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
 
-	<Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
+	<Grid x:Name="MainGrid"
+          RowSpacing="8"
+          ColumnSpacing="12"
+          Padding="0,0,16,16">
+
 		<Grid.RowDefinitions>
 			<RowDefinition Height="3*" />
 			<RowDefinition Height="2*" />
 		</Grid.RowDefinitions>
 
-		<!-- FlashBoardView will be injected in code-behind into row 0 -->
+		<!-- FlashBoardView injected via code-behind into Row 0 -->
 
-		<!-- Caller Tools + Pattern Grid -->
-		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
+		<!-- Bottom UI Grid -->
+		<Grid Grid.Row="1" ColumnSpacing="12">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="2*" />
-				<ColumnDefinition Width="3*" />
+				<ColumnDefinition Width="1.5*" />
+				<!-- Flight Bar -->
+				<ColumnDefinition Width="Auto" />
+				<!-- Call Button -->
+				<ColumnDefinition Width="2.5*" />
+				<!-- Pattern -->
+				<ColumnDefinition Width="2.0*" />
+				<!-- Game Info -->
 			</Grid.ColumnDefinitions>
 
-			<!-- Tools Panel -->
-			<VerticalStackLayout Grid.Column="0" Spacing="8" BackgroundColor="red">
-				<!-- Future: toggle buttons, win checkers, etc. -->
+			<!-- Flight Bar Placeholder -->
+			<BoxView Grid.Column="0"
+                     BackgroundColor="#222"
+                     HorizontalOptions="Fill"
+                     VerticalOptions="Fill" />
 
-				<HorizontalStackLayout Spacing="12">
-					<controls:IconButton IconName="next_call" Command="{Binding NextCallCommand}" />
-					<controls:IconButton IconName="replay" Command="{Binding ReplayCommand}" />
-					<controls:IconButton IconName="undo" Command="{Binding UndoCommand}" />
-				</HorizontalStackLayout>
+			<!-- Next Call Button -->
+			<Image Grid.Column="1"
+                   Source="button_next_pick_win.png"
+                   WidthRequest="72"
+                   HeightRequest="72"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center" />
+
+			<!-- Pattern with name label -->
+			<VerticalStackLayout Grid.Column="2"
+                                 Spacing="4"
+                                 VerticalOptions="Center"
+                                 HorizontalOptions="Center">
+				<Label Text="Pattern: None"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="DimGray" />
+				<pattern:PatternDisplayView
+                    WidthRequest="360"
+                    ViewModel="{Binding PatternVM}"
+                    BackgroundColor="Transparent" />
 			</VerticalStackLayout>
 
-			<!-- Pattern Grid -->
-			<pattern:PatternDisplayView
-				Grid.Column="1"
-				VerticalOptions="Fill"
-				HorizontalOptions="Fill"
-				BackgroundColor="Transparent"
-				ViewModel="{Binding PatternVM}" />
+			<!-- Reusable Game Info Panel -->
+			<game:GameInfoPanel Grid.Column="3"
+                                VerticalOptions="Center"
+                                HorizontalOptions="Fill"
+                                BindingContext="{Binding GameInfoVM}" />
 		</Grid>
 	</Grid>
 </ContentPage>

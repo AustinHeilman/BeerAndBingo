@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Xunit;
-using Bingo.Core.Patterns;
-using Bingo.Core.Extensions;
+﻿using Bingo.Core.Games.Bingo.Patterns;
+using Bingo.Core.Games.Bingo.Patterns.Extensions;
 
 namespace Bingo.Core.Tests.Extensions
 {
@@ -11,7 +8,7 @@ namespace Bingo.Core.Tests.Extensions
 		[Fact]
 		public void ToMatrix_Creates_Expected_Grid()
 		{
-			var pattern = new BingoPattern
+			BingoPattern pattern = new()
 			{
 				Cells = new HashSet<PatternCell>
 				{

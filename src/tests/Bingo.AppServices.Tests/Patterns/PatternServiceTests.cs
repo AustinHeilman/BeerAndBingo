@@ -1,5 +1,5 @@
 ﻿using Bingo.AppServices.Patterns;
-using Bingo.Core.Patterns;
+using Bingo.Core.Games.Bingo.Patterns;
 using Bingo.Services.Patterns;
 using Moq;
 

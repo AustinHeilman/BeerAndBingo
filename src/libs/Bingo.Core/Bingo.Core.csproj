@@ -18,4 +18,10 @@
     <None Remove="Service\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Events\" />
+    <Folder Include="BoardRules\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

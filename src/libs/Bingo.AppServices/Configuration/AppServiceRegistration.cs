@@ -12,7 +12,7 @@ public static class AppServiceRegistration
 {
 	public static IServiceCollection AddAppServices(this IServiceCollection services)
 	{
-		services.AddSingleton<IPatternService, PatternService>();		
+		services.AddSingleton<IPatternService, PatternService>();
 		services.AddSingleton<IPatternRepository, DefaultPatternRepository>();
 		services.AddSingleton<IMascotFeedbackService, MascotFeedbackService>();
 		services.AddSingleton<ICardRecognitionService, CardRecognitionService>();

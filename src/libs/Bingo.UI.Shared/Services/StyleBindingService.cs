@@ -1,5 +1,4 @@
-﻿using Bingo.Core.Device;
-using Bingo.Core.Device.Fonts;
+﻿using Bingo.Core.Device.Fonts;
 using Bingo.UI.Shared.Extensions;
 
 namespace Bingo.UI.Shared.Services;
@@ -11,7 +10,7 @@ public class StyleBindingService
 
 	public StyleBindingService(IDeviceInfoProvider deviceInfoProvider)
 	{
-		var persona = deviceInfoProvider.Persona;
+		DevicePersona persona = deviceInfoProvider.Persona;
 		FontProfileResult result = FontProfileResolver.Resolve(persona);
 		_fontSet = result.FontSet;
 		_fontProfile = result.Profile;

@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using Xunit;
-using Bingo.Core.Patterns;
-using Bingo.Core.Extensions;
-using static Bingo.Core.Extensions.IsSymmetricalExtension;
+﻿using Bingo.Core.Games.Bingo.Patterns;
+using Bingo.Core.Games.Bingo.Patterns.Extensions;
+using static Bingo.Core.Games.Bingo.Patterns.Extensions.IsSymmetricalExtension;
 
 namespace Bingo.Core.Tests.Extensions
 {
@@ -11,7 +9,7 @@ namespace Bingo.Core.Tests.Extensions
 		[Fact]
 		public void Diagonal_Symmetry_Is_Detected()
 		{
-			var pattern = new BingoPattern
+			BingoPattern pattern = new()
 			{
 				Cells = new HashSet<PatternCell>
 				{
@@ -27,7 +25,7 @@ namespace Bingo.Core.Tests.Extensions
 		[Fact]
 		public void Horizontal_Symmetry_Is_Detected()
 		{
-			var pattern = new BingoPattern
+			BingoPattern pattern = new()
 			{
 				Cells = new HashSet<PatternCell>
 				{

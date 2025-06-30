@@ -1,4 +1,4 @@
-﻿namespace Bingo.Core.Patterns
+﻿namespace Bingo.Core.Games.Bingo.Patterns
 {
 	public static class PatternGridSettings
 	{

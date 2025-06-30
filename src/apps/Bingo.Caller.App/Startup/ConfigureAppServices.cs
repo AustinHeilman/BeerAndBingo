@@ -1,5 +1,4 @@
 ﻿using Bingo.AppServices.Configuration;
-using Bingo.Core.Device;
 using Bingo.UI.Shared.Services;
 using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.ViewModel.MainPage.Caller;

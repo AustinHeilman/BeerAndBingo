@@ -1,4 +1,4 @@
-﻿using Bingo.Core.Patterns;
+﻿using Bingo.Core.Games.Bingo.Patterns;
 using Bingo.Services.Patterns;
 using System.Collections.ObjectModel;
 
@@ -30,7 +30,7 @@ public class PatternDisplayViewModel
 	{
 		PatternCells.Clear();
 
-		foreach (var cell in pattern.Cells)
+		foreach (PatternCell cell in pattern.Cells)
 		{
 			PatternCells.Add(new PatternCell
 			{

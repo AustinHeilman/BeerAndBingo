@@ -1,4 +1,4 @@
-﻿using Bingo.Core.Patterns;
+﻿using Bingo.Core.Games.Bingo.Patterns;
 
 public interface IPatternService
 {

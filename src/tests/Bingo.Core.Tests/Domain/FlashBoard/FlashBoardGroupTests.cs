@@ -1,13 +1,15 @@
-﻿using Bingo.Core.Domain.FlashBoard;
-using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Games.Bingo.FlashBoard;
+using Bingo.Core.Games.Bingo.FlashBoard.Events;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
 public class FlashBoardGroupTests
 {
+	private readonly FlashBoardConfig FlashBoardConfig = new();
+
 	[Fact]
 	public void GroupCompleted_ShouldFire_WhenAllNumbersAreCalled()
 	{
-		FlashBoardObj board = new();
+		FlashBoardObj board = new(FlashBoardConfig);
 		FlashBoardGroup group = board.Children.First();
 		char? completed = null;
 
@@ -22,7 +24,7 @@ public class FlashBoardGroupTests
 	[Fact]
 	public void GroupCompleted_ShouldNotFire_WhenNotAllNumbersAreCalled()
 	{
-		FlashBoardObj board = new();
+		FlashBoardObj board = new(FlashBoardConfig);
 		FlashBoardGroup group = board.Children.First();
 		bool fired = false;
 

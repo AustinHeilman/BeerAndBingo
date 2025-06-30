@@ -9,15 +9,15 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-		// Set up the FlashBoardView        
+		// Inject FlashBoardView
 		flashBoardView.IsInteractive = true;
 		flashBoardView.VerticalOptions = LayoutOptions.Fill;
 		flashBoardView.HorizontalOptions = LayoutOptions.Fill;
 		flashBoardView.ViewModel = viewModel.FlashBoardVM;
 
-		// Add FlashBoardView to the MainGrid at row 0
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
+		Grid.SetColumnSpan(flashBoardView, 4);
 
 		BindingContext = viewModel;
 	}

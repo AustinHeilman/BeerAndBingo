@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:Bingo.ViewModel.GameInfo;assembly=Bingo.ViewModel"
+             x:Class="Bingo.UI.Shared.Views.GameInfo.GameInfoPanel"
+             x:DataType="vm:GameInfoPanelViewModel">
+
+	<VerticalStackLayout Spacing="2" Padding="0"
+                         HorizontalOptions="Fill"
+                         VerticalOptions="Center">
+
+		<!-- Current Call -->
+		<Border Stroke="#FFD700"
+                StrokeThickness="2"
+                BackgroundColor="#2D2D40"
+                Padding="{OnIdiom Phone='8,4', Tablet='20,10'}"
+                Margin="1"
+                StrokeShape="RoundRectangle 8"
+                HorizontalOptions="Fill">
+			<Label Text="{Binding CurrentCallDisplay}"
+                   FontAttributes="Bold"
+                   FontAutoScalingEnabled="True"
+                   TextColor="#FFD700" />
+		</Border>
+
+		<!-- Previous Call -->
+		<Border Stroke="White"
+                StrokeThickness="1.5"
+                BackgroundColor="#333C4A"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8'}"
+                Margin="1"
+                StrokeShape="RoundRectangle 7"
+                HorizontalOptions="Fill">
+			<Label Text="{Binding PreviousCallDisplay}"
+                   FontAttributes="Bold"
+                   FontAutoScalingEnabled="True"
+                   TextColor="White" />
+		</Border>
+
+		<!-- PAYD Alert (Visible only when triggered) -->
+		<Border Stroke="Crimson"
+                StrokeThickness="1.5"
+                BackgroundColor="#4A1F1F"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8'}"
+                Margin="1"
+                StrokeShape="RoundRectangle 7"
+                HorizontalOptions="Fill"
+                IsVisible="{Binding ShowFakeCall}">
+			<Label Text="{Binding FakeCallDisplay}"
+                   FontAttributes="Bold"
+                   FontAutoScalingEnabled="True"
+                   TextColor="Crimson" />
+		</Border>
+
+		<!-- Game Rounds -->
+		<Border Stroke="White"
+                StrokeThickness="1.5"
+                BackgroundColor="#333C4A"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8'}"
+                Margin="1"
+                StrokeShape="RoundRectangle 7"
+                HorizontalOptions="Fill">
+			<Label Text="{Binding GameRoundsText}"
+                   FontAttributes="Bold"
+                   FontAutoScalingEnabled="True"
+                   TextColor="White" />
+		</Border>
+	</VerticalStackLayout>
+</ContentView>

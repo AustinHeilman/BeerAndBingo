@@ -1,9 +1,11 @@
-﻿using Bingo.Core.Domain;
+﻿using Bingo.Core.Games.Bingo.FlashBoard;
 
 namespace Bingo.Core.Tests.Domain;
 
 public class BingoBoardConfigTests
 {
+	private readonly FlashBoardConfig FlashBoardConfig = new();
+
 	[Theory]
 	[InlineData(0, 0, 1)]
 	[InlineData(4, 0, 5)]
@@ -23,14 +25,14 @@ public class BingoBoardConfigTests
 	[InlineData('O', 4)]
 	public void GetIndexForBoardLetter_ShouldReturnExpectedIndex(char letter, int expectedIndex)
 	{
-		int index = FlashBoardConfig.GetIndexForBoardLetter(letter);
+		int index = FlashBoardConfig.GetIndexForLetter(letter);
 		Assert.Equal(expectedIndex, index);
 	}
 
 	[Fact]
 	public void GetIndexForBoardLetter_ShouldThrow_ForInvalidLetter()
 	{
-		Assert.Throws<ArgumentException>(() => FlashBoardConfig.GetIndexForBoardLetter('Z'));
+		Assert.Throws<ArgumentException>(() => FlashBoardConfig.GetIndexForLetter('Z'));
 	}
 
 	[Theory]
@@ -39,7 +41,7 @@ public class BingoBoardConfigTests
 	[InlineData(4, 61, 75)]
 	public void GetNumbersInBoardIndex_ShouldReturnExpectedRange(int index, int expectedStart, int expectedEnd)
 	{
-		List<int> range = FlashBoardConfig.GetNumbersInBoardIndex(index).ToList();
+		List<int> range = FlashBoardConfig.GetNumbersInIndex(index).ToList();
 
 		Assert.Equal(15, range.Count);
 		Assert.Equal(expectedStart, range.First());
@@ -49,8 +51,8 @@ public class BingoBoardConfigTests
 	[Fact]
 	public void GetNumbersInBoardIndex_ShouldThrow_ForOutOfRangeIndex()
 	{
-		Assert.Throws<ArgumentOutOfRangeException>(() => FlashBoardConfig.GetNumbersInBoardIndex(-1));
-		Assert.Throws<ArgumentOutOfRangeException>(() => FlashBoardConfig.GetNumbersInBoardIndex(5));
+		Assert.Throws<ArgumentOutOfRangeException>(() => FlashBoardConfig.GetNumbersInIndex(-1));
+		Assert.Throws<ArgumentOutOfRangeException>(() => FlashBoardConfig.GetNumbersInIndex(5));
 	}
 
 	[Theory]
@@ -58,7 +60,7 @@ public class BingoBoardConfigTests
 	[InlineData('O', 61, 75)]
 	public void GetNumbersInBoardLetter_ShouldReturnExpectedRange(char letter, int expectedStart, int expectedEnd)
 	{
-		List<int> range = FlashBoardConfig.GetNumbersInBoardLetter(letter).ToList();
+		List<int> range = FlashBoardConfig.GetNumbersInLetter(letter).ToList();
 
 		Assert.Equal(15, range.Count);
 		Assert.Equal(expectedStart, range.First());

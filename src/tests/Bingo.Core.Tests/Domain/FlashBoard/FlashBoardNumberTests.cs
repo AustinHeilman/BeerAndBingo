@@ -1,14 +1,16 @@
-﻿using Bingo.Core.Domain.FlashBoard;
-using Bingo.Core.Domain.FlashBoard.Events;
+﻿using Bingo.Core.Games.Bingo.FlashBoard;
+using Bingo.Core.Games.Bingo.FlashBoard.Events;
 
 namespace Bingo.Core.Tests.Domain.FlashBoard;
 
 public class FlashBoardNumberTests
 {
+	private readonly FlashBoardConfig _config = new();
+
 	[Fact]
 	public void SetCalled_ShouldRaiseEvent_WhenValueChanges()
 	{
-		FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj());
+		FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj(_config));
 		FlashBoardNumber number = group.Cells.First();
 		FlashBoardCalledChangedEventArgs? capturedEvent = null;
 
@@ -26,7 +28,7 @@ public class FlashBoardNumberTests
 	[Fact]
 	public void SetCalled_ShouldNotRaiseEvent_WhenValueIsSame()
 	{
-		FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj());
+		FlashBoardGroup group = new('B', 1, 15, new FlashBoardObj(_config));
 		FlashBoardNumber number = group.Cells.First();
 		bool wasRaised = false;
 
