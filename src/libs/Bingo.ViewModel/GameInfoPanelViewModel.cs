@@ -11,6 +11,10 @@ public class GameInfoPanelViewModel : INotifyPropertyChanged
 
 	public string CurrentCallDisplay => Format(_session.CurrentItem);
 	public string PreviousCallDisplay => Format(_session.PreviousItem);
+
+	public string CurrentCallLabeled => $"Current: {CurrentCallDisplay}";
+	public string PreviousCallLabeled => $"Previous: {PreviousCallDisplay}";
+
 	public string GameRoundsText => $"Game Rounds: {_session.Round}";
 
 	public GameInfoPanelViewModel(GameSessionState<int> session)
@@ -36,8 +40,11 @@ public class GameInfoPanelViewModel : INotifyPropertyChanged
 	{
 		OnPropertyChanged(nameof(CurrentCallDisplay));
 		OnPropertyChanged(nameof(PreviousCallDisplay));
+		OnPropertyChanged(nameof(CurrentCallLabeled));
+		OnPropertyChanged(nameof(PreviousCallLabeled));
 		OnPropertyChanged(nameof(GameRoundsText));
 	}
+
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 	protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
