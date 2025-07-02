@@ -23,4 +23,8 @@ public class BingoSession : GameSessionState<int>
 			_ => 'O'
 		};
 	}
+	public void Restart()
+	{
+		base.Restart(Enumerable.Range(Min, Max));
+	}
 }

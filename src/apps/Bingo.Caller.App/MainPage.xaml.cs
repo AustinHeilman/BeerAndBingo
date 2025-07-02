@@ -1,51 +1,39 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using Bingo.UI.Shared.Views.FlashBoard;
-using Bingo.UI.Shared.Views.GameInfoPanel;
 using Bingo.ViewModel.MainPage.Caller;
 
 namespace Bingo.Caller.App;
 
 public partial class MainPage : ContentPage, INotifyPropertyChanged
 {
-    private bool _isToolsPanelVisible = false;
-
-    public bool IsToolsPanelVisible
-    {
-        get => _isToolsPanelVisible;
-        set
-        {
-            if (_isToolsPanelVisible != value)
-            {
-                _isToolsPanelVisible = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ToolsPanelToggleText));
-            }
-        }
-    }
-
-    public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
+	public ICommand NewGameCommand { get; }
 
 	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
 	{
 		InitializeComponent();
 
-		// Inject FlashBoardView
 		flashBoardView.IsInteractive = true;
 		flashBoardView.ViewModel = viewModel.FlashBoardVM;
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 
-		BindingContext = viewModel;
+		NewGameCommand = new Command(async () =>
+		{
+			bool confirmed = await DisplayAlert(
+				"Start New Game?",
+				"This will reset the board and call history. Are you sure?",
+				"Yes", "No");
+
+			if (confirmed)
+				viewModel.ResetSession();
+		});
+
+		BindingContext = new { viewModel, page = this };
 	}
 
-
-	private void OnToggleToolsPanelClicked(object sender, EventArgs e)
-    {
-        IsToolsPanelVisible = !IsToolsPanelVisible;
-    }
-
-    public new event PropertyChangedEventHandler? PropertyChanged;
-    protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	public event PropertyChangedEventHandler? PropertyChanged;
+	protected void OnPropertyChanged([CallerMemberName] string propertyName = "") =>
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
