@@ -4,7 +4,7 @@ public static class PlatformIconHelper
 {
 	public static ImageSource Get(string baseName)
 	{
-		if (OperatingSystem.IsWindows())
+		if (OperatingSystem.IsWindows() || !File.Exists($"{baseName}.svg"))
 			return ImageSource.FromFile($"{baseName}_win.png");
 		else
 			return ImageSource.FromFile($"{baseName}.svg");
