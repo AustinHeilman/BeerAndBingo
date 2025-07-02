@@ -35,7 +35,7 @@
                 Grid.Column="0"
                 IconName="button_next_pick"
                 Command="{Binding viewModel.NextCallCommand}"
-                IconSize="200"
+                IconSize="{OnIdiom Desktop='200', Tablet='200', Phone='100', Default='150' }"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 Margin="0,0,8,0" />
