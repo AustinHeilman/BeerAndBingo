@@ -168,6 +168,7 @@ public partial class PatternDisplayView : ContentView
 	protected override void OnSizeAllocated(double width, double height)
 	{
 		base.OnSizeAllocated(width, height);
+
 		double size = Math.Min(width, height);
 		this.WidthRequest = size;
 		this.HeightRequest = size;

@@ -28,13 +28,14 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="$placeholder$"
+        DisplayName="Beer&amp;Bingo - Caller"
         Description="$placeholder$"
         Square150x150Logo="$placeholder$.png"
-        Square44x44Logo="$placeholder$.png"
-        BackgroundColor="transparent">
+        BackgroundColor="transparent" Square44x44Logo="bingo_caller_circular_icon.png">
         <uap:DefaultTile Square71x71Logo="$placeholder$.png" Wide310x150Logo="$placeholder$.png" Square310x310Logo="$placeholder$.png" />
         <uap:SplashScreen Image="$placeholder$.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>

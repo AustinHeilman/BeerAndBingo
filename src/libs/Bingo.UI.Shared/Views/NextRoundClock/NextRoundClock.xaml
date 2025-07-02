@@ -9,64 +9,75 @@
 		<converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 	</ContentView.Resources>
 
-	<Border
-        Padding="24,24,24,36"
-        Background="#222"
-        StrokeThickness="0"
-        StrokeShape="RoundRectangle 16"
+	<ContentView
         HorizontalOptions="Center"
         VerticalOptions="Center"
-        IsVisible="{Binding ViewModel.IsVisible}">
+        WidthRequest="{OnIdiom Phone=360, Tablet=500, Desktop=600}">
 
-		<ScrollView>
-			<VerticalStackLayout Spacing="12">
+		<Border
+            Padding="24,24,24,36"
+            Background="#222"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 16"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            IsVisible="{Binding ViewModel.IsVisible}">
 
-				<Label Text="Next Round Starts At:"
-                       FontSize="20"
-                       TextColor="White"
-                       HorizontalOptions="Center" />
+			<ScrollView>
+				<VerticalStackLayout Spacing="12">
 
-				<Label Text="{Binding ViewModel.DisplayScheduled}"
-                       FontSize="26"
-                       TextColor="LightGray"
-                       HorizontalOptions="Center" />
+					<Label Text="Next Round Starts At:"
+                           FontSize="20"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
 
-				<Label Text="{Binding ViewModel.DisplayCountdown}"
-                       FontSize="48"
-                       FontAttributes="Bold"
-                       TextColor="{Binding ViewModel.CountdownColor}"
-                       HorizontalOptions="Center" />
+					<Label Text="{Binding ViewModel.DisplayScheduled}"
+                           FontSize="26"
+                           TextColor="LightGray"
+                           HorizontalOptions="Center" />
 
-				<StackLayout IsVisible="{Binding ViewModel.IsReadOnly, Converter={StaticResource InverseBoolConverter}}"
-                             Spacing="10"
-                             HorizontalOptions="Center">
-                    <Entry x:Name="MinutesEntry"
-                        Placeholder="Enter minutes (e.g. 0.5)"
-                        Keyboard="Numeric"
-                        WidthRequest="180"
-                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
-                        BackgroundColor="{AppThemeBinding Light=White, Dark=#333}"
-                        HorizontalTextAlignment="Center"
-                        ClearButtonVisibility="WhileEditing" />
-                    <Button Text="Set Timer"
-                            Clicked="OnSetTimerClicked"
-                            FontSize="18"
-                            HeightRequest="50"
-                            Padding="12,6"
-                            CornerRadius="8"
-                            BackgroundColor="#3A8CFF"
-                            TextColor="White" />
+					<Label Text="{Binding ViewModel.DisplayCountdown}"
+                           FontSize="48"
+                           FontAttributes="Bold"
+                           TextColor="{Binding ViewModel.CountdownColor}"
+                           HorizontalOptions="Center" />
 
-					<Button Text="Cancel"
-        					Clicked="OnCancelClicked"
-        					FontSize="18"
-        					HeightRequest="50"
-        					Padding="12,6"
-        					CornerRadius="8"
-        					BackgroundColor="#666"
-        					TextColor="White" />
-				</StackLayout>
-			</VerticalStackLayout>
-		</ScrollView>
-	</Border>
+					<StackLayout IsVisible="{Binding ViewModel.IsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                                 Spacing="10"
+                                 HorizontalOptions="Center">
+
+						<Entry x:Name="MinutesEntry"
+                               Placeholder="Enter minutes (e.g. 0.5)"
+                               Keyboard="Numeric"
+                               WidthRequest="180"
+                               TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#333}"
+                               HorizontalTextAlignment="Center"
+                               ClearButtonVisibility="WhileEditing" />
+
+						<HorizontalStackLayout Spacing="12"
+                                               HorizontalOptions="Center">
+							<Button Text="Set Timer"
+                                    Clicked="OnSetTimerClicked"
+                                    FontSize="18"
+                                    HeightRequest="50"
+                                    Padding="12,6"
+                                    CornerRadius="8"
+                                    BackgroundColor="#3A8CFF"
+                                    TextColor="White" />
+
+							<Button Text="Cancel"
+                                    Clicked="OnCancelClicked"
+                                    FontSize="18"
+                                    HeightRequest="50"
+                                    Padding="12,6"
+                                    CornerRadius="8"
+                                    BackgroundColor="#666"
+                                    TextColor="White" />
+						</HorizontalStackLayout>
+					</StackLayout>
+				</VerticalStackLayout>
+			</ScrollView>
+		</Border>
+	</ContentView>
 </ContentView>
