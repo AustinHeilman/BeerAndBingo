@@ -27,6 +27,10 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public ICommand RedoPickCommand { get; } = new RelayCommand(() => { });
 	public ICommand PatternsCommand { get; } = new RelayCommand(() => { });
 	public ICommand SettingsCommand { get; } = new RelayCommand(() => { });
+	public ICommand NextGameCommand { get; }
+
+	// Event to notify the view to show the NextRoundClock
+	public event Action? ShowNextRoundClockRequested;
 
 	public CallerMainPageViewModel()
 	{
@@ -39,6 +43,12 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 		ToggleToolsPanelCommand = new RelayCommand(() => IsToolsPanelVisible = !IsToolsPanelVisible);
 		NextCallCommand = new RelayCommand(() => _session.CallNext());
+		NextGameCommand = new RelayCommand(OnNextGame);
+	}
+
+	private void OnNextGame()
+	{
+		ShowNextRoundClockRequested?.Invoke();
 	}
 
 	public void ResetSession()

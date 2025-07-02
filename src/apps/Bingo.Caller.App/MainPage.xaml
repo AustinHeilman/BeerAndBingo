@@ -5,6 +5,7 @@
              xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
              xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
+             xmlns:views="clr-namespace:Bingo.UI.Shared.Views.NextRoundClock;assembly=Bingo.UI.Shared"
              xmlns:converters="clr-namespace:Bingo.Caller.App.Converters;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.MainPage"
              x:Name="RootPage"
@@ -12,8 +13,8 @@
 
 	<ContentPage.Resources>
 		<Style TargetType="Button">
-			<Setter Property="FontSize" Value="14"/>
-			<Setter Property="Padding" Value="4,2"/>
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Padding" Value="4,2" />
 		</Style>
 		<converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 	</ContentPage.Resources>
@@ -24,6 +25,9 @@
 			<RowDefinition Height="2*" />
 		</Grid.RowDefinitions>
 
+		<!-- FlashBoard is injected in code-behind at Grid.Row=0 -->
+
+		<!-- Lower Panel: Call Controls + Info + Pattern -->
 		<Grid Grid.Row="1" ColumnSpacing="12" BackgroundColor="Transparent">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="2*" />
@@ -35,7 +39,7 @@
                 Grid.Column="0"
                 IconName="button_next_pick"
                 Command="{Binding viewModel.NextCallCommand}"
-                IconSize="{OnIdiom Desktop='200', Tablet='200', Phone='100', Default='150' }"
+                IconSize="{OnIdiom Desktop='200', Tablet='200', Phone='100', Default='150'}"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 Margin="0,0,8,0" />
@@ -54,6 +58,7 @@
                 ViewModel="{Binding viewModel.PatternVM}" />
 		</Grid>
 
+		<!-- Tools Panel Overlay -->
 		<Grid
             Grid.Row="1"
             IsVisible="{Binding viewModel.IsToolsPanelVisible}"
@@ -75,9 +80,10 @@
 
 				<HorizontalStackLayout Grid.Row="2" Spacing="12" VerticalOptions="End">
 					<controls:IconButton IconName="button_new_game" IconSize="100" Command="{Binding page.NewGameCommand}" />
+					<controls:IconButton IconName="button_nextgame" IconSize="100" Command="{Binding page.NextClockCommand}" />
 					<controls:IconButton IconName="button_patterns" IconSize="100" Command="{Binding viewModel.PatternsCommand}" />
-					<controls:IconButton IconName="button_undo_pick" IconSize="100" Command="{Binding viewModel.UndoCommand}" />
-					<controls:IconButton IconName="button_redo_pick" IconSize="100" Command="{Binding viewModel.RedoPickCommand}" />
+					<controls:IconButton IconName="button_undo_pick" IconSize="100" Command="{Binding page.UndoPickCommand}" />
+					<controls:IconButton IconName="button_redo_pick" IconSize="100" Command="{Binding page.RedoPickCommand}" />
 					<controls:IconButton IconName="button_replay" IconSize="100" Command="{Binding viewModel.ReplayCommand}" />
 					<HorizontalStackLayout Spacing="16" VerticalOptions="Center">
 						<controls:IconButton IconName="button_settings" IconSize="100" Command="{Binding viewModel.SettingsCommand}" />
@@ -87,6 +93,7 @@
 			</Grid>
 		</Grid>
 
+		<!-- Tools Toggle When Collapsed -->
 		<controls:IconButton
             Grid.Row="1"
             IconName="{Binding viewModel.ToolsPanelToggleIcon}"
@@ -96,5 +103,19 @@
             VerticalOptions="Center"
             Margin="0"
             IsVisible="{Binding viewModel.IsToolsPanelVisible, Converter={StaticResource InverseBoolConverter}}" />
+
+		<!-- Optional Dim Background -->
+		<BoxView Grid.RowSpan="2"
+                 BackgroundColor="#66000000"
+                 IsVisible="{Binding page.NextClockVisible}"
+                 ZIndex="45" />
+
+		<!-- Next Round Clock Overlay -->
+		<views:NextRoundClock x:Name="NextClockOverlay"
+                              Grid.RowSpan="2"
+                              HorizontalOptions="Center"
+                              VerticalOptions="CenterAndExpand"
+                              IsVisible="{Binding page.NextClockVisible}"
+                              ZIndex="50" />
 	</Grid>
 </ContentPage>

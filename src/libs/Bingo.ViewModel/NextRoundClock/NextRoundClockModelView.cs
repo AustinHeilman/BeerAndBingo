@@ -4,29 +4,42 @@ using System.Timers;
 
 namespace Bingo.ViewModel.NextRoundClock;
 
+using Timer = System.Timers.Timer;
+
 public class NextRoundClockViewModel : INotifyPropertyChanged
 {
-	private DateTime? _nextRoundTime;
-	private readonly System.Timers.Timer _timer;
+	private enum TimerMode { Hidden, Countdown, Elapsed }
 
-	public bool IsVisible => _nextRoundTime.HasValue;
+	private DateTime? _targetTime;
+	private TimerMode _mode = TimerMode.Hidden;
+
+	private readonly Timer _timer;
+
+	public bool IsVisible => _mode != TimerMode.Hidden;
 	public bool IsReadOnly { get; set; } = false;
 
-	public string? DisplayScheduled => _nextRoundTime?.ToLocalTime().ToString("h:mm tt");
-	public string? DisplayCountdown => _nextRoundTime is null
-		? null
-		: FormatCountdown(_nextRoundTime.Value - DateTime.UtcNow);
+	public string? DisplayScheduled => _targetTime?.ToLocalTime().ToString("h:mm tt");
+
+	public string? DisplayCountdown =>
+		_mode switch
+		{
+			TimerMode.Countdown => FormatTimeSpan(_targetTime!.Value - DateTime.UtcNow),
+			TimerMode.Elapsed => "+" + FormatTimeSpan(DateTime.UtcNow - _targetTime!.Value),
+			_ => null
+		};
 
 	public NextRoundClockViewModel()
 	{
-		_timer = new System.Timers.Timer(1000); // Update every second
+		_timer = new Timer(1000);
 		_timer.Elapsed += (_, _) => OnTick();
 	}
 
 	public void SetTimer(TimeSpan delay)
 	{
-		_nextRoundTime = DateTime.UtcNow + delay;
+		_targetTime = DateTime.UtcNow + delay;
+		_mode = TimerMode.Countdown;
 		_timer.Start();
+
 		OnPropertyChanged(nameof(IsVisible));
 		OnPropertyChanged(nameof(DisplayScheduled));
 		OnPropertyChanged(nameof(DisplayCountdown));
@@ -35,7 +48,9 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 	public void CancelTimer()
 	{
 		_timer.Stop();
-		_nextRoundTime = null;
+		_mode = TimerMode.Hidden;
+		_targetTime = null;
+
 		OnPropertyChanged(nameof(IsVisible));
 		OnPropertyChanged(nameof(DisplayScheduled));
 		OnPropertyChanged(nameof(DisplayCountdown));
@@ -43,22 +58,23 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 
 	private void OnTick()
 	{
-		if (_nextRoundTime is null)
+		if (_targetTime is null)
 			return;
 
-		var remaining = _nextRoundTime.Value - DateTime.UtcNow;
-
-		if (remaining <= TimeSpan.Zero)
+		if (_mode == TimerMode.Countdown && DateTime.UtcNow >= _targetTime)
 		{
-			CancelTimer();
-			return;
+			_mode = TimerMode.Elapsed;
+			OnPropertyChanged(nameof(DisplayScheduled));
 		}
 
 		OnPropertyChanged(nameof(DisplayCountdown));
 	}
 
-	private string FormatCountdown(TimeSpan span) =>
-		$"{(int)span.TotalMinutes:D2}:{span.Seconds:D2}";
+	private string FormatTimeSpan(TimeSpan span)
+	{
+		span = span < TimeSpan.Zero ? TimeSpan.Zero : span;
+		return $"{(int)span.TotalMinutes:D2}:{span.Seconds:D2}";
+	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
 	private void OnPropertyChanged([CallerMemberName] string? name = null) =>

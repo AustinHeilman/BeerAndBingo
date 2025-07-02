@@ -1,6 +1,6 @@
 using Bingo.ViewModel.NextRoundClock;
 
-namespace Bingo.UI.Shared.NextRoundClock;
+namespace Bingo.UI.Shared.Views.NextRoundClock;
 
 public partial class NextRoundClock : ContentView
 {

@@ -1,14 +1,28 @@
-﻿using System.ComponentModel;
+﻿using Bingo.UI.Shared.Views.FlashBoard;
+using Bingo.ViewModel.MainPage.Caller;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Bingo.UI.Shared.Views.FlashBoard;
-using Bingo.ViewModel.MainPage.Caller;
 
 namespace Bingo.Caller.App;
 
-public partial class MainPage : ContentPage, INotifyPropertyChanged
+public partial class MainPage : ContentPage
 {
-	public ICommand NewGameCommand { get; }
+	public ICommand NextClockCommand { get; }
+
+	public bool NextClockVisible
+	{
+		get => _nextClockVisible;
+		set
+		{
+			if (_nextClockVisible != value)
+			{
+				_nextClockVisible = value;
+				OnPropertyChanged(nameof(NextClockVisible));
+			}
+		}
+	}
+	private bool _nextClockVisible = false;
 
 	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
 	{
@@ -19,21 +33,25 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 
-		NewGameCommand = new Command(async () =>
+		NextClockCommand = new Command(() =>
 		{
-			bool confirmed = await DisplayAlert(
-				"Start New Game?",
-				"This will reset the board and call history. Are you sure?",
-				"Yes", "No");
+			if (!NextClockVisible)
+			{
+				NextClockOverlay.ViewModel.IsReadOnly = false;
+				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(5)); // Optional default
+			}
+			else
+			{
+				NextClockOverlay.ViewModel.CancelTimer();
+			}
 
-			if (confirmed)
-				viewModel.ResetSession();
+			NextClockVisible = !NextClockVisible;
 		});
 
 		BindingContext = new { viewModel, page = this };
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;
-	protected void OnPropertyChanged([CallerMemberName] string propertyName = "") =>
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	protected void OnPropertyChanged([CallerMemberName] string name = "") =>
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

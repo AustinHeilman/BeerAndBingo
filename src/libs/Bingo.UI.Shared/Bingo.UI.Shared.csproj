@@ -42,7 +42,7 @@
 	  <MauiXaml Update="Controls\IconButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="NextRoundClock\NextRoundClock.xaml">
+	  <MauiXaml Update="Views\NextRoundClock\NextRoundClock.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Styles\FlashBoardTheme.xaml">
