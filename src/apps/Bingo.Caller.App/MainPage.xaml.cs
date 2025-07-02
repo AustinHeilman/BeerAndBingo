@@ -1,14 +1,13 @@
 ﻿using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.ViewModel.MainPage.Caller;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Bingo.Caller.App;
 
-public partial class MainPage : ContentPage, INotifyPropertyChanged
+public partial class MainPage : ContentPage
 {
 	public ICommand NextClockCommand { get; }
+	public ICommand TogglePatternZoomCommand { get; }
 
 	private bool _nextClockVisible = false;
 	public bool NextClockVisible
@@ -24,6 +23,20 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		}
 	}
 
+	private bool _isPatternZoomed = false;
+	public bool IsPatternZoomed
+	{
+		get => _isPatternZoomed;
+		set
+		{
+			if (_isPatternZoomed != value)
+			{
+				_isPatternZoomed = value;
+				OnPropertyChanged(nameof(IsPatternZoomed));
+			}
+		}
+	}
+
 	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
 	{
 		InitializeComponent();
@@ -33,7 +46,6 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 
-		// Listen for safe closure event from timer overlay
 		NextClockOverlay.RequestClose += (_, _) => CollapseTimerUI();
 
 		NextClockCommand = new Command(() =>
@@ -50,6 +62,11 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 			}
 		});
 
+		TogglePatternZoomCommand = new Command(() =>
+		{
+			IsPatternZoomed = !IsPatternZoomed;
+		});
+
 		BindingContext = new { viewModel, page = this };
 	}
 
@@ -58,8 +75,4 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		NextClockOverlay.ViewModel.CancelTimer();
 		NextClockVisible = false;
 	}
-
-	public event PropertyChangedEventHandler? PropertyChanged;
-	protected void OnPropertyChanged([CallerMemberName] string name = "") =>
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 }

@@ -48,10 +48,12 @@
                                     HorizontalOptions="Fill"
                                     BindingContext="{Binding viewModel.GameInfoVM}" />
 
-			<pattern:PatternDisplayView Grid.Column="2"
-                                        VerticalOptions="Fill"
-                                        HorizontalOptions="Fill"
-                                        ViewModel="{Binding viewModel.PatternVM}" />
+			<ContentView Grid.Column="2">
+				<ContentView.GestureRecognizers>
+					<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
+				</ContentView.GestureRecognizers>
+				<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
+			</ContentView>
 		</Grid>
 
 		<!-- Tools Panel Overlay -->
@@ -87,7 +89,30 @@
                              Margin="0"
                              IsVisible="{Binding viewModel.IsToolsPanelVisible, Converter={StaticResource InverseBoolConverter}}" />
 
-		<!-- Modal Backdrop -->
+		<!-- Pattern Zoom Modal -->
+		<ContentView Grid.RowSpan="2"
+                     BackgroundColor="#88000000"
+                     IsVisible="{Binding page.IsPatternZoomed}"
+                     InputTransparent="False"
+                     ZIndex="46">
+			<ContentView.GestureRecognizers>
+				<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
+			</ContentView.GestureRecognizers>
+			<Border WidthRequest="{OnIdiom Phone=360, Tablet=600, Desktop=720}"
+                    HeightRequest="{OnIdiom Phone=360, Tablet=600, Desktop=720}"
+                    StrokeShape="RoundRectangle 24"
+                    BackgroundColor="{AppThemeBinding Light=White, Dark=#222}"
+                    Padding="24"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+				<Border.Shadow>
+					<Shadow Brush="Black" Offset="4,4" Radius="6" Opacity="0.4" />
+				</Border.Shadow>
+				<pattern:PatternDisplayView BindingContext="{Binding viewModel.PatternVM}" />
+			</Border>
+		</ContentView>
+
+		<!-- Timer Backdrop -->
 		<ContentView Grid.RowSpan="2"
                      BackgroundColor="#88000000"
                      IsVisible="{Binding page.NextClockVisible}"

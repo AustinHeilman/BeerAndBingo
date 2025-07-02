@@ -43,6 +43,7 @@
 	<PropertyGroup>
 		<EnablePreviewMsbuildFeatures>true</EnablePreviewMsbuildFeatures>
 		<EnableCompiledBindings>true</EnableCompiledBindings>
+		<MauiEnableXamlCBindingWithSourceCompilation>true</MauiEnableXamlCBindingWithSourceCompilation>
 	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android' Or '$(TargetFramework)' == 'net9.0-ios'">
