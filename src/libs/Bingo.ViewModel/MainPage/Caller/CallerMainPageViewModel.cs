@@ -22,7 +22,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public ICommand ToggleToolsPanelCommand { get; }
 	public ICommand NextCallCommand { get; }
 	public ICommand ReplayCommand { get; } = new RelayCommand(() => { });
-	public ICommand UndoCommand { get; } = new RelayCommand(() => { });
+	public ICommand UndoPickCommand { get; } = new RelayCommand(() => { });
 	public ICommand RedoPickCommand { get; } = new RelayCommand(() => { });
 	public ICommand PatternsCommand { get; } = new RelayCommand(() => { });
 	public ICommand SettingsCommand { get; } = new RelayCommand(() => { });

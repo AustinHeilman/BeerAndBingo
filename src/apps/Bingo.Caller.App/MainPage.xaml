@@ -72,7 +72,7 @@
 					<controls:IconButton IconName="button_patterns" IconSize="100" Command="{Binding viewModel.PatternsCommand}" />
 					<controls:IconButton IconName="button_undo_pick" IconSize="100" Command="{Binding page.UndoPickCommand}" />
 					<controls:IconButton IconName="button_redo_pick" IconSize="100" Command="{Binding page.RedoPickCommand}" />
-					<controls:IconButton IconName="button_replay" IconSize="100" Command="{Binding viewModel.ReplayCommand}" />
+					<controls:IconButton IconName="button_replay" IconSize="100" Command="{Binding page.ReplayCommand}" />
 					<controls:IconButton IconName="button_settings" IconSize="100" Command="{Binding viewModel.SettingsCommand}" />
 					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}" IconSize="50" Command="{Binding viewModel.ToggleToolsPanelCommand}" />
 				</HorizontalStackLayout>

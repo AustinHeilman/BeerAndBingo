@@ -8,6 +8,10 @@ public partial class MainPage : ContentPage
 {
 	public ICommand NextClockCommand { get; }
 	public ICommand TogglePatternZoomCommand { get; }
+	public ICommand NewGameCommand { get; }
+	public ICommand UndoPickCommand { get; }
+	public ICommand RedoPickCommand { get; }
+	public ICommand ReplayCommand { get; }
 
 	private bool _nextClockVisible = false;
 	public bool NextClockVisible
@@ -53,7 +57,7 @@ public partial class MainPage : ContentPage
 			if (!NextClockVisible)
 			{
 				NextClockOverlay.ViewModel.IsReadOnly = false;
-				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(5));
+				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(10));
 				NextClockVisible = true;
 			}
 			else
@@ -65,6 +69,42 @@ public partial class MainPage : ContentPage
 		TogglePatternZoomCommand = new Command(() =>
 		{
 			IsPatternZoomed = !IsPatternZoomed;
+		});
+
+		NewGameCommand = new Command(async () =>
+		{
+			bool confirm = await DisplayAlert("New Game", "Start a new game and reset session?", "Yes", "No");
+			if (confirm)
+			{
+				viewModel.ResetSession();
+			}
+		});
+
+		UndoPickCommand = new Command(async () =>
+		{
+			bool confirm = await DisplayAlert("Undo", "Undo last action?", "Yes", "No");
+			if (confirm)
+			{
+				
+			}
+		});
+
+		RedoPickCommand = new Command(async () =>
+		{
+			bool confirm = await DisplayAlert("New Game", "Redo last action?", "Yes", "No");
+			if (confirm)
+			{
+				
+			}
+		});
+
+		ReplayCommand = new Command(async () =>
+		{
+			bool confirm = await DisplayAlert("Replay", "Play all recorded game actions?", "Yes", "No");
+			if (confirm)
+			{
+
+			}
 		});
 
 		BindingContext = new { viewModel, page = this };
