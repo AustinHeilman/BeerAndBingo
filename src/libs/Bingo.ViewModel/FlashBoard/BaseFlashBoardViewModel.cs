@@ -1,7 +1,7 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using Bingo.Core.FlashBoard;
+﻿using Bingo.Core.FlashBoard;
 using Bingo.Core.FlashBoard.Events;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Bingo.ViewModel.FlashBoard;
 
@@ -18,9 +18,9 @@ public abstract class BaseFlashBoardViewModel : INotifyPropertyChanged
 
 		foreach (FlashBoardGroup group in _board.Children)
 		{
-			var cellVMs = group.Cells.Select(cell =>
+			List<FlashBoardCellViewModel> cellVMs = group.Cells.Select(cell =>
 			{
-				var vm = new FlashBoardCellViewModel(cell);
+				FlashBoardCellViewModel vm = new(cell);
 				cell.IsCalledChanged += (_, e) =>
 				{
 					NumberCalledAnimationRequested?.Invoke(cell.Number, e.SourceTag);
@@ -28,11 +28,11 @@ public abstract class BaseFlashBoardViewModel : INotifyPropertyChanged
 				return vm;
 			}).ToList();
 
-			var groupVM = new FlashBoardGroupViewModel(group.Letter, cellVMs);
+			FlashBoardGroupViewModel groupVM = new(group.Letter, cellVMs);
 
 			group.GroupCompleted += (_, _) =>
 			{
-				foreach (var vm in groupVM.Cells)
+				foreach (FlashBoardCellViewModel vm in groupVM.Cells)
 					vm.GroupCompleted = true;
 			};
 

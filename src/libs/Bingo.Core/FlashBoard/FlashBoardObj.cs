@@ -16,8 +16,8 @@ public class FlashBoardObj
 		Children = new();
 		foreach (char letter in FlashBoardConfig.GameLetters)
 		{
-			var numbers = FlashBoardConfig.GetNumbersInBoardLetter(letter);
-			var group = new FlashBoardGroup(letter, numbers.First(), numbers.Last(), this);
+			IEnumerable<int> numbers = FlashBoardConfig.GetNumbersInBoardLetter(letter);
+			FlashBoardGroup group = new(letter, numbers.First(), numbers.Last(), this);
 			Children.Add(group);
 		}
 	}
@@ -31,8 +31,8 @@ public class FlashBoardObj
 
 	public void UpdateCalled(IEnumerable<int> called)
 	{
-		var calledSet = new HashSet<int>(called);
-		foreach (var cell in AllCells)
+		HashSet<int> calledSet = new(called);
+		foreach (FlashBoardNumber cell in AllCells)
 			cell.SetCalled(calledSet.Contains(cell.Number), FlashBoardEventSource.Sync);
 	}
 }

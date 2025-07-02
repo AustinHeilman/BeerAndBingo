@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Timers;
 
 namespace Bingo.ViewModel.NextRoundClock;
 
@@ -12,10 +11,10 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 
 	private DateTime? _targetTime;
 	private TimerMode _mode = TimerMode.Hidden;
-
 	private readonly Timer _timer;
 
 	public bool IsVisible => _mode != TimerMode.Hidden;
+	public bool IsElapsed => _mode == TimerMode.Elapsed;
 	public bool IsReadOnly { get; set; } = false;
 
 	public string? DisplayScheduled => _targetTime?.ToLocalTime().ToString("h:mm tt");
@@ -23,10 +22,17 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 	public string? DisplayCountdown =>
 		_mode switch
 		{
-			TimerMode.Countdown => FormatTimeSpan(_targetTime!.Value - DateTime.UtcNow),
-			TimerMode.Elapsed => "+" + FormatTimeSpan(DateTime.UtcNow - _targetTime!.Value),
+			TimerMode.Countdown => FormatTimeSpan(Remaining),
+			TimerMode.Elapsed => "Oops. Late… +" + FormatTimeSpan(DateTime.UtcNow - _targetTime!.Value),
 			_ => null
 		};
+
+	public string CountdownColor =>
+		_mode == TimerMode.Countdown && Remaining <= TimeSpan.FromSeconds(10)
+			? "Crimson"
+			: "#FFAA44";
+
+	private TimeSpan Remaining => _targetTime is null ? TimeSpan.Zero : _targetTime.Value - DateTime.UtcNow;
 
 	public NextRoundClockViewModel()
 	{
@@ -41,8 +47,10 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 		_timer.Start();
 
 		OnPropertyChanged(nameof(IsVisible));
+		OnPropertyChanged(nameof(IsElapsed));
 		OnPropertyChanged(nameof(DisplayScheduled));
 		OnPropertyChanged(nameof(DisplayCountdown));
+		OnPropertyChanged(nameof(CountdownColor));
 	}
 
 	public void CancelTimer()
@@ -52,8 +60,10 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 		_targetTime = null;
 
 		OnPropertyChanged(nameof(IsVisible));
+		OnPropertyChanged(nameof(IsElapsed));
 		OnPropertyChanged(nameof(DisplayScheduled));
 		OnPropertyChanged(nameof(DisplayCountdown));
+		OnPropertyChanged(nameof(CountdownColor));
 	}
 
 	private void OnTick()
@@ -64,10 +74,12 @@ public class NextRoundClockViewModel : INotifyPropertyChanged
 		if (_mode == TimerMode.Countdown && DateTime.UtcNow >= _targetTime)
 		{
 			_mode = TimerMode.Elapsed;
+			OnPropertyChanged(nameof(IsElapsed));
 			OnPropertyChanged(nameof(DisplayScheduled));
 		}
 
 		OnPropertyChanged(nameof(DisplayCountdown));
+		OnPropertyChanged(nameof(CountdownColor));
 	}
 
 	private string FormatTimeSpan(TimeSpan span)

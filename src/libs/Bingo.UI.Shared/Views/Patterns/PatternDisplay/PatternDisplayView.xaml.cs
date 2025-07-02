@@ -62,7 +62,7 @@ public partial class PatternDisplayView : ContentView
 	private void SetPatternCells(IEnumerable<PatternCell> cells)
 	{
 		_cellMap.Clear();
-		foreach (var cell in cells)
+		foreach (PatternCell cell in cells)
 			_cellMap[(cell.Row, cell.Col)] = cell;
 
 		UpdatePatternVisuals();
@@ -91,7 +91,7 @@ public partial class PatternDisplayView : ContentView
 		{
 			for (int c = 0; c < cols; c++)
 			{
-				var border = new Border
+				Border border = new()
 				{
 					Padding = 0,
 					Margin = new Thickness(0),
@@ -119,9 +119,9 @@ public partial class PatternDisplayView : ContentView
 
 	private void AddLetter(int col, int row)
 	{
-		var columnLetter = "BINGO"[col].ToString();
+		string columnLetter = "BINGO"[col].ToString();
 
-		var label = new Label
+		Label label = new()
 		{
 			Text = columnLetter,
 			TextColor = Color.FromArgb("#303030"),
@@ -140,7 +140,7 @@ public partial class PatternDisplayView : ContentView
 
 	private void CreateStarInCenter()
 	{
-		var starView = new GraphicsView
+		GraphicsView starView = new()
 		{
 			Drawable = new StarDrawable(),
 			HorizontalOptions = LayoutOptions.Fill,
@@ -156,9 +156,9 @@ public partial class PatternDisplayView : ContentView
 
 	private void UpdatePatternVisuals()
 	{
-		foreach (var pos in _borderMap.Keys)
+		foreach ((int, int) pos in _borderMap.Keys)
 		{
-			bool isActive = _cellMap.TryGetValue(pos, out var cell) && cell.IsActive;
+			bool isActive = _cellMap.TryGetValue(pos, out PatternCell? cell) && cell.IsActive;
 			_borderMap[pos].Background = isActive
 				? Colors.Goldenrod
 				: Colors.LightGray;

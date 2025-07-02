@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Bingo.Core.Domain;
+﻿using Bingo.Core.Domain;
 using Bingo.Core.Domain.Bingo;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Bingo.ViewModel.GameInfo;
 

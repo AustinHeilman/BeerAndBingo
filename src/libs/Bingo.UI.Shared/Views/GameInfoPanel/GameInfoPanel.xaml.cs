@@ -1,6 +1,4 @@
-using Bingo.Core.Domain.Bingo;
 using Bingo.ViewModel.GameInfo;
-using Microsoft.Maui.Controls;
 
 namespace Bingo.UI.Shared.Views.GameInfoPanel;
 

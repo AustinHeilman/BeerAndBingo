@@ -1,5 +1,4 @@
-﻿using Bingo.Core.Device;
-using Bingo.Core.Device.Fonts;
+﻿using Bingo.Core.Device.Fonts;
 using Bingo.UI.Shared.Styles;
 
 namespace Bingo.Caller.App.Startup;

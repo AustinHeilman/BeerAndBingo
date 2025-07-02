@@ -82,7 +82,7 @@ public class GameSessionState<T>
 	{
 		if (_pointer < 0) return;
 
-		var undone = _history[_pointer];
+		T? undone = _history[_pointer];
 		_pointer--;
 
 		_calledSet.Remove(undone);
@@ -96,7 +96,7 @@ public class GameSessionState<T>
 		if (_pointer >= _history.Count - 1) return;
 
 		_pointer++;
-		var redone = _history[_pointer];
+		T? redone = _history[_pointer];
 
 		_calledSet.Add(redone);
 		_availableSet.Remove(redone);
@@ -111,10 +111,10 @@ public class GameSessionState<T>
 		_calledSet.Clear();
 		_availableSet.Clear();
 
-		var shuffled = newSet.ToList();
+		List<T> shuffled = newSet.ToList();
 		Shuffle(shuffled);
 
-		foreach (var item in shuffled)
+		foreach (T? item in shuffled)
 			_availableSet.Add(item);
 
 		_startedAt = DateTime.UtcNow;
@@ -144,10 +144,10 @@ public class GameSessionState<T>
 		_calledSet.Clear();
 		_availableSet.Clear();
 
-		foreach (var item in _history.Take(_pointer + 1))
+		foreach (T? item in _history.Take(_pointer + 1))
 			_calledSet.Add(item);
 
-		foreach (var item in _history.Skip(_pointer + 1))
+		foreach (T? item in _history.Skip(_pointer + 1))
 			_availableSet.Add(item);
 
 		_startedAt = snapshot.StartedAt;
@@ -163,7 +163,7 @@ public class GameSessionState<T>
 
 	private void Shuffle(List<T> list)
 	{
-		var rng = new Random();
+		Random rng = new();
 		for (int i = list.Count - 1; i > 0; i--)
 		{
 			int j = rng.Next(i + 1);

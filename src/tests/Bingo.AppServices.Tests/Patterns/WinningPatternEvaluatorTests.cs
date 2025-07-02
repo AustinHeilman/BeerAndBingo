@@ -1,7 +1,5 @@
-﻿using Xunit;
-using System.Collections.Generic;
+﻿using Bingo.AppServices.Patterns;
 using Bingo.Core.Patterns;
-using Bingo.AppServices.Patterns;
 
 namespace Bingo.AppServices.Tests.Patterns
 {
@@ -10,7 +8,7 @@ namespace Bingo.AppServices.Tests.Patterns
 		[Fact]
 		public void Pattern_Matches_Marked_Cells()
 		{
-			var pattern = new BingoPattern
+			BingoPattern pattern = new()
 			{
 				Cells = new HashSet<PatternCell>
 				{
@@ -19,7 +17,8 @@ namespace Bingo.AppServices.Tests.Patterns
 				}
 			};
 
-			var marked = new HashSet<(int, int)> { (0, 0), (1, 1) };
+			HashSet<(int, int)> marked = new()
+			{ (0, 0), (1, 1) };
 
 			// Static method call — no object needed
 			bool result = WinningPatternEvaluator.IsWinning(pattern, marked);

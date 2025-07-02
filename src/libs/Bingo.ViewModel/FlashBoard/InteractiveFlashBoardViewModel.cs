@@ -1,8 +1,7 @@
-﻿using System.Windows.Input;
-using Bingo.Core.FlashBoard;
+﻿using Bingo.Core.FlashBoard;
 using Bingo.Core.FlashBoard.Events;
-using Bingo.ViewModel.Helpers;
 using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
 
 namespace Bingo.ViewModel.FlashBoard;
 
@@ -17,7 +16,7 @@ public class InteractiveFlashBoardViewModel : BaseFlashBoardViewModel
 
 	private void ToggleCalled(int number)
 	{
-		var cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
+		FlashBoardNumber? cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
 		if (cell is not null)
 		{
 			bool newState = !cell.IsCalled;

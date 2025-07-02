@@ -6,10 +6,11 @@ using System.Windows.Input;
 
 namespace Bingo.Caller.App;
 
-public partial class MainPage : ContentPage
+public partial class MainPage : ContentPage, INotifyPropertyChanged
 {
 	public ICommand NextClockCommand { get; }
 
+	private bool _nextClockVisible = false;
 	public bool NextClockVisible
 	{
 		get => _nextClockVisible;
@@ -22,7 +23,6 @@ public partial class MainPage : ContentPage
 			}
 		}
 	}
-	private bool _nextClockVisible = false;
 
 	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
 	{
@@ -33,22 +33,30 @@ public partial class MainPage : ContentPage
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 
+		// Listen for safe closure event from timer overlay
+		NextClockOverlay.RequestClose += (_, _) => CollapseTimerUI();
+
 		NextClockCommand = new Command(() =>
 		{
 			if (!NextClockVisible)
 			{
 				NextClockOverlay.ViewModel.IsReadOnly = false;
-				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(5)); // Optional default
+				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(5));
+				NextClockVisible = true;
 			}
 			else
 			{
-				NextClockOverlay.ViewModel.CancelTimer();
+				CollapseTimerUI();
 			}
-
-			NextClockVisible = !NextClockVisible;
 		});
 
 		BindingContext = new { viewModel, page = this };
+	}
+
+	private void CollapseTimerUI()
+	{
+		NextClockOverlay.ViewModel.CancelTimer();
+		NextClockVisible = false;
 	}
 
 	public event PropertyChangedEventHandler? PropertyChanged;

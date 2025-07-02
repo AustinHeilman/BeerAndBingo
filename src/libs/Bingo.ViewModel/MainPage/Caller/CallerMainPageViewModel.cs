@@ -1,6 +1,5 @@
 ﻿using Bingo.AppServices.Patterns;
 using Bingo.Core.Domain.Bingo;
-using Bingo.Core.FlashBoard;
 using Bingo.ViewModel.FlashBoard;
 using Bingo.ViewModel.GameInfo;
 using Bingo.ViewModel.Patterns;

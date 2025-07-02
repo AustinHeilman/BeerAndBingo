@@ -30,7 +30,7 @@ public class PatternDisplayViewModel
 	{
 		PatternCells.Clear();
 
-		foreach (var cell in pattern.Cells)
+		foreach (PatternCell cell in pattern.Cells)
 		{
 			PatternCells.Add(new PatternCell
 			{

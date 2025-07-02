@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Xunit;
-using Bingo.AppServices.Patterns;
+﻿using Bingo.AppServices.Patterns;
 using Bingo.Core.Patterns;
 
 namespace Bingo.AppServices.Tests.Patterns
@@ -10,9 +8,9 @@ namespace Bingo.AppServices.Tests.Patterns
 		[Fact]
 		public async Task Can_Load_Default_Patterns()
 		{
-			var repo = new DefaultPatternRepository();
+			DefaultPatternRepository repo = new();
 
-			var all = await repo.GetAllAsync();
+			IEnumerable<BingoPattern> all = await repo.GetAllAsync();
 
 			Assert.NotNull(all);
 			Assert.Contains(all, p => p.Name == "4 Corners");

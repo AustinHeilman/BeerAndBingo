@@ -9,48 +9,64 @@
 		<converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 	</ContentView.Resources>
 
-	<Frame Padding="24"
-           CornerRadius="16"
-           BackgroundColor="#222"
-           HasShadow="True"
-           WidthRequest="350"
-           HeightRequest="300"
-           HorizontalOptions="Fill"
-           VerticalOptions="Fill"
-           IsVisible="{Binding ViewModel.IsVisible}">
+	<Border
+        Padding="24,24,24,36"
+        Background="#222"
+        StrokeThickness="0"
+        StrokeShape="RoundRectangle 16"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        IsVisible="{Binding ViewModel.IsVisible}">
 
-		<VerticalStackLayout Spacing="12">
+		<ScrollView>
+			<VerticalStackLayout Spacing="12">
 
-			<Label Text="Next Round Starts At:"
-                   FontSize="20"
-                   TextColor="White"
-                   HorizontalOptions="Center" />
+				<Label Text="Next Round Starts At:"
+                       FontSize="20"
+                       TextColor="White"
+                       HorizontalOptions="Center" />
 
-			<Label Text="{Binding ViewModel.DisplayScheduled}"
-                   FontSize="26"
-                   TextColor="LightGray"
-                   HorizontalOptions="Center" />
+				<Label Text="{Binding ViewModel.DisplayScheduled}"
+                       FontSize="26"
+                       TextColor="LightGray"
+                       HorizontalOptions="Center" />
 
-			<Label Text="{Binding ViewModel.DisplayCountdown}"
-                   FontSize="48"
-                   FontAttributes="Bold"
-                   TextColor="#FFAA44"
-                   HorizontalOptions="Center" />
+				<Label Text="{Binding ViewModel.DisplayCountdown}"
+                       FontSize="48"
+                       FontAttributes="Bold"
+                       TextColor="{Binding ViewModel.CountdownColor}"
+                       HorizontalOptions="Center" />
 
-			<StackLayout IsVisible="{Binding ViewModel.IsReadOnly, Converter={StaticResource InverseBoolConverter}}"
-                         Spacing="10"
-                         HorizontalOptions="Center">
-				<Entry x:Name="MinutesEntry"
-                       Placeholder="Enter minutes..."
-                       Keyboard="Numeric"
-                       WidthRequest="180"
-                       BackgroundColor="White"
-                       HorizontalTextAlignment="Center" />
-				<Button Text="Set Timer" Clicked="OnSetTimerClicked" />
-				<Button Text="Cancel" Clicked="OnCancelClicked" BackgroundColor="#444" TextColor="White" />
-			</StackLayout>
+				<StackLayout IsVisible="{Binding ViewModel.IsReadOnly, Converter={StaticResource InverseBoolConverter}}"
+                             Spacing="10"
+                             HorizontalOptions="Center">
+                    <Entry x:Name="MinutesEntry"
+                        Placeholder="Enter minutes (e.g. 0.5)"
+                        Keyboard="Numeric"
+                        WidthRequest="180"
+                        TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                        BackgroundColor="{AppThemeBinding Light=White, Dark=#333}"
+                        HorizontalTextAlignment="Center"
+                        ClearButtonVisibility="WhileEditing" />
+                    <Button Text="Set Timer"
+                            Clicked="OnSetTimerClicked"
+                            FontSize="18"
+                            HeightRequest="50"
+                            Padding="12,6"
+                            CornerRadius="8"
+                            BackgroundColor="#3A8CFF"
+                            TextColor="White" />
 
-		</VerticalStackLayout>
-	</Frame>
+					<Button Text="Cancel"
+        					Clicked="OnCancelClicked"
+        					FontSize="18"
+        					HeightRequest="50"
+        					Padding="12,6"
+        					CornerRadius="8"
+        					BackgroundColor="#666"
+        					TextColor="White" />
+				</StackLayout>
+			</VerticalStackLayout>
+		</ScrollView>
+	</Border>
 </ContentView>
-    
