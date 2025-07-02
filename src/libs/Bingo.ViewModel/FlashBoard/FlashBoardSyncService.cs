@@ -19,6 +19,7 @@ public class FlashBoardSyncService
 		_session.UndoPerformed += (_, _) => Sync();
 		_session.RedoPerformed += (_, _) => Sync();
 		_session.NewGameStarted += (_, _) => _board.UpdateCalled(Array.Empty<int>());
+		_session.ItemUncalled += (_, _) => Sync();
 
 		Sync();
 	}

@@ -22,6 +22,7 @@ public class GameSessionState<T>
 	public event EventHandler<(T undoneItem, T? newCurrent)>? UndoPerformed;
 	public event EventHandler<T>? RedoPerformed;
 	public event EventHandler? NewGameStarted;
+	public event EventHandler<T>? ItemUncalled;
 
 	#endregion
 
@@ -122,6 +123,26 @@ public class GameSessionState<T>
 
 		NewGameStarted?.Invoke(this, EventArgs.Empty);
 	}
+
+	public void UncallItem(T item)
+	{
+		if (!_calledSet.Contains(item))
+			return;
+
+		int index = _history.IndexOf(item);
+		if (index < 0)
+			return;
+
+		if (index <= _pointer)
+			_pointer--;
+
+		_history.Remove(item);
+		_calledSet.Remove(item);
+		_availableSet.Add(item);
+
+		ItemUncalled?.Invoke(this, item); // 🔔 Event fired here
+	}
+
 
 	#endregion
 

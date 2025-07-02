@@ -38,48 +38,48 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 			CellGrid.RowDefinitions.Clear();
 			CellGrid.ColumnDefinitions.Clear();
 
-			// 5 rows: B, I, N, G, O
+			// Define 5 rows: B, I, N, G, O
 			for (int i = 0; i < 5; i++)
 				CellGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
 
-			// 16 columns: 1 for label + 15 numbers
+			// Define 16 columns: 1 for label, 15 for numbers
 			for (int i = 0; i < 16; i++)
 				CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
 			FontSet fontSet = _styleService.GetFontSet();
-			System.Collections.ObjectModel.ObservableCollection<FlashBoardGroupViewModel>? groups = ViewModel?.Groups;
+			var groups = ViewModel?.Groups;
 			if (groups is null)
 				return;
 
 			for (int row = 0; row < groups.Count; row++)
 			{
-				FlashBoardGroupViewModel group = groups[row];
+				var group = groups[row];
 
-				// Left-side letter label (column 0)
-				Style? headerLabelStyle = Application.Current?.Resources["FlashBoardHeaderLabel"] as Style;
-				if (headerLabelStyle != null)
+				// Left-side letter label
+				if (Application.Current?.Resources["FlashBoardHeaderLabel"] is Style headerLabelStyle)
 				{
-					Label label = new()
+					var label = new Label
 					{
 						Text = group.Letter.ToString(),
 						Style = headerLabelStyle
 					};
+
 					Grid.SetRow(label, row);
 					Grid.SetColumn(label, 0);
 					CellGrid.Children.Add(label);
 				}
 
-				// Number cells (columns 1–15)
+				// Number cells
 				for (int col = 0; col < group.Cells.Count; col++)
 				{
-					FlashBoardCellView cellView = new()
+					var cellView = new FlashBoardCellView
 					{
 						BindingContext = group.Cells[col]
 					};
 
 					if (IsInteractive && ViewModel is InteractiveFlashBoardViewModel interactive)
 					{
-						TapGestureRecognizer tap = new()
+						var tap = new TapGestureRecognizer
 						{
 							Command = interactive.ToggleCallCommand,
 							CommandParameter = group.Cells[col].Number

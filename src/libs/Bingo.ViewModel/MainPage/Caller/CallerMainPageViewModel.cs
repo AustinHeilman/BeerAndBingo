@@ -34,7 +34,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public CallerMainPageViewModel()
 	{
 		_sync = new FlashBoardSyncService(_session);
-		FlashBoardVM = new InteractiveFlashBoardViewModel(_sync.Board);
+		FlashBoardVM = new InteractiveFlashBoardViewModel(_session, _sync.Board);
 		GameInfoVM = new GameInfoPanelViewModel(_session);
 
 		PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository());
@@ -65,15 +65,11 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 			{
 				_isToolsPanelVisible = value;
 				OnPropertyChanged();
-				OnPropertyChanged(nameof(ToolsPanelToggleText));
-				OnPropertyChanged(nameof(ToolsPanelToggleSymbol));
 				OnPropertyChanged(nameof(ToolsPanelToggleIcon));
 			}
 		}
 	}
-
-	public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
-	public string ToolsPanelToggleSymbol => IsToolsPanelVisible ? "<<" : ">>";
+		
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
 	public event PropertyChangedEventHandler? PropertyChanged;
