@@ -6,7 +6,7 @@
              xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
              xmlns:views="clr-namespace:Bingo.UI.Shared.Views.NextRoundClock;assembly=Bingo.UI.Shared"
-             xmlns:converters="clr-namespace:Bingo.Caller.App.Converters;assembly=Bingo.UI.Shared"
+             xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
              x:Class="Bingo.Caller.App.MainPage"
              x:Name="RootPage"
              BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
