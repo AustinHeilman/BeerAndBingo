@@ -1,12 +1,12 @@
-﻿namespace Bingo.Core.FlashBoard.Events
+﻿namespace Bingo.Core.FlashBoard.Events;
+
+public enum FlashBoardEventSource
 {
-	public enum FlashBoardEventSource
-	{
-		Unknown,
-		Manual,
-		Random,
-		Replay,
-		Undo,
-		Redo
-	}
+	Unknown,
+	Manual,
+	Random,
+	Replay,
+	Undo,
+	Redo,
+	Sync
 }

@@ -1,58 +1,74 @@
-﻿using System.ComponentModel;
+﻿using Bingo.AppServices.Patterns;
+using Bingo.Core.Domain;
+using Bingo.Core.Domain.Bingo;
+using Bingo.Core.FlashBoard;
+using Bingo.Core.FlashBoard.Events;
+using Bingo.ViewModel.FlashBoard;
+using Bingo.ViewModel.GameInfo;
+using Bingo.ViewModel.Helpers;
+using Bingo.ViewModel.Patterns;
+using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Bingo.AppServices.Patterns;
-using Bingo.ViewModel.FlashBoard;
-using Bingo.ViewModel.Patterns;
-using Bingo.ViewModel.Helpers; // Add this for DelegateCommand
 
 namespace Bingo.ViewModel.MainPage.Caller;
 
 public class CallerMainPageViewModel : INotifyPropertyChanged
 {
-    public FlashBoardViewModel FlashBoardVM { get; } = new();
-    public PatternDisplayViewModel PatternVM { get; }
+	private readonly GameSessionState<int> _session = new BingoSession();
+	private readonly FlashBoardSyncService _sync;
 
-    private bool _isToolsPanelVisible = false;
-    public bool IsToolsPanelVisible
-    {
-        get => _isToolsPanelVisible;
-        set
-        {
-            if (_isToolsPanelVisible != value)
-            {
-                _isToolsPanelVisible = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ToolsPanelToggleText));
-                OnPropertyChanged(nameof(ToolsPanelToggleSymbol));
-                OnPropertyChanged(nameof(ToolsPanelToggleIcon));
-            }
-        }
-    }
+	public GameInfoPanelViewModel GameInfoVM { get; }
 
-    public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
-    public string ToolsPanelToggleSymbol => IsToolsPanelVisible ? "<<" : ">>";
-    public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
+	public InteractiveFlashBoardViewModel FlashBoardVM { get; }
+	public PatternDisplayViewModel PatternVM { get; }
 
-    public ICommand ToggleToolsPanelCommand { get; }
+	private bool _isToolsPanelVisible = false;
+	public bool IsToolsPanelVisible
+	{
+		get => _isToolsPanelVisible;
+		set
+		{
+			if (_isToolsPanelVisible != value)
+			{
+				_isToolsPanelVisible = value;
+				OnPropertyChanged();
+				OnPropertyChanged(nameof(ToolsPanelToggleText));
+				OnPropertyChanged(nameof(ToolsPanelToggleSymbol));
+				OnPropertyChanged(nameof(ToolsPanelToggleIcon));
+			}
+		}
+	}
 
-    // Placeholder commands for the IconButtons
-    public ICommand NextCallCommand { get; } = new DelegateCommand(() => { /* Implement logic */ });
-    public ICommand ReplayCommand { get; } = new DelegateCommand(() => { /* Implement logic */ });
-    public ICommand UndoCommand { get; } = new DelegateCommand(() => { /* Implement logic */ });
+	public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
+	public string ToolsPanelToggleSymbol => IsToolsPanelVisible ? "<<" : ">>";
+	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
-    public CallerMainPageViewModel()
-    {
-        DefaultPatternRepository repo = new();
-        PatternVM = new PatternDisplayViewModel(repo);
+	public ICommand ToggleToolsPanelCommand { get; }
+	public ICommand NextCallCommand { get; }
+	public ICommand ReplayCommand { get; } = new RelayCommand(() => { /* TBD */ });
+	public ICommand UndoCommand { get; } = new RelayCommand(() => { /* TBD */ });
+	public ICommand RedoPickCommand { get; } = new RelayCommand(() => { /* TBD */ });
+	public ICommand PatternsCommand { get; } = new RelayCommand(() => { /* TBD */ });
+	public ICommand SettingsCommand { get; } = new RelayCommand(() => { /* TBD */ });
 
-        // Ensure a visible grid with no active cells on launch
-        _ = PatternVM.LoadPatternAsync("None");
+	public CallerMainPageViewModel()
+	{
+		_sync = new FlashBoardSyncService(_session);
+		FlashBoardVM = new InteractiveFlashBoardViewModel(_sync.Board);
 
-        ToggleToolsPanelCommand = new DelegateCommand(() => IsToolsPanelVisible = !IsToolsPanelVisible);
-    }
+		DefaultPatternRepository repo = new();
+		PatternVM = new PatternDisplayViewModel(repo);
+		_ = PatternVM.LoadPatternAsync("None");
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		GameInfoVM = new GameInfoPanelViewModel(_session);
+
+		ToggleToolsPanelCommand = new RelayCommand(() => IsToolsPanelVisible = !IsToolsPanelVisible);
+		NextCallCommand = new RelayCommand(() => _session.CallNext());
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+	protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+		=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

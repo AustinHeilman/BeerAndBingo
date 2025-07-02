@@ -66,7 +66,7 @@ public class BingoPattern
 					{
 						Row = row,
 						Col = col,
-						IsActive = Random.Shared.Next(2) == 0 // 50/50 chance
+						IsActive = false// Random.Shared.Next(2) == 0 // 50/50 chance
 					})
 			)
 		)

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Bingo.Core\Bingo.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FlashBoard\" />
+  </ItemGroup>
+
 </Project>

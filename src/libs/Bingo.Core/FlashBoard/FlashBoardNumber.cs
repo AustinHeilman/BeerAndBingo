@@ -1,44 +1,41 @@
 ﻿using Bingo.Core.FlashBoard.Events;
 
-namespace Bingo.Core.FlashBoard
+namespace Bingo.Core.FlashBoard;
+
+public class FlashBoardNumber
 {
-	public class FlashBoardNumber
+	public int Number { get; }
+	public FlashBoardGroup Parent { get; }
+
+	public bool IsCalled { get; private set; }
+	public FlashBoardEventSource SourceTag { get; private set; } = FlashBoardEventSource.Unknown;
+
+	/// <summary>
+	/// Fired when the called state changes (via user input or session sync).
+	/// </summary>
+	public event EventHandler<FlashBoardCalledChangedEventArgs>? IsCalledChanged;
+
+	public FlashBoardNumber(int number, FlashBoardGroup parent)
 	{
-		public int Number { get; }
-		public FlashBoardGroup Parent { get; internal set; }
-		public FlashBoardObj? Board => Parent?.Parent;
+		Number = number;
+		Parent = parent;
+	}
 
-		public int ColumnIndex => Board?.Children.IndexOf(Parent) ?? -1;
+	public void SetCalled(bool called, FlashBoardEventSource source)
+	{
+		if (IsCalled == called)
+			return;
 
-		private bool _isCalled;
+		bool oldValue = IsCalled;
 
-		public bool IsCalled => _isCalled;
+		IsCalled = called;
+		SourceTag = source;
 
-		public event EventHandler<FlashBoardCalledChangedEventArgs>? IsCalledChanged;
-
-		public FlashBoardNumber(int number, FlashBoardGroup parent)
-		{
-			Number = number;
-			Parent = parent;
-			_isCalled = false;
-		}
-
-		public void SetCalled(bool value, FlashBoardEventSource source)
-		{
-			if (_isCalled != value)
-			{
-				bool oldValue = _isCalled;
-				_isCalled = value;
-				IsCalledChanged?.Invoke(
-					this,
-					new FlashBoardCalledChangedEventArgs(this, oldValue, _isCalled, source)
-				);
-			}
-		}
-
-		public override bool Equals(object? obj) =>
-			obj is FlashBoardNumber other && Number == other.Number;
-
-		public override int GetHashCode() => Number.GetHashCode();
+		IsCalledChanged?.Invoke(this,
+			new FlashBoardCalledChangedEventArgs(
+				source: this,
+				oldValue: oldValue,
+				newValue: IsCalled,
+				sourceTag: source));
 	}
 }

@@ -1,82 +1,79 @@
-﻿using Bingo.Core.FlashBoard;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
+using Bingo.Core.FlashBoard;
 using Bingo.Core.FlashBoard.Events;
-using Bingo.Services.FlashBoard;
+using Bingo.ViewModel.Helpers;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
 
-namespace Bingo.ViewModel.FlashBoard
+
+namespace Bingo.ViewModel.FlashBoard;
+
+public class FlashBoardViewModel : INotifyPropertyChanged
 {
-	public class FlashBoardViewModel
+	private readonly FlashBoardObj _board;
+
+	public ObservableCollection<FlashBoardGroupViewModel> Groups { get; } = new();
+
+	/// <summary>
+	/// Fired when a call animation should trigger from external state (not user input).
+	/// </summary>
+	public event Action<int, FlashBoardEventSource>? NumberCalledAnimationRequested;
+
+	public ICommand ToggleCallCommand { get; }
+
+	public FlashBoardViewModel(FlashBoardObj board)
 	{
-		private readonly FlashBoardService _service = new();
+		_board = board;
 
-		public ObservableCollection<FlashBoardGroupViewModel> Groups { get; } = new();
-
-		public event Action<int, FlashBoardEventSource>? NumberCalledAnimationRequested;
-		public IRelayCommand<int> ToggleCallCommand { get; }
-
-		public FlashBoardViewModel()
+		foreach (FlashBoardGroup group in _board.Children)
 		{
-			foreach (FlashBoardGroup group in _service.Board.Children)
+			var cellVMs = group.Cells
+				.Select(cell =>
+				{
+					var vm = new FlashBoardCellViewModel(cell);
+
+					// Relay animation requests from model events
+					cell.IsCalledChanged += (s, e) =>
+					{
+						NumberCalledAnimationRequested?.Invoke(cell.Number, e.SourceTag);
+					};
+
+					return vm;
+				})
+				.ToList();
+
+			var groupVM = new FlashBoardGroupViewModel(group.Letter, cellVMs);
+
+			// Update group completion state
+			group.GroupCompleted += (_, letter) =>
 			{
-				List<FlashBoardCellViewModel> cellVMs = group.Cells
-					.OrderBy(c => c.Number)
-					.Select(c => new FlashBoardCellViewModel(c))
-					.ToList();
+				if (letter == groupVM.Letter)
+				{
+					foreach (var vm in groupVM.Cells)
+						vm.GroupCompleted = true;
+				}
+			};
 
-				Groups.Add(new FlashBoardGroupViewModel(group.Letter, cellVMs));
-			}
-
-			ToggleCallCommand = new RelayCommand<int>(ToggleCallNumber);
-
-			_service.NumberCalledChanged += OnNumberCalledChanged;
-			_service.GroupCompleted += OnGroupCompleted;
+			Groups.Add(groupVM);
 		}
 
-		public IReadOnlyList<int> CalledNumbers => _service.CalledNumbers;
+		ToggleCallCommand = new RelayCommand<int>(ToggleCalled);
+	}
 
-		public IEnumerable<char> CompletedColumns =>
-			_service.Board.Children
-					 .Where(g => g.Cells.All(c => c.IsCalled))
-					 .Select(g => g.Letter);
-
-		private void OnNumberCalledChanged(object? sender, FlashBoardCalledChangedEventArgs e)
+	private void ToggleCalled(int number)
+	{
+		var cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
+		if (cell is not null)
 		{
-			FlashBoardCellViewModel? cellVM = Groups
-				.SelectMany(r => r.Cells)
-				.FirstOrDefault(c => c.Number == e.Source.Number);
-
-			if (cellVM is not null)
-			{
-				NumberCalledAnimationRequested?.Invoke(cellVM.Number, e.SourceTag);
-			}
-		}
-
-		private void OnGroupCompleted(object? sender, char letter)
-		{
-			FlashBoardGroupViewModel? row = Groups.FirstOrDefault(r => r.Letter == letter);
-			if (row is not null)
-			{
-				foreach (FlashBoardCellViewModel cell in row.Cells)
-					cell.GroupCompleted = true;
-			}
-		}
-
-		public void CallNumber(int number) =>
-			_service.CallNumber(number, FlashBoardEventSource.Manual);
-
-		public void UncallNumber(int number) =>
-			_service.UncallNumber(number);
-
-		public void LoadSnapshot(FlashBoardSnapshot snapshot) =>
-			_service.LoadSnapshot(snapshot);
-
-		private void ToggleCallNumber(int number)
-		{
-			if (CalledNumbers.Contains(number))
-				UncallNumber(number);
-			else
-				CallNumber(number);
+			bool next = !cell.IsCalled;
+			cell.SetCalled(next, FlashBoardEventSource.Manual);
 		}
 	}
+
+	public FlashBoardObj Model => _board;
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+	protected void OnPropertyChanged(string propertyName) =>
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

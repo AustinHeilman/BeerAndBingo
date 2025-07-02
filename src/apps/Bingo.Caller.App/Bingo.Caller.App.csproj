@@ -65,6 +65,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Pages\**" />
+	  <AndroidResource Remove="Views\**" />
+	  <Compile Remove="Pages\**" />
+	  <Compile Remove="Views\**" />
+	  <EmbeddedResource Remove="Pages\**" />
+	  <EmbeddedResource Remove="Views\**" />
+	  <MauiCss Remove="Pages\**" />
+	  <MauiCss Remove="Views\**" />
+	  <MauiXaml Remove="Pages\**" />
+	  <MauiXaml Remove="Views\**" />
+	  <None Remove="Pages\**" />
+	  <None Remove="Views\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.80" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
 	</ItemGroup>
@@ -78,10 +93,5 @@
 	  <ProjectReference Include="..\..\libs\Bingo.Services\Bingo.Services.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.UI.Shared\Bingo.UI.Shared.csproj" />
 	  <ProjectReference Include="..\..\libs\Bingo.ViewModel\Bingo.ViewModel.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Views\" />
-	  <Folder Include="Pages\" />
 	</ItemGroup>
 </Project>

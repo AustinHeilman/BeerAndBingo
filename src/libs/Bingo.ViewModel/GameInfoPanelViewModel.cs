@@ -1,66 +1,45 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Bingo.Core.Domain;
+using Bingo.Core.Domain.Bingo;
 
-namespace Bingo.ViewModels
+namespace Bingo.ViewModel.GameInfo;
+
+public class GameInfoPanelViewModel : INotifyPropertyChanged
 {
-	public class GameInfoPanelViewModel : INotifyPropertyChanged
+	private readonly GameSessionState<int> _session;
+
+	public string CurrentCallDisplay => Format(_session.CurrentItem);
+	public string PreviousCallDisplay => Format(_session.PreviousItem);
+	public string GameRoundsText => $"Game Rounds: {_session.Round}";
+
+	public GameInfoPanelViewModel(GameSessionState<int> session)
 	{
-		public GameInfoPanelViewModel()
-		{
-			// Initialize properties with default values
-			CurrentCallDisplay = "Current Call: None";
-			PreviousCallDisplay = "Previous Call: None";
-			GameRoundsText = "Game Rounds: 0";
-		}
+		_session = session;
 
-		private string _currentCallDisplay;
-		private string _previousCallDisplay;
-		private string _gameRoundsText;
-
-		public string CurrentCallDisplay
-		{
-			get => _currentCallDisplay;
-			set
-			{
-				if (_currentCallDisplay != value)
-				{
-					_currentCallDisplay = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		public string PreviousCallDisplay
-		{
-			get => _previousCallDisplay;
-			set
-			{
-				if (_previousCallDisplay != value)
-				{
-					_previousCallDisplay = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		public string GameRoundsText
-		{
-			get => _gameRoundsText;
-			set
-			{
-				if (_gameRoundsText != value)
-				{
-					_gameRoundsText = value;
-					OnPropertyChanged();
-				}
-			}
-		}
-
-		public event PropertyChangedEventHandler? PropertyChanged;
-
-		protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		_session.ItemCalled += (_, _) => OnGameStateChanged();
+		_session.UndoPerformed += (_, _) => OnGameStateChanged();
+		_session.RedoPerformed += (_, _) => OnGameStateChanged();
+		_session.NewGameStarted += (_, _) => OnGameStateChanged();
 	}
+
+	private string Format(int? number)
+	{
+		if (number is null || number is < BingoSession.Min or > BingoSession.Max)
+			return "None";
+
+		return BingoSession.FormatCall(number.Value);
+	}
+
+
+	private void OnGameStateChanged()
+	{
+		OnPropertyChanged(nameof(CurrentCallDisplay));
+		OnPropertyChanged(nameof(PreviousCallDisplay));
+		OnPropertyChanged(nameof(GameRoundsText));
+	}
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+	protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+		=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

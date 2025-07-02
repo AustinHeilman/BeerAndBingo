@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Bingo.UI.Shared.Views.FlashBoard;
+using Bingo.UI.Shared.Views.GameInfoPanel;
 using Bingo.ViewModel.MainPage.Caller;
 
 namespace Bingo.Caller.App;
@@ -25,29 +26,26 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 
     public string ToolsPanelToggleText => IsToolsPanelVisible ? "Hide Tools" : "Show Tools";
 
-    public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
-    {
-        InitializeComponent();
+	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel)
+	{
+		InitializeComponent();
 
-        // Set up the FlashBoardView        
-        flashBoardView.IsInteractive = true;
-        flashBoardView.VerticalOptions = LayoutOptions.Fill;
-        flashBoardView.HorizontalOptions = LayoutOptions.Fill;
-        flashBoardView.ViewModel = viewModel.FlashBoardVM;
+		// Inject FlashBoardView
+		flashBoardView.IsInteractive = true;
+		flashBoardView.ViewModel = viewModel.FlashBoardVM;
+		MainGrid.Children.Add(flashBoardView);
+		Grid.SetRow(flashBoardView, 0);
 
-        // Add FlashBoardView to the MainGrid at row 0
-        MainGrid.Children.Add(flashBoardView);
-        Grid.SetRow(flashBoardView, 0);
+		BindingContext = viewModel;
+	}
 
-        BindingContext = viewModel;
-    }
 
-    private void OnToggleToolsPanelClicked(object sender, EventArgs e)
+	private void OnToggleToolsPanelClicked(object sender, EventArgs e)
     {
         IsToolsPanelVisible = !IsToolsPanelVisible;
     }
 
-    public new event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public new event PropertyChangedEventHandler? PropertyChanged;
+    protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

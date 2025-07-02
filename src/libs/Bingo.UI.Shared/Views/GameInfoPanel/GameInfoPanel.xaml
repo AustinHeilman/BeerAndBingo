@@ -5,7 +5,7 @@
              x:Class="Bingo.UI.Shared.Views.GameInfoPanel.GameInfoPanel">
 	<VerticalStackLayout Spacing="2" Padding="0" HorizontalOptions="Fill" VerticalOptions="Center">
 		<Border Stroke="#FFD700" StrokeThickness="2" BackgroundColor="#2D2D40"
-                Padding="{OnIdiom Phone='8,4', Tablet='20,10'}"
+                Padding="{OnIdiom Phone='8,4', Tablet='20,10', Desktop='20,10'}"
                 Margin="1"
                 StrokeShape="RoundRectangle 8" HorizontalOptions="Fill">
 			<Label x:Name="CurrentCallLabel"
@@ -15,7 +15,7 @@
                    TextColor="#FFD700" />
 		</Border>
 		<Border Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
-                Padding="{OnIdiom Phone='7,3', Tablet='18,8'}"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8', Desktop='18,8'}"
                 Margin="1"
                 StrokeShape="RoundRectangle 7" HorizontalOptions="Fill">
 			<Label x:Name="PreviousCallLabel"
@@ -25,7 +25,7 @@
                    TextColor="White" />
 		</Border>
 		<Border Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
-                Padding="{OnIdiom Phone='7,3', Tablet='18,8'}"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8', Desktop='18,8'}"
                 Margin="1"
                 StrokeShape="RoundRectangle 7" HorizontalOptions="Fill">
 			<Label x:Name="GameRoundsLabel"

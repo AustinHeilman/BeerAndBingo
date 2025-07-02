@@ -37,7 +37,7 @@
             <controls:IconButton
                 Grid.Column="0"
                 IconName="button_next_pick"
-                Command="{Binding NewGameCommand}"
+                Command="{Binding NextCallCommand}"
                 IconSize="200"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
@@ -46,7 +46,8 @@
             <!-- Game Info Panel -->
             <gameinfo:GameInfoPanel Grid.Column="1"
                 VerticalOptions="Center"
-                HorizontalOptions="Fill" />
+                HorizontalOptions="Fill"
+				BindingContext="{Binding GameInfoVM} "/>
 
             <!-- Pattern Grid -->
             <pattern:PatternDisplayView
@@ -77,27 +78,26 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <!-- Collapse Button: Vertically centered, right-aligned -->
-                <controls:IconButton
-                    Grid.Row="1"
-                    IconName="{Binding ToolsPanelToggleIcon}"
-                    Command="{Binding ToggleToolsPanelCommand}"
-					IconSize="50"
-                    HorizontalOptions="End"
-                    VerticalOptions="Center"
-                    Margin="0,0,-16,0" />
-
                 <!-- Tool Buttons: At the bottom -->
                 <HorizontalStackLayout
                     Grid.Row="2"
                     Spacing="12"
                     VerticalOptions="End">
-					<controls:IconButton IconName="button_new_game" IconSize="100" Command="{Binding NextCallCommand}" />
+					<controls:IconButton IconName="button_new_game" IconSize="100" Command="{Binding NewGameCommand}" />
 					<controls:IconButton IconName="button_patterns" IconSize="100" Command="{Binding PatternsCommand}" />
 					<controls:IconButton IconName="button_undo_pick" IconSize="100" Command="{Binding UndoPickCommand}" />
 					<controls:IconButton IconName="button_redo_pick" IconSize="100" Command="{Binding RedoPickCommand}" />
 					<controls:IconButton IconName="button_replay" IconSize="100" Command="{Binding ReplayCommand}" />
-					<controls:IconButton IconName="button_settings" IconSize="100" Command="{Binding SettingsCommand}" />
+                    <!-- Group settings and chevron together -->
+                    <HorizontalStackLayout Spacing="16" VerticalOptions="Center">
+                        <controls:IconButton IconName="button_settings" IconSize="100" Command="{Binding SettingsCommand}" />
+                        <controls:IconButton
+                            IconName="{Binding ToolsPanelToggleIcon}"
+                            Command="{Binding ToggleToolsPanelCommand}"
+                            IconSize="50"
+                            VerticalOptions="Center"
+                            />
+                    </HorizontalStackLayout>
                 </HorizontalStackLayout>
                 <!-- Add more tools here -->
             </Grid>

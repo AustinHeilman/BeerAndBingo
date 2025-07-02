@@ -22,9 +22,9 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 			set => SetValue(IsInteractiveProperty, value);
 		}
 
-		public FlashBoardViewModel ViewModel
+		public BaseFlashBoardViewModel ViewModel
 		{
-			get => (FlashBoardViewModel)BindingContext;
+			get => (BaseFlashBoardViewModel)BindingContext;
 			set
 			{
 				BindingContext = value;
@@ -77,11 +77,11 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 						BindingContext = group.Cells[col]
 					};
 
-					if (IsInteractive)
+					if (IsInteractive && ViewModel is InteractiveFlashBoardViewModel interactive)
 					{
 						TapGestureRecognizer tap = new()
 						{
-							Command = ViewModel?.ToggleCallCommand,
+							Command = interactive.ToggleCallCommand,
 							CommandParameter = group.Cells[col].Number
 						};
 						cellView.GestureRecognizers.Add(tap);
