@@ -15,7 +15,9 @@ public class GameInfoPanelViewModel : INotifyPropertyChanged
 	public string CurrentCallLabeled => $"Current: {CurrentCallDisplay}";
 	public string PreviousCallLabeled => $"Previous: {PreviousCallDisplay}";
 
-	public string GameRoundsText => $"Game Rounds: {_session.Round}";
+	public string PaydCallLabeled => $"PAYD: {Format(GetPayd())}";
+
+	public string GameRoundsText => $"Turn: {_session.Round}";
 
 	public GameInfoPanelViewModel(GameSessionState<int> session)
 	{
@@ -43,6 +45,16 @@ public class GameInfoPanelViewModel : INotifyPropertyChanged
 		OnPropertyChanged(nameof(CurrentCallLabeled));
 		OnPropertyChanged(nameof(PreviousCallLabeled));
 		OnPropertyChanged(nameof(GameRoundsText));
+		OnPropertyChanged(nameof(PaydCallLabeled));
+	}
+
+	private int? GetPayd()
+	{
+		if (_session.Round < 3)
+			return null;
+
+		var history = _session.CalledItems;
+		return history.Count >= 3 ? history[^3] : null;
 	}
 
 

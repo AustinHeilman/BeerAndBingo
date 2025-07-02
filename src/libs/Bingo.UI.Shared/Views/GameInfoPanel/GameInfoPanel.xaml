@@ -1,38 +1,64 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="Bingo.UI.Shared.Views.GameInfoPanel"
+             xmlns:local="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel"
              x:Class="Bingo.UI.Shared.Views.GameInfoPanel.GameInfoPanel">
-	<VerticalStackLayout Spacing="2" Padding="0" HorizontalOptions="Fill" VerticalOptions="Center">
-		<Border Stroke="#FFD700" StrokeThickness="2" BackgroundColor="#2D2D40"
+
+	<Grid Padding="0"
+          RowSpacing="6"
+          ColumnSpacing="6"
+          HorizontalOptions="Fill"
+          VerticalOptions="Center">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<!-- Row 0, Col 0: Current -->
+		<Border Grid.Row="0" Grid.Column="0"
+                Stroke="#FFD700" StrokeThickness="2" BackgroundColor="#2D2D40"
                 Padding="{OnIdiom Phone='8,4', Tablet='20,10', Desktop='20,10'}"
-                Margin="1"
-                StrokeShape="RoundRectangle 8" HorizontalOptions="Fill">
-			<Label x:Name="CurrentCallLabel"
-                   Text="{Binding CurrentCallLabeled}"
+                StrokeShape="RoundRectangle 8">
+			<Label Text="{Binding CurrentCallLabeled}"
                    FontAttributes="Bold"
                    FontAutoScalingEnabled="True"
                    TextColor="#FFD700" />
 		</Border>
-		<Border Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
+
+		<!-- Row 0, Col 1: Previous -->
+		<Border Grid.Row="0" Grid.Column="1"
+                Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
                 Padding="{OnIdiom Phone='7,3', Tablet='18,8', Desktop='18,8'}"
-                Margin="1"
-                StrokeShape="RoundRectangle 7" HorizontalOptions="Fill">
-			<Label x:Name="PreviousCallLabel"
-                   Text="{Binding PreviousCallLabeled}"
+                StrokeShape="RoundRectangle 7">
+			<Label Text="{Binding PreviousCallLabeled}"
                    FontAttributes="Bold"
                    FontAutoScalingEnabled="True"
                    TextColor="White" />
 		</Border>
-		<Border Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
-                Padding="{OnIdiom Phone='7,3', Tablet='18,8', Desktop='18,8'}"
-                Margin="1"
-                StrokeShape="RoundRectangle 7" HorizontalOptions="Fill">
-			<Label x:Name="GameRoundsLabel"
-                   Text="{Binding GameRoundsText}"
+
+		<!-- Row 1, Col 0: PAYD -->
+		<Border Grid.Row="1" Grid.Column="0"
+                Stroke="Crimson" StrokeThickness="2" BackgroundColor="#3A1F1F"
+                Padding="{OnIdiom Phone='8,4', Tablet='20,10', Desktop='20,10'}"
+                StrokeShape="RoundRectangle 8">
+			<Label Text="{Binding PaydCallLabeled}"
                    FontAttributes="Bold"
                    FontAutoScalingEnabled="True"
                    TextColor="White" />
 		</Border>
-	</VerticalStackLayout>
+
+		<!-- Row 1, Col 1: Rounds -->
+		<Border Grid.Row="1" Grid.Column="1"
+                Stroke="White" StrokeThickness="1.5" BackgroundColor="#333C4A"
+                Padding="{OnIdiom Phone='7,3', Tablet='18,8', Desktop='18,8'}"
+                StrokeShape="RoundRectangle 7">
+			<Label Text="{Binding GameRoundsText}"
+                   FontAttributes="Bold"
+                   FontAutoScalingEnabled="True"
+                   TextColor="White" />
+		</Border>
+	</Grid>
 </ContentView>
