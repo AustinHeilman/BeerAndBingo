@@ -89,7 +89,7 @@
 					<controls:IconButton IconName="button_redo_pick" Command="{Binding page.RedoPickCommand}"     IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
 					<controls:IconButton IconName="button_replay" Command="{Binding page.ReplayCommand}"          IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
 					<controls:IconButton IconName="button_settings" Command="{Binding viewModel.SettingsCommand}" IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_exit" Command="{Binding viewModel.QuitCommand}" IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
+					<controls:IconButton IconName="button_exit" Command="{Binding page.QuitCommand}" IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
 					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}"
                                          Command="{Binding viewModel.ToggleToolsPanelCommand}"
                                          IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}" />
