@@ -6,9 +6,9 @@
 
 	<Grid HorizontalOptions="Center"
 		  VerticalOptions="Center">
-		<HorizontalStackLayout Spacing="12">
+		<HorizontalStackLayout Spacing="12">			
 			<controls:IconButton IconName="button_create_pattern"
-								 Command="{Binding CreateCommand}"
+								 Command="{Binding page.ShowCreatePatternCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_load_pattern"
 								 Command="{Binding LoadCommand}"

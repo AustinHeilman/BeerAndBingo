@@ -1,5 +1,7 @@
 ﻿using Bingo.UI.Shared.Views.FlashBoard;
+using Bingo.UI.Shared.Views.Patterns;
 using Bingo.ViewModel.MainPage;
+using CommunityToolkit.Mvvm.Messaging;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -69,6 +71,12 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 			}
 		});
 
+		WeakReferenceMessenger.Default.Register<CloseCreatePatternMessage>(this, (r, m) =>
+		{
+			HideCreatePatternCommand.Execute(null);
+		});
+
+
 		TogglePatternZoomCommand = new Command(() =>
 		{
 			IsPatternZoomed = !IsPatternZoomed;
@@ -128,7 +136,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		NextClockVisible = false;
 	}
 
-	#region Pattern Button UI
+	#region Main Pattern Button UI
 	public bool IsPatternSheetVisible
 	{
 		get => _isPatternSheetVisible;
@@ -154,6 +162,34 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		await PatternSheetContainer.TranslateTo(0, 400, 250, Easing.SinIn);
 		IsPatternSheetVisible = false;
 	});
+	#endregion
+
+	#region Create Pattern Button UI
+	private bool _isCreatePatternVisible;
+	public bool IsCreatePatternVisible
+	{
+		get => _isCreatePatternVisible;
+		set
+		{
+			if (_isCreatePatternVisible != value)
+			{
+				_isCreatePatternVisible = value;
+				OnPropertyChanged(nameof(IsCreatePatternVisible));
+			}
+		}
+	}
+	public ICommand ShowCreatePatternCommand => new Command(async () =>
+	{
+		IsCreatePatternVisible = true;
+		await CreatePatternContainer.TranslateTo(0, 0, 300, Easing.SinOut);
+	});
+
+	public ICommand HideCreatePatternCommand => new Command(async () =>
+	{
+		await CreatePatternContainer.TranslateTo(0, 400, 250, Easing.SinIn);
+		IsCreatePatternVisible = false;
+	});
+
 	#endregion
 
 	private async Task QuitAppAsync()

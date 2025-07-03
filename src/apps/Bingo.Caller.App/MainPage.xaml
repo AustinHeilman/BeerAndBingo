@@ -162,6 +162,29 @@
 				<patterns:PatternMainPageView />
 			</Grid>
 		</ContentView>
+		
+		<!-- Slide-Up Create Pattern -->
+		<ContentView x:Name="CreatePatternOverlay"
+					 Grid.RowSpan="2"
+					 VerticalOptions="Center"
+					 HorizontalOptions="Center"
+					 BackgroundColor="#88000000"
+					 IsVisible="{Binding page.IsCreatePatternVisible}"
+					 ZIndex="49">
+			<ContentView.GestureRecognizers>
+				<TapGestureRecognizer Command="{Binding page.HideCreatePatternCommand}" />
+			</ContentView.GestureRecognizers>
+			<Grid x:Name="CreatePatternContainer"
+				  TranslationY="400"
+				  HorizontalOptions="Center"
+				  VerticalOptions="End"
+				  WidthRequest="{OnIdiom Desktop=620, Tablet=520, Phone=360}"
+				  HeightRequest="{OnIdiom Desktop=420, Tablet=360, Phone=300}"
+				  Padding="24"
+				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
+				<patterns:CreatePatternView />
+			</Grid>
+		</ContentView>
 
 		<!-- Timer Modals -->
 		<ContentView Grid.RowSpan="2"
