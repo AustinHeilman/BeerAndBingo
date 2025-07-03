@@ -129,38 +129,29 @@ public partial class MainPage : ContentPage
 	private async Task QuitAppAsync()
 	{
 		await Task.Delay(100); // Simulate some delay if needed
+#if WINDOWS		
 		if (OperatingSystem.IsWindows())
 		{
 			// Windows-specific quit logic
 			Application.Current?.Quit();
 		}
-#if ANDROID
-		else if (OperatingSystem.IsAndroid())
+#elif ANDROID
+		if (OperatingSystem.IsAndroid())
 		{
 			// Android-specific quit logic			
 			Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
 		}
 #elif IOS
-		else if (OperatingSystem.IsIOS())
+		if (OperatingSystem.IsIOS())
 		{
 			// iOS-specific quit logic
 			await DisplayAlert("Unsupported", "Please press the Home button to exit the app.", "OK");
 		}
-#endif
-		else if (OperatingSystem.IsMacOS())
-		{
-			// macOS-specific quit logic
-			Application.Current?.Quit();
-		}
-		else if (OperatingSystem.IsLinux())
-		{
-			// Linux-specific quit logic
-			Application.Current?.Quit();
-		}
-		else
+#else
 		{
 			// For other platforms, use the platform-specific APIs
 			System.Diagnostics.Process.GetCurrentProcess().Kill();
 		}
+#endif
 	}
 }
