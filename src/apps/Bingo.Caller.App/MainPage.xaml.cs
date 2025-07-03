@@ -85,7 +85,7 @@ public partial class MainPage : ContentPage
 			bool confirm = await DisplayAlert("Undo", "Undo last action?", "Yes", "No");
 			if (confirm)
 			{
-				
+				viewModel.UndoPickCommand.Execute(null);
 			}
 		});
 
@@ -94,7 +94,7 @@ public partial class MainPage : ContentPage
 			bool confirm = await DisplayAlert("New Game", "Redo last action?", "Yes", "No");
 			if (confirm)
 			{
-				
+				viewModel.RedoPickCommand.Execute(null);
 			}
 		});
 
@@ -103,7 +103,7 @@ public partial class MainPage : ContentPage
 			bool confirm = await DisplayAlert("Replay", "Play all recorded game actions?", "Yes", "No");
 			if (confirm)
 			{
-
+				viewModel.ReplayCommand.Execute(null);
 			}
 		});
 

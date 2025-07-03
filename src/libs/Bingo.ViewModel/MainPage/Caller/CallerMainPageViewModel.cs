@@ -21,14 +21,13 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 	public ICommand ToggleToolsPanelCommand { get; }
 	public ICommand NextCallCommand { get; }
-	public ICommand ReplayCommand { get; } = new RelayCommand(() => { });
-	public ICommand UndoPickCommand { get; } = new RelayCommand(() => { });
-	public ICommand RedoPickCommand { get; } = new RelayCommand(() => { });
-	public ICommand PatternsCommand { get; } = new RelayCommand(() => { });
-	public ICommand SettingsCommand { get; } = new RelayCommand(() => { });
+	public ICommand ReplayCommand { get; }
+	public ICommand UndoPickCommand { get; }
+	public ICommand RedoPickCommand { get; }
+	public ICommand PatternsCommand { get; }
+	public ICommand SettingsCommand { get; }
 	public ICommand NextGameCommand { get; }
 
-	// Event to notify the view to show the NextRoundClock
 	public event Action? ShowNextRoundClockRequested;
 
 	public CallerMainPageViewModel()
@@ -36,13 +35,24 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		_sync = new FlashBoardSyncService(_session);
 		FlashBoardVM = new InteractiveFlashBoardViewModel(_session, _sync.Board);
 		GameInfoVM = new GameInfoPanelViewModel(_session);
-
 		PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository());
+
 		_ = PatternVM.LoadPatternAsync("None");
 
 		ToggleToolsPanelCommand = new RelayCommand(() => IsToolsPanelVisible = !IsToolsPanelVisible);
 		NextCallCommand = new RelayCommand(() => _session.CallNext());
 		NextGameCommand = new RelayCommand(OnNextGame);
+
+		UndoPickCommand = new RelayCommand(_session.Undo);
+		RedoPickCommand = new RelayCommand(_session.Redo);
+		ReplayCommand = new RelayCommand(() => { /* Coming soon 👀 */ });
+		PatternsCommand = new RelayCommand(() => { /* TODO */ });
+		SettingsCommand = new RelayCommand(() => { /* TODO */ });
+
+		// Optional: Subscribe to session change events
+		_session.ItemCalled += (_, _) => NotifySessionUpdate();
+		_session.UndoPerformed += (_, _) => NotifySessionUpdate();
+		_session.RedoPerformed += (_, _) => NotifySessionUpdate();
 	}
 
 	private void OnNextGame()
@@ -53,6 +63,17 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public void ResetSession()
 	{
 		_session.Restart();
+		NotifySessionUpdate();
+	}
+
+	private void NotifySessionUpdate()
+	{
+		OnPropertyChanged(nameof(UndoPickCommand));
+		OnPropertyChanged(nameof(RedoPickCommand));
+
+		// Optional: Trigger any manual updates for UI-bound properties
+		// FlashBoardVM.NotifyChange();
+		// GameInfoVM.NotifyChange();
 	}
 
 	private bool _isToolsPanelVisible;
@@ -69,7 +90,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 			}
 		}
 	}
-		
+
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
 	public event PropertyChangedEventHandler? PropertyChanged;
