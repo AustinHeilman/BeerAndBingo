@@ -30,6 +30,10 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 	public event Action? ShowNextRoundClockRequested;
 
+	private CancellationTokenSource? _replayCts;
+	public bool IsReplaying => _replayCts is not null;
+
+
 	public CallerMainPageViewModel()
 	{
 		_sync = new FlashBoardSyncService(_session);
@@ -45,7 +49,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 		UndoPickCommand = new RelayCommand(_session.Undo);
 		RedoPickCommand = new RelayCommand(_session.Redo);
-		ReplayCommand = new AsyncRelayCommand(PlayReplayAsync);
+		ReplayCommand = new AsyncRelayCommand(ToggleReplayAsync);
 		PatternsCommand = new RelayCommand(() => { /* TODO */ });
 		SettingsCommand = new RelayCommand(() => { /* TODO */ });
 
@@ -91,16 +95,48 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		}
 	}
 
+	public async Task ToggleReplayAsync()
+	{
+		if (_replayCts is not null)
+		{
+			_replayCts.Cancel();
+			_replayCts = null;
+			return;
+		}
+
+		await PlayReplayAsync();
+	}
+
+
 	public async Task PlayReplayAsync()
 	{
+		if (_replayCts is not null)
+			return;
+
+		_replayCts = new CancellationTokenSource();
+		var token = _replayCts.Token;
+
 		var snapshot = SyncSnapshot.FromSession(_session);
+		var originalSnapshot = _session.CreateSnapshot(); // Save current state
 
-		_session.Restart(snapshot.CalledNumbers); // Wipes slate, sets shuffled + available pool
-
-		foreach (int item in snapshot.CalledNumbers)
+		try
 		{
-			_session.CallItem(item); // Triggers all events like normal
-			await Task.Delay(3000);   // Pacing between picks
+			_session.Restart(snapshot.CalledNumbers);
+
+			foreach (int item in snapshot.CalledNumbers)
+			{
+				token.ThrowIfCancellationRequested();
+				_session.CallItem(item);
+				await Task.Delay(3000, token);
+			}
+		}
+		catch (OperationCanceledException)
+		{
+			_session.LoadSnapshot(originalSnapshot); // Restore session on abort
+		}
+		finally
+		{
+			_replayCts = null;
 		}
 	}
 
