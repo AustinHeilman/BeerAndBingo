@@ -45,7 +45,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 		UndoPickCommand = new RelayCommand(_session.Undo);
 		RedoPickCommand = new RelayCommand(_session.Redo);
-		ReplayCommand = new RelayCommand(() => { /* Coming soon 👀 */ });
+		ReplayCommand = new AsyncRelayCommand(PlayReplayAsync);
 		PatternsCommand = new RelayCommand(() => { /* TODO */ });
 		SettingsCommand = new RelayCommand(() => { /* TODO */ });
 
@@ -88,6 +88,19 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 				OnPropertyChanged();
 				OnPropertyChanged(nameof(ToolsPanelToggleIcon));
 			}
+		}
+	}
+
+	public async Task PlayReplayAsync()
+	{
+		var snapshot = SyncSnapshot.FromSession(_session);
+
+		_session.Restart(snapshot.CalledNumbers); // Wipes slate, sets shuffled + available pool
+
+		foreach (int item in snapshot.CalledNumbers)
+		{
+			_session.CallItem(item); // Triggers all events like normal
+			await Task.Delay(3000);   // Pacing between picks
 		}
 	}
 
