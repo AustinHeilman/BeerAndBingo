@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
+using AndroidX.Core.View;
 
 namespace Bingo.Caller.App;
 
@@ -9,25 +10,50 @@ namespace Bingo.Caller.App;
 	Label = "Beer&Bingo - Caller",
 	Theme = "@style/Maui.SplashTheme",
 	MainLauncher = true,
-	ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+	ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation,
+	ScreenOrientation = ScreenOrientation.Landscape)] // Force landscape
 public class MainActivity : MauiAppCompatActivity
 {
 	protected override void OnCreate(Bundle? savedInstanceState)
 	{
 		base.OnCreate(savedInstanceState);
-		// No need to set the flag here
+
+		// Enable full screen (hide status and navigation bars)
+#pragma warning disable CA1416 // Suppress platform dependent API warning
+		Window?.AddFlags(WindowManagerFlags.Fullscreen);
+
+		if (Window != null && Window.DecorView != null)
+		{
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.R) // Android 11 (API 30) and above
+			{
+				var controller = Window.InsetsController;
+				if (controller != null)
+				{
+					controller.Hide(WindowInsets.Type.StatusBars() | WindowInsets.Type.NavigationBars());
+					controller.SystemBarsBehavior = (int)WindowInsetsControllerBehavior.ShowTransientBarsBySwipe;
+				}
+			}
+			else
+			{
+#pragma warning disable CA1422 // Suppress platform dependent API warning
+				Window.DecorView.SystemUiFlags =
+					SystemUiFlags.ImmersiveSticky
+					| SystemUiFlags.HideNavigation
+					| SystemUiFlags.Fullscreen;
+#pragma warning restore CA1422
+			}
+		}
+#pragma warning restore CA1416
 	}
 
 	protected override void OnResume()
 	{
 		base.OnResume();
-		// Keep the screen awake while the app is active
 		Window?.AddFlags(WindowManagerFlags.KeepScreenOn);
 	}
 
 	protected override void OnPause()
 	{
-		// Allow the screen to turn off when the app is not active
 		Window?.ClearFlags(WindowManagerFlags.KeepScreenOn);
 		base.OnPause();
 	}
