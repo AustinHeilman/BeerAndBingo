@@ -100,7 +100,7 @@ public partial class MainPage : ContentPage
 
 		ReplayCommand = new Command(async () =>
 		{
-			bool confirm = await DisplayAlert("Replay", "Play all recorded game actions?", "Yes", "No");
+			bool confirm = await DisplayAlert("Replay", "Play all recorded game actions?\nPress replay again to stop", "Yes", "No");
 			if (confirm)
 			{
 				viewModel.ReplayCommand.Execute(null);
