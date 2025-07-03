@@ -78,9 +78,6 @@ public partial class PatternDisplayView : ContentView
 		PatternGrid.Children.Clear();
 		_borderMap.Clear();
 
-		PatternGrid.RowSpacing = 1;
-		PatternGrid.ColumnSpacing = 1;
-
 		for (int r = 0; r < rows; r++)
 			PatternGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
 
@@ -126,11 +123,9 @@ public partial class PatternDisplayView : ContentView
 			Text = columnLetter,
 			TextColor = Color.FromArgb("#303030"),
 			FontSize = 16,
-			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35, // Star/center
-			FontAttributes = FontAttributes.None,
+			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35,
 			HorizontalOptions = LayoutOptions.Center,
-			VerticalOptions = LayoutOptions.Center,
-			//InputTransparent = true,			
+			VerticalOptions = LayoutOptions.Center
 		};
 
 		Grid.SetRow(label, row);
@@ -163,14 +158,5 @@ public partial class PatternDisplayView : ContentView
 				? Colors.Goldenrod
 				: Colors.LightGray;
 		}
-	}
-
-	protected override void OnSizeAllocated(double width, double height)
-	{
-		base.OnSizeAllocated(width, height);
-
-		double size = Math.Min(width, height);
-		this.WidthRequest = size;
-		this.HeightRequest = size;
 	}
 }

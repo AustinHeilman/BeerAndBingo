@@ -22,10 +22,12 @@
 	<Grid x:Name="MainGrid" RowSpacing="8" ColumnSpacing="12" Padding="0,0,16,16">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="5*" />
+			<!-- FlashBoard -->
 			<RowDefinition Height="2*" />
+			<!-- Control Bar -->
 		</Grid.RowDefinitions>
 
-		<!-- FlashBoard is added in code-behind at Grid.Row="0" -->
+		<!-- FlashBoard is injected dynamically at Grid.Row=0 -->
 
 		<!-- Control Panel -->
 		<Grid Grid.Row="1" ColumnSpacing="12">
@@ -38,52 +40,67 @@
 			<controls:IconButton Grid.Column="0"
                                  IconName="button_next_pick"
                                  Command="{Binding viewModel.NextCallCommand}"
-                                 IconSize="{OnIdiom Desktop='200', Tablet='150', Phone='100', Default='100'}"
+                                 IconSize="{OnIdiom Desktop=200, Tablet=150, Phone=100}"
                                  HorizontalOptions="Center"
                                  VerticalOptions="Center"
                                  Margin="0,0,8,0" />
 
 			<gameinfo:GameInfoPanel Grid.Column="1"
+                                    BindingContext="{Binding viewModel.GameInfoVM}"
                                     VerticalOptions="Center"
-                                    HorizontalOptions="Fill"
-                                    BindingContext="{Binding viewModel.GameInfoVM}" />
+                                    HorizontalOptions="Fill" />
 
+			<!-- Pattern Preview Thumbnail -->
 			<ContentView Grid.Column="2">
 				<ContentView.GestureRecognizers>
 					<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 				</ContentView.GestureRecognizers>
-				<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
+				<Border WidthRequest="{OnIdiom Phone=140, Tablet=200, Desktop=240}"
+                        MinimumHeightRequest="{OnIdiom Phone=160, Tablet=240, Desktop=280}"
+                        BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#1A1A1A}"
+                        StrokeShape="RoundRectangle 6"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Fill">
+					<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
+				</Border>
 			</ContentView>
 		</Grid>
 
-		<!-- Tools Panel Overlay -->
+		<!-- Tools Panel (Dock-Style Strip) -->
 		<Grid Grid.Row="1"
-              IsVisible="{Binding viewModel.IsToolsPanelVisible}"
+              VerticalOptions="End"
+              HeightRequest="{OnIdiom Phone=120, Tablet=150, Desktop=150}"
               BackgroundColor="#80000000"
+              IsVisible="{Binding viewModel.IsToolsPanelVisible}"
               InputTransparent="False"
-              ZIndex="10">
-			<Grid Padding="24"
-                  BackgroundColor="DarkSlateGray"
-                  VerticalOptions="Fill"
+              ZIndex="100">
+			<Grid BackgroundColor="DarkSlateGray"
+                  HeightRequest="{OnIdiom Phone=100, Tablet=120, Desktop=110}"
+                  Padding="12,0"
+                  VerticalOptions="Fill"				  
                   HorizontalOptions="Start">
-				<HorizontalStackLayout Spacing="12">
-					<controls:IconButton IconName="button_new_game" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding page.NewGameCommand}" />
-					<controls:IconButton IconName="button_nextgame" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding page.NextClockCommand}" />
-					<controls:IconButton IconName="button_patterns" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding viewModel.PatternsCommand}" />
-					<controls:IconButton IconName="button_undo_pick" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding page.UndoPickCommand}" />
-					<controls:IconButton IconName="button_redo_pick" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding page.RedoPickCommand}" />
-					<controls:IconButton IconName="button_replay" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding page.ReplayCommand}" />
-					<controls:IconButton IconName="button_settings" IconSize="{OnIdiom Desktop='200', Tablet='100', Phone='80', Default='150'}" Command="{Binding viewModel.SettingsCommand}" />
-					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}" IconSize="{OnIdiom Desktop='50', Tablet='50', Phone='30', Default='50'}" Command="{Binding viewModel.ToggleToolsPanelCommand}" />
+				<HorizontalStackLayout HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       Spacing="12">
+					<controls:IconButton IconName="button_new_game" Command="{Binding page.NewGameCommand}"       IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_nextgame" Command="{Binding page.NextClockCommand}"     IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_patterns" Command="{Binding viewModel.PatternsCommand}" IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_undo_pick" Command="{Binding page.UndoPickCommand}"     IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_redo_pick" Command="{Binding page.RedoPickCommand}"     IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_replay" Command="{Binding page.ReplayCommand}"          IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_settings" Command="{Binding viewModel.SettingsCommand}" IconSize="{OnIdiom Desktop=200, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}"
+                                         Command="{Binding viewModel.ToggleToolsPanelCommand}"
+                                         IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}" />
 				</HorizontalStackLayout>
 			</Grid>
 		</Grid>
 
-		<!-- Tools Toggle (Collapsed) -->
+		<!-- Toggle Button (Collapsed) -->
 		<controls:IconButton Grid.Row="1"
                              IconName="{Binding viewModel.ToolsPanelToggleIcon}"
                              Command="{Binding viewModel.ToggleToolsPanelCommand}"
-                             IconSize="{OnIdiom Desktop='50', Tablet='50', Phone='30', Default='50'}"
+                             IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}"
                              HorizontalOptions="Start"
                              VerticalOptions="Center"
                              Margin="0"
