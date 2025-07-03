@@ -2,11 +2,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Bingo.UI.Shared.Views.Patterns.PatternMainPageView"
+			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
              Title="PatternMainPageView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+	<HorizontalStackLayout Spacing="12">
+		<controls:IconButton IconName="button_create_pattern" Command="{Binding CreateCommand}" />
+		<controls:IconButton IconName="button_load_pattern" Command="{Binding LoadCommand}" />
+		<controls:IconButton IconName="button_clear_pattern" Command="{Binding ClearCommand}" />
+		<controls:IconButton IconName="button_close" Command="{Binding QuitCommand}" />
+	</HorizontalStackLayout>
+
 </ContentPage>
