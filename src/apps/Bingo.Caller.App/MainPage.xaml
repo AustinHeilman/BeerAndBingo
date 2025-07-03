@@ -69,26 +69,26 @@
 		<!-- Tools Panel (Dock-Style Strip) -->
 		<Grid Grid.Row="1"
               VerticalOptions="End"
-              HeightRequest="{OnIdiom Phone=120, Tablet=150, Desktop=150}"
+              HeightRequest="{OnIdiom Phone=120, Tablet=150, Desktop=240}"
               BackgroundColor="#80000000"
               IsVisible="{Binding viewModel.IsToolsPanelVisible}"
               InputTransparent="False"
               ZIndex="100">
 			<Grid BackgroundColor="DarkSlateGray"
-                  HeightRequest="{OnIdiom Phone=100, Tablet=120, Desktop=110}"
+                  HeightRequest="{OnIdiom Phone=100, Tablet=120, Desktop=170}"
                   Padding="12,0"
                   VerticalOptions="Fill"				  
                   HorizontalOptions="Start">
 				<HorizontalStackLayout HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        Spacing="12">
-					<controls:IconButton IconName="button_new_game" Command="{Binding page.NewGameCommand}"       IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_nextgame" Command="{Binding page.NextClockCommand}"     IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_patterns" Command="{Binding viewModel.PatternsCommand}" IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_undo_pick" Command="{Binding page.UndoPickCommand}"     IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_redo_pick" Command="{Binding page.RedoPickCommand}"     IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_replay" Command="{Binding page.ReplayCommand}"          IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
-					<controls:IconButton IconName="button_settings" Command="{Binding viewModel.SettingsCommand}" IconSize="{OnIdiom Desktop=100, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_new_game" Command="{Binding page.NewGameCommand}"       IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_nextgame" Command="{Binding page.NextClockCommand}"     IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_patterns" Command="{Binding viewModel.PatternsCommand}" IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_undo_pick" Command="{Binding page.UndoPickCommand}"     IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_redo_pick" Command="{Binding page.RedoPickCommand}"     IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_replay" Command="{Binding page.ReplayCommand}"          IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
+					<controls:IconButton IconName="button_settings" Command="{Binding viewModel.SettingsCommand}" IconSize="{OnIdiom Desktop=150, Tablet=100, Phone=80}" />
 					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}"
                                          Command="{Binding viewModel.ToggleToolsPanelCommand}"
                                          IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}" />
