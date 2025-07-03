@@ -9,16 +9,16 @@
 		<HorizontalStackLayout Spacing="12">
 			<controls:IconButton IconName="button_create_pattern"
 								 Command="{Binding CreateCommand}"
-								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_load_pattern"
 								 Command="{Binding LoadCommand}"
-								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_clear_pattern"
 								 Command="{Binding ClearCommand}"
-								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_close"
-								 Command="{Binding page.CloseCommand}"
-								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+								 Command="{Binding page.HidePatternSheetCommand}"
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 		</HorizontalStackLayout>
 	</Grid>
 

@@ -142,7 +142,9 @@
 
 		<!-- Slide-Up Pattern Sheet -->
 		<ContentView x:Name="PatternSheetOverlay"
-					 Grid.RowSpan="2"
+					 Grid.RowSpan="2"					 
+					 VerticalOptions="Center"
+					 HorizontalOptions="Center"
 					 BackgroundColor="#88000000"
 					 IsVisible="{Binding page.IsPatternSheetVisible}"
 					 ZIndex="48">
