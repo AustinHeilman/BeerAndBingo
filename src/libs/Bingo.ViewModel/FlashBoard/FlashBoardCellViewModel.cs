@@ -48,7 +48,7 @@ namespace Bingo.ViewModel.FlashBoard
 		public FlashBoardGroup Parent => _model.Parent;
 		public int Number => _model.Number;
 		public char Letter => _model.Parent.Letter;
-				
+
 		public bool IsCalled => _model.IsCalled;
 
 		private FlashBoardEventSource _sourceTag = FlashBoardEventSource.Unknown;
@@ -108,8 +108,8 @@ namespace Bingo.ViewModel.FlashBoard
 
 		private void OnIsCalledChanged(object? sender, FlashBoardCalledChangedEventArgs e)
 		{
-			if ( this.Number == 67 )
-				Debug.WriteLine($"[FlashBoardCellViewModel.OnIsCalledChanged] Cell {_model.Number} IsCalled changed to {_model.IsCalled} by {e.SourceTag}");			
+			if (this.Number == 67)
+				Debug.WriteLine($"[FlashBoardCellViewModel.OnIsCalledChanged] Cell {_model.Number} IsCalled changed to {_model.IsCalled} by {e.SourceTag}");
 
 			OnPropertyChanged(nameof(IsCalled));
 			OnPropertyChanged(nameof(CanToggle));
@@ -121,7 +121,7 @@ namespace Bingo.ViewModel.FlashBoard
 			get
 			{
 				bool result = _parentBoard?.IsInteractive == true && !_model.IsCalled;
-				if ( _model.Number == 67 )
+				if (_model.Number == 67)
 					Debug.WriteLine($"[FlashBoardCellViewModel.CanToggle] Cell {_model.Number}: IsCalled={_model.IsCalled} IsInteractive={_parentBoard?.IsInteractive} → CanToggle={result}");
 				return result;
 			}

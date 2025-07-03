@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bingo.UI.Shared.Views.Patterns.PatternMainPageView"
-			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-             Title="PatternMainPageView">
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+			 x:Class="Bingo.UI.Shared.Views.Patterns.PatternMainPageView"
+			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared">
 
-	<HorizontalStackLayout Spacing="12">
-		<controls:IconButton IconName="button_create_pattern" Command="{Binding CreateCommand}" />
-		<controls:IconButton IconName="button_load_pattern" Command="{Binding LoadCommand}" />
-		<controls:IconButton IconName="button_clear_pattern" Command="{Binding ClearCommand}" />
-		<controls:IconButton IconName="button_close" Command="{Binding QuitCommand}" />
-	</HorizontalStackLayout>
+	<Grid HorizontalOptions="Center"
+		  VerticalOptions="Center">
+		<HorizontalStackLayout Spacing="12">
+			<controls:IconButton IconName="button_create_pattern"
+								 Command="{Binding CreateCommand}"
+								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+			<controls:IconButton IconName="button_load_pattern"
+								 Command="{Binding LoadCommand}"
+								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+			<controls:IconButton IconName="button_clear_pattern"
+								 Command="{Binding ClearCommand}"
+								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+			<controls:IconButton IconName="button_close"
+								 Command="{Binding page.CloseCommand}"
+								 IconSize="{OnIdiom Desktop=230, Tablet=180, Phone=160}" />
+		</HorizontalStackLayout>
+	</Grid>
 
-</ContentPage>
+</ContentView>

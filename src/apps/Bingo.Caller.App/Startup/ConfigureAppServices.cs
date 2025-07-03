@@ -1,7 +1,7 @@
 ﻿using Bingo.AppServices.Configuration;
 using Bingo.UI.Shared.Services;
 using Bingo.UI.Shared.Views.FlashBoard;
-using Bingo.ViewModel.MainPage.Caller;
+using Bingo.ViewModel.MainPage;
 
 namespace Bingo.Caller.App.Startup;
 

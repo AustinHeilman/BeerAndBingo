@@ -46,7 +46,7 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 
 			// Get font and style resources
 			FontSet fontSet = _styleService.GetFontSet();
-			var groups = FlashBoardVM?.Groups;
+			System.Collections.ObjectModel.ObservableCollection<FlashBoardGroupViewModel>? groups = FlashBoardVM?.Groups;
 			if (groups is null)
 				return;
 

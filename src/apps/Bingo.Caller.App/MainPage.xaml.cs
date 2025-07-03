@@ -1,10 +1,12 @@
 ﻿using Bingo.UI.Shared.Views.FlashBoard;
-using Bingo.ViewModel.MainPage.Caller;
+using Bingo.ViewModel.MainPage;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Bingo.Caller.App;
 
-public partial class MainPage : ContentPage
+public partial class MainPage : ContentPage, INotifyPropertyChanged
 {
 	public ICommand NextClockCommand { get; }
 	public ICommand TogglePatternZoomCommand { get; }
@@ -89,7 +91,7 @@ public partial class MainPage : ContentPage
 				viewModel.ResetSession();
 			}
 		});
-
+		
 		UndoPickCommand = new Command(async () =>
 		{
 			bool confirm = await DisplayAlert("Undo", "Undo last action?", "Yes", "No");
@@ -126,10 +128,38 @@ public partial class MainPage : ContentPage
 		NextClockVisible = false;
 	}
 
+	#region Pattern Button UI
+	public bool IsPatternSheetVisible
+	{
+		get => _isPatternSheetVisible;
+		set
+		{
+			if (_isPatternSheetVisible != value)
+			{
+				_isPatternSheetVisible = value;
+				OnPropertyChanged(nameof(IsPatternSheetVisible));
+			}
+		}
+	}
+	private bool _isPatternSheetVisible;
+
+	public ICommand ShowPatternSheetCommand => new Command(async () =>
+	{
+		IsPatternSheetVisible = true;
+		await PatternSheetContainer.TranslateTo(0, 0, 300, Easing.SinOut);
+	});
+
+	public ICommand HidePatternSheetCommand => new Command(async () =>
+	{
+		await PatternSheetContainer.TranslateTo(0, 400, 250, Easing.SinIn);
+		IsPatternSheetVisible = false;
+	});
+	#endregion
+
 	private async Task QuitAppAsync()
 	{
 		await Task.Delay(100); // Simulate some delay if needed
-#if WINDOWS		
+#if WINDOWS
 		if (OperatingSystem.IsWindows())
 		{
 			// Windows-specific quit logic

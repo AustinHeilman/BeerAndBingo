@@ -69,12 +69,12 @@ public class FlashBoardViewModel : INotifyPropertyChanged
 
 			Groups.Add(groupVM);
 			groupVM.SetParentBoard(this);
-		}		
+		}
 	}
 
 	public void ToggleCalled(int number)
 	{
-		var cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
+		FlashBoardNumber? cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
 		if (cell == null)
 			return;
 		else if (!IsInteractive)
@@ -92,9 +92,9 @@ public class FlashBoardViewModel : INotifyPropertyChanged
 
 	public void RebindModel()
 	{
-		foreach (var groupVM in Groups)
+		foreach (FlashBoardGroupViewModel groupVM in Groups)
 		{
-			var modelGroup = _board.Children.FirstOrDefault(g => g.Letter == groupVM.Letter);
+			FlashBoardGroup? modelGroup = _board.Children.FirstOrDefault(g => g.Letter == groupVM.Letter);
 			if (modelGroup is null)
 				continue;
 

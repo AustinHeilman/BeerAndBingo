@@ -15,12 +15,12 @@ namespace Bingo.ViewModel.FlashBoard
 
 		public void SetParentBoard(FlashBoardViewModel board)
 		{
-			foreach (var cell in Cells)
+			foreach (FlashBoardCellViewModel cell in Cells)
 			{
 				cell.SetParentBoard(board);
 				if (cell is FlashBoardCellViewModel vm)
-					if ( vm.Number == 67) // Debugging specific cell
-						Debug.WriteLine($"[FlashBoardGroupViewModel.SetParentBoard] Cell {vm.Number} now listening to board {board}");				
+					if (vm.Number == 67) // Debugging specific cell
+						Debug.WriteLine($"[FlashBoardGroupViewModel.SetParentBoard] Cell {vm.Number} now listening to board {board}");
 			}
 		}
 	}

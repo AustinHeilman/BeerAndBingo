@@ -2,7 +2,6 @@
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
-using AndroidX.Core.View;
 
 namespace Bingo.Caller.App;
 
@@ -26,7 +25,7 @@ public class MainActivity : MauiAppCompatActivity
 		{
 			if (Build.VERSION.SdkInt >= BuildVersionCodes.R) // Android 11 (API 30) and above
 			{
-				var controller = Window.InsetsController;
+				IWindowInsetsController? controller = Window.InsetsController;
 				if (controller != null)
 				{
 					controller.Hide(WindowInsets.Type.StatusBars() | WindowInsets.Type.NavigationBars());

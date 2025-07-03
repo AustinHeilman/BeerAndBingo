@@ -53,7 +53,7 @@ public class GameInfoPanelViewModel : INotifyPropertyChanged
 		if (_session.Round < 3)
 			return null;
 
-		var history = _session.CalledItems;
+		IReadOnlyList<int> history = _session.CalledItems;
 		return history.Count >= 3 ? history[^3] : null;
 	}
 

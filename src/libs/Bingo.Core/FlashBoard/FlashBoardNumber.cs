@@ -10,14 +10,15 @@ public class FlashBoardNumber
 
 	private bool _isCalled = false;
 
-	public bool IsCalled { 
-		get => _isCalled; 
-		private set			
+	public bool IsCalled
+	{
+		get => _isCalled;
+		private set
 		{
 			if (_isCalled != value)
 			{
 				_isCalled = value;
-				if ( this.Number == 67 )
+				if (this.Number == 67)
 					Debug.WriteLine($"[FlashBoardNumber.IsCalled] {Number}: set to {value}");
 			}
 		}

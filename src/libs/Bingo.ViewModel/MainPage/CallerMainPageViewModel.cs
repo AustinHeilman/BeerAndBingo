@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
-namespace Bingo.ViewModel.MainPage.Caller;
+namespace Bingo.ViewModel.MainPage;
 
 public class CallerMainPageViewModel : INotifyPropertyChanged
 {
@@ -42,7 +42,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		FlashBoardVM = new FlashBoardViewModel(_session, _sync.Board);
 		_session.ItemCalled += (sender, item) =>
 		{
-			var cell = _sync.Board.AllCells.FirstOrDefault(c => c.Number == item);
+			Core.FlashBoard.FlashBoardNumber? cell = _sync.Board.AllCells.FirstOrDefault(c => c.Number == item);
 			if (cell != null)
 			{
 				Debug.WriteLine($"[ItemCalled Handler] Applying call to number {item}");
@@ -107,6 +107,8 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		}
 	}
 
+
+	#region Replay Control
 	public async Task ToggleReplayAsync()
 	{
 		if (_replayCts is not null)
@@ -132,8 +134,8 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		ReplayStarted?.Invoke(this, EventArgs.Empty);
 		FlashBoardVM.SetInteractive(false); // Lock board
 
-		var originalSnapshot = _session.CreateSnapshot();
-		var replaySnapshot = SyncSnapshot.FromSession(_session);
+		Core.Domain.GameSessionSnapshot<int> originalSnapshot = _session.CreateSnapshot();
+		SyncSnapshot replaySnapshot = SyncSnapshot.FromSession(_session);
 
 		_replayCts = new CancellationTokenSource();
 		CancellationToken token = _replayCts.Token;
@@ -165,11 +167,11 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 			_sync.UpdateCalled(_session.CalledItems);
 			FlashBoardVM.RebindModel();
 
-			foreach (var group in FlashBoardVM.Groups)
+			foreach (FlashBoardGroupViewModel group in FlashBoardVM.Groups)
 			{
-				foreach (var cell in group.Cells)
+				foreach (FlashBoardCellViewModel cell in group.Cells)
 				{
-					if ( cell.Number == 67 )
+					if (cell.Number == 67)
 						Debug.WriteLine($"PlayReplayAsync() - Cell {cell.Number} — IsCalled={cell.IsCalled} — CanToggle={cell.CanToggle}");
 				}
 			}
@@ -183,7 +185,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 			Debug.WriteLine("PlayReplayAsync() - Replay ended.");
 		}
 	}
-
+	#endregion
 
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
