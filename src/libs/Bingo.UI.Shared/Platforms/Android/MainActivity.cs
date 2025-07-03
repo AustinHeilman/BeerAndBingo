@@ -6,11 +6,11 @@ using Android.Views;
 namespace Bingo.UI.Shared;
 
 [Activity(
-	Label = "Bingo",
+	Label = "Beer&Bingo",
 	Theme = "@style/Maui.SplashTheme",
-	MainLauncher = true,
+	MainLauncher = false,
 	ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-public class MainActivity : MauiAppCompatActivity
+public class SharedMainActivity : MauiAppCompatActivity
 {
 	protected override void OnCreate(Bundle? savedInstanceState)
 	{
