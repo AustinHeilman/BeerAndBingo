@@ -15,8 +15,20 @@ public class MainActivity : MauiAppCompatActivity
 	protected override void OnCreate(Bundle? savedInstanceState)
 	{
 		base.OnCreate(savedInstanceState);
+		// No need to set the flag here
+	}
 
-		// Keep the screen awake during gameplay
+	protected override void OnResume()
+	{
+		base.OnResume();
+		// Keep the screen awake while the app is active
 		Window?.AddFlags(WindowManagerFlags.KeepScreenOn);
+	}
+
+	protected override void OnPause()
+	{
+		// Allow the screen to turn off when the app is not active
+		Window?.ClearFlags(WindowManagerFlags.KeepScreenOn);
+		base.OnPause();
 	}
 }
