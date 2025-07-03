@@ -45,8 +45,8 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
-		flashBoardView.IsInteractive = true;
-		flashBoardView.ViewModel = viewModel.FlashBoardVM;
+		viewModel.FlashBoardVM.SetInteractive(true);
+		flashBoardView.FlashBoardVM = viewModel.FlashBoardVM;
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 

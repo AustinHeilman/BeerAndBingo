@@ -16,7 +16,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	private readonly FlashBoardSyncService _sync;
 
 	public GameInfoPanelViewModel GameInfoVM { get; }
-	public InteractiveFlashBoardViewModel FlashBoardVM { get; }
+	public FlashBoardViewModel FlashBoardVM { get; }
 	public PatternDisplayViewModel PatternVM { get; }
 
 	public ICommand ToggleToolsPanelCommand { get; }
@@ -37,7 +37,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public CallerMainPageViewModel()
 	{
 		_sync = new FlashBoardSyncService(_session);
-		FlashBoardVM = new InteractiveFlashBoardViewModel(_session, _sync.Board);
+		FlashBoardVM = new FlashBoardViewModel(_session, _sync.Board);
 		GameInfoVM = new GameInfoPanelViewModel(_session);
 		PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository());
 
@@ -107,21 +107,27 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		await PlayReplayAsync();
 	}
 
+	public event EventHandler? ReplayStarted;
+	public event EventHandler? ReplayEnded;
 
 	public async Task PlayReplayAsync()
 	{
 		if (_replayCts is not null)
 			return;
 
+		ReplayStarted?.Invoke(this, EventArgs.Empty);
+		FlashBoardVM.SetInteractive(false); // Freeze input
+
 		_replayCts = new CancellationTokenSource();
 		var token = _replayCts.Token;
 
 		var snapshot = SyncSnapshot.FromSession(_session);
-		var originalSnapshot = _session.CreateSnapshot(); // Save current state
+		var originalSnapshot = _session.CreateSnapshot();
 
 		try
 		{
 			_session.Restart(snapshot.CalledNumbers);
+			_sync.UpdateCalled(_session.CalledItems); // Optional: flush early state
 
 			foreach (int item in snapshot.CalledNumbers)
 			{
@@ -132,10 +138,13 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		}
 		catch (OperationCanceledException)
 		{
-			_session.LoadSnapshot(originalSnapshot); // Restore session on abort
+			_session.LoadSnapshot(originalSnapshot);
+			_sync.UpdateCalled(_session.CalledItems);
 		}
 		finally
 		{
+			FlashBoardVM.SetInteractive(true); // Re-enable input
+			ReplayEnded?.Invoke(this, EventArgs.Empty);
 			_replayCts = null;
 		}
 	}

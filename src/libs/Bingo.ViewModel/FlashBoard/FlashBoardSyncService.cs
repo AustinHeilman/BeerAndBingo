@@ -15,15 +15,20 @@ public class FlashBoardSyncService
 		_session = session;
 		_board = new FlashBoardObj();
 
-		_session.ItemCalled += (_, _) => Sync();
-		_session.UndoPerformed += (_, _) => Sync();
-		_session.RedoPerformed += (_, _) => Sync();
+		_session.ItemCalled += (_, _) => SyncFromSession();
+		_session.UndoPerformed += (_, _) => SyncFromSession();
+		_session.RedoPerformed += (_, _) => SyncFromSession();
 		_session.NewGameStarted += (_, _) => _board.UpdateCalled(Array.Empty<int>());
-		_session.ItemUncalled += (_, _) => Sync();
+		_session.ItemUncalled += (_, _) => SyncFromSession();
 
-		Sync();
+		SyncFromSession();
 	}
 
-	private void Sync() =>
+	private void SyncFromSession() =>
 		_board.UpdateCalled(_session.CalledItems);
+
+	public void UpdateCalled(IEnumerable<int> calledNumbers)
+	{
+		_board.UpdateCalled(calledNumbers);
+	}
 }

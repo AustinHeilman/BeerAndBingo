@@ -1,10 +1,11 @@
 ﻿using Bingo.Core.Device.Fonts;
 using Bingo.UI.Shared.Services;
 using Bingo.ViewModel.FlashBoard;
+using System.ComponentModel;
 
 namespace Bingo.UI.Shared.Views.FlashBoard
 {
-	public partial class FlashBoardView : ContentView
+	public partial class FlashBoardView : ContentView, INotifyPropertyChanged
 	{
 		private readonly StyleBindingService _styleService = new(new MauiDeviceInfoProvider());
 
@@ -13,18 +14,15 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 			InitializeComponent();
 		}
 
-		public static readonly BindableProperty IsInteractiveProperty =
-			BindableProperty.Create(nameof(IsInteractive), typeof(bool), typeof(FlashBoardView), false);
+		public event PropertyChangedEventHandler? PropertyChanged;
+		protected void OnPropertyChanged(string propertyName) =>
+		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-		public bool IsInteractive
-		{
-			get => (bool)GetValue(IsInteractiveProperty);
-			set => SetValue(IsInteractiveProperty, value);
-		}
+		public bool IsInteractive => FlashBoardVM?.IsInteractive ?? false;
 
-		public BaseFlashBoardViewModel ViewModel
+		public FlashBoardViewModel FlashBoardVM
 		{
-			get => (BaseFlashBoardViewModel)BindingContext;
+			get => (FlashBoardViewModel)BindingContext;
 			set
 			{
 				BindingContext = value;
@@ -47,7 +45,7 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 				CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
 
 			FontSet fontSet = _styleService.GetFontSet();
-			var groups = ViewModel?.Groups;
+			var groups = FlashBoardVM?.Groups;
 			if (groups is null)
 				return;
 
@@ -77,15 +75,12 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 						BindingContext = group.Cells[col]
 					};
 
-					if (IsInteractive && ViewModel is InteractiveFlashBoardViewModel interactive)
+					var tap = new TapGestureRecognizer
 					{
-						var tap = new TapGestureRecognizer
-						{
-							Command = interactive.ToggleCallCommand,
-							CommandParameter = group.Cells[col].Number
-						};
-						cellView.GestureRecognizers.Add(tap);
-					}
+						Command = FlashBoardVM.ToggleCallCommand,
+						CommandParameter = group.Cells[col].Number
+					};
+					cellView.GestureRecognizers.Add(tap);
 
 					Grid.SetRow(cellView, row);
 					Grid.SetColumn(cellView, col + 1);
