@@ -12,6 +12,7 @@ public partial class MainPage : ContentPage
 	public ICommand UndoPickCommand { get; }
 	public ICommand RedoPickCommand { get; }
 	public ICommand ReplayCommand { get; }
+	public ICommand QuitCommand { get; }
 
 	private bool _nextClockVisible = false;
 	public bool NextClockVisible
@@ -71,6 +72,15 @@ public partial class MainPage : ContentPage
 			IsPatternZoomed = !IsPatternZoomed;
 		});
 
+		QuitCommand = new Command(async () =>
+		{
+			bool confirm = await DisplayAlert("Quit App", "Do you want to quit this app?", "Yes", "No");
+			if (confirm)
+			{
+				await QuitAppAsync();
+			}
+		});
+
 		NewGameCommand = new Command(async () =>
 		{
 			bool confirm = await DisplayAlert("New Game", "Start a new game and reset session?", "Yes", "No");
@@ -114,5 +124,43 @@ public partial class MainPage : ContentPage
 	{
 		NextClockOverlay.ViewModel.CancelTimer();
 		NextClockVisible = false;
+	}
+
+	private async Task QuitAppAsync()
+	{
+		await Task.Delay(100); // Simulate some delay if needed
+		if (OperatingSystem.IsWindows())
+		{
+			// Windows-specific quit logic
+			Application.Current?.Quit();
+		}
+#if ANDROID
+		else if (OperatingSystem.IsAndroid())
+		{
+			// Android-specific quit logic			
+			Android.OS.Process.KillProcess(Android.OS.Process.MyPid());
+		}
+#elif IOS
+		else if (OperatingSystem.IsIOS())
+		{
+			// iOS-specific quit logic
+			await DisplayAlert("Unsupported", "Please press the Home button to exit the app.", "OK");
+		}
+#endif
+		else if (OperatingSystem.IsMacOS())
+		{
+			// macOS-specific quit logic
+			Application.Current?.Quit();
+		}
+		else if (OperatingSystem.IsLinux())
+		{
+			// Linux-specific quit logic
+			Application.Current?.Quit();
+		}
+		else
+		{
+			// For other platforms, use the platform-specific APIs
+			System.Diagnostics.Process.GetCurrentProcess().Kill();
+		}
 	}
 }
