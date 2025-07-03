@@ -63,7 +63,7 @@ public class GameSessionState<T>
 
 	public void CallItem(T item)
 	{
-		Debug.WriteLine($"[GameSession] CallItem invoked with {item}");
+		Debug.WriteLine($"[GameSessionState.CallItem] CallItem invoked with {item}");
 		if (_calledSet.Contains(item) || !_availableSet.Contains(item))
 			return;
 
@@ -177,6 +177,20 @@ public class GameSessionState<T>
 		if (CurrentItem is not null)
 			ItemCalled?.Invoke(this, CurrentItem);
 	}
+
+	public void SyncState(IEnumerable<T> calledItems, IEnumerable<T> availableItems)
+	{
+		_calledSet.Clear();
+		_calledSet.UnionWith(calledItems);
+
+		_availableSet.Clear();
+		_availableSet.UnionWith(availableItems);
+
+		Debug.WriteLine("[GameSession] Synced via external source — Called: " +
+			string.Join(", ", _calledSet.OrderBy(n => n)));
+	}
+
+
 
 	#endregion
 

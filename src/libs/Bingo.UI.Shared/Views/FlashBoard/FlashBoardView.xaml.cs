@@ -14,9 +14,10 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 			InitializeComponent();
 		}
 
-		public event PropertyChangedEventHandler? PropertyChanged;
-		protected void OnPropertyChanged(string propertyName) =>
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		public new event PropertyChangedEventHandler? PropertyChanged;
+
+		protected new void OnPropertyChanged(string propertyName) =>
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
 		public bool IsInteractive => FlashBoardVM?.IsInteractive ?? false;
 
@@ -32,31 +33,32 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 
 		private void BuildGrid()
 		{
+			// Clear and configure grid structure
 			CellGrid.Children.Clear();
 			CellGrid.RowDefinitions.Clear();
 			CellGrid.ColumnDefinitions.Clear();
 
-			// Define 5 rows: B, I, N, G, O
 			for (int i = 0; i < 5; i++)
-				CellGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star });
+				CellGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Star }); // B, I, N, G, O
 
-			// Define 16 columns: 1 for label, 15 for numbers
 			for (int i = 0; i < 16; i++)
-				CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+				CellGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star }); // 1 label + 15 numbers
 
+			// Get font and style resources
 			FontSet fontSet = _styleService.GetFontSet();
 			var groups = FlashBoardVM?.Groups;
 			if (groups is null)
 				return;
 
+			// Populate each row (group)
 			for (int row = 0; row < groups.Count; row++)
 			{
-				var group = groups[row];
+				FlashBoardGroupViewModel group = groups[row];
 
-				// Left-side letter label
+				// Add left-side header label
 				if (Application.Current?.Resources["FlashBoardHeaderLabel"] is Style headerLabelStyle)
 				{
-					var label = new Label
+					Label label = new()
 					{
 						Text = group.Letter.ToString(),
 						Style = headerLabelStyle
@@ -67,20 +69,28 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 					CellGrid.Children.Add(label);
 				}
 
-				// Number cells
+				// Add cells
 				for (int col = 0; col < group.Cells.Count; col++)
 				{
-					var cellView = new FlashBoardCellView
+					FlashBoardCellViewModel cellVM = group.Cells[col];
+					FlashBoardCellView cellView = new()
 					{
-						BindingContext = group.Cells[col]
+						BindingContext = cellVM
 					};
+					cellView.FlashDebugColor();
 
-					var tap = new TapGestureRecognizer
+					// Bind interactivity visuals
+					cellView.SetBinding(
+						FlashBoardCellView.CanToggleProperty,
+						new Binding(nameof(cellVM.CanToggle))
+					);
+
+					// Hook up gesture control
+					cellView.GestureRecognizers.Add(new TapGestureRecognizer
 					{
-						Command = FlashBoardVM.ToggleCallCommand,
-						CommandParameter = group.Cells[col].Number
-					};
-					cellView.GestureRecognizers.Add(tap);
+						Command = FlashBoardVM?.ToggleCallCommand ?? throw new NullReferenceException(nameof(FlashBoardVM)),
+						CommandParameter = cellVM.Number
+					});
 
 					Grid.SetRow(cellView, row);
 					Grid.SetColumn(cellView, col + 1);
@@ -88,5 +98,6 @@ namespace Bingo.UI.Shared.Views.FlashBoard
 				}
 			}
 		}
+
 	}
 }

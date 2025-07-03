@@ -104,6 +104,40 @@ public partial class FlashBoardCellView : ContentView
 		}
 	}
 
+	public static readonly BindableProperty CanToggleProperty =
+	BindableProperty.Create(
+		nameof(CanToggle),
+		typeof(bool),
+		typeof(FlashBoardCellView),
+		true,
+		propertyChanged: OnCanToggleChanged);
+
+	public bool CanToggle
+	{
+		get => (bool)GetValue(CanToggleProperty);
+		set => SetValue(CanToggleProperty, value);
+	}
+
+	private static void OnCanToggleChanged(BindableObject bindable, object oldValue, object newValue)
+	{
+		if (bindable is FlashBoardCellView cell)
+			cell.UpdateLockedVisualState();
+	}
+
+	private void UpdateLockedVisualState()
+	{
+		// Visual feedback: dim the cell if it’s locked
+		CellBorder.Opacity = CanToggle ? 1.0 : 0.4;
+	}
+
+	public async void FlashDebugColor()
+	{
+		Color original = CellBorder.BackgroundColor;
+		CellBorder.BackgroundColor = Colors.Gold; // or Colors.MediumPurple for a subtler pulse
+		await Task.Delay(100);
+		CellBorder.BackgroundColor = original;
+	}
+
 
 	private async Task SafeAnimateAsync(int token, Func<Task> animationBlock)
 	{

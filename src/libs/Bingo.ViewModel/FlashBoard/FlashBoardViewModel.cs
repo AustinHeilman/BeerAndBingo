@@ -19,7 +19,18 @@ public class FlashBoardViewModel : INotifyPropertyChanged
 	private readonly GameSessionState<int> _session;
 
 	private bool _isInteractive = true;
-	public bool IsInteractive => _isInteractive;
+	public bool IsInteractive
+	{
+		get => _isInteractive;
+		private set
+		{
+			if (_isInteractive != value)
+			{
+				_isInteractive = value;
+				OnPropertyChanged(nameof(IsInteractive));
+			}
+		}
+	}
 
 	public void SetInteractive(bool value)
 	{
@@ -57,13 +68,14 @@ public class FlashBoardViewModel : INotifyPropertyChanged
 			};
 
 			Groups.Add(groupVM);
-		}
+			groupVM.SetParentBoard(this);
+		}		
 	}
 
-	private void ToggleCalled(int number)
+	public void ToggleCalled(int number)
 	{
-		FlashBoardNumber? cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
-		if (cell is null)
+		var cell = _board.AllCells.FirstOrDefault(c => c.Number == number);
+		if (cell == null)
 			return;
 		else if (!IsInteractive)
 			return;
@@ -77,6 +89,29 @@ public class FlashBoardViewModel : INotifyPropertyChanged
 			_session.UncallItem(cell.Number);
 		}
 	}
+
+	public void RebindModel()
+	{
+		foreach (var groupVM in Groups)
+		{
+			var modelGroup = _board.Children.FirstOrDefault(g => g.Letter == groupVM.Letter);
+			if (modelGroup is null)
+				continue;
+
+			for (int i = 0; i < groupVM.Cells.Count; i++)
+			{
+				groupVM.Cells[i].Model = modelGroup.Cells[i];
+			}
+
+			groupVM.SetParentBoard(this); // resets IsInteractive tracking!
+		}
+	}
+
+	public void RaiseAnimationRequest(int number, FlashBoardEventSource source)
+	{
+		NumberCalledAnimationRequested?.Invoke(number, source);
+	}
+
 
 	public FlashBoardObj Model => _board;
 

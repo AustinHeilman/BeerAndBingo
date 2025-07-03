@@ -1,10 +1,12 @@
 ﻿using Bingo.AppServices.Patterns;
 using Bingo.Core.Domain.Bingo;
+using Bingo.Core.FlashBoard.Events;
 using Bingo.ViewModel.FlashBoard;
 using Bingo.ViewModel.GameInfo;
 using Bingo.ViewModel.Patterns;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
@@ -38,6 +40,16 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	{
 		_sync = new FlashBoardSyncService(_session);
 		FlashBoardVM = new FlashBoardViewModel(_session, _sync.Board);
+		_session.ItemCalled += (sender, item) =>
+		{
+			var cell = _sync.Board.AllCells.FirstOrDefault(c => c.Number == item);
+			if (cell != null)
+			{
+				Debug.WriteLine($"[ItemCalled Handler] Applying call to number {item}");
+				cell.SetCalled(true, FlashBoardEventSource.Manual);
+			}
+		};
+
 		GameInfoVM = new GameInfoPanelViewModel(_session);
 		PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository());
 
@@ -113,41 +125,65 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public async Task PlayReplayAsync()
 	{
 		if (_replayCts is not null)
-			return;
+			return; // Already running — safeguard
+
+		Debug.WriteLine("PlayReplayAsync() - Starting replay...");
 
 		ReplayStarted?.Invoke(this, EventArgs.Empty);
-		FlashBoardVM.SetInteractive(false); // Freeze input
+		FlashBoardVM.SetInteractive(false); // Lock board
+
+		var originalSnapshot = _session.CreateSnapshot();
+		var replaySnapshot = SyncSnapshot.FromSession(_session);
 
 		_replayCts = new CancellationTokenSource();
-		var token = _replayCts.Token;
-
-		var snapshot = SyncSnapshot.FromSession(_session);
-		var originalSnapshot = _session.CreateSnapshot();
+		CancellationToken token = _replayCts.Token;
 
 		try
 		{
-			_session.Restart(snapshot.CalledNumbers);
-			_sync.UpdateCalled(_session.CalledItems); // Optional: flush early state
+			// Reset board to clean pre-replay state
+			_session.Restart(replaySnapshot.CalledNumbers);
 
-			foreach (int item in snapshot.CalledNumbers)
+			foreach (int number in replaySnapshot.CalledNumbers)
 			{
 				token.ThrowIfCancellationRequested();
-				_session.CallItem(item);
-				await Task.Delay(3000, token);
+				_session.CallItem(number);
+				await Task.Delay(3000, token); // Adjust for your pacing
 			}
+
+			// Sync final called state and rebind viewmodel wiring
+			_sync.UpdateCalled(_session.CalledItems);
+			FlashBoardVM.RebindModel();
 		}
 		catch (OperationCanceledException)
 		{
+			// Roll back to original state
 			_session.LoadSnapshot(originalSnapshot);
+			_session.SyncState(
+				_sync.Board.AllCells.Where(c => c.IsCalled).Select(c => c.Number),
+				_sync.Board.AllCells.Where(c => !c.IsCalled).Select(c => c.Number)
+			);
 			_sync.UpdateCalled(_session.CalledItems);
+			FlashBoardVM.RebindModel();
+
+			foreach (var group in FlashBoardVM.Groups)
+			{
+				foreach (var cell in group.Cells)
+				{
+					if ( cell.Number == 67 )
+						Debug.WriteLine($"PlayReplayAsync() - Cell {cell.Number} — IsCalled={cell.IsCalled} — CanToggle={cell.CanToggle}");
+				}
+			}
 		}
 		finally
 		{
-			FlashBoardVM.SetInteractive(true); // Re-enable input
+			FlashBoardVM.SetInteractive(true); // Unlock board
 			ReplayEnded?.Invoke(this, EventArgs.Empty);
 			_replayCts = null;
+
+			Debug.WriteLine("PlayReplayAsync() - Replay ended.");
 		}
 	}
+
 
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
 
