@@ -89,7 +89,7 @@
 										 Command="{Binding page.NextClockCommand}"
 										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
 					<controls:IconButton IconName="button_patterns"
-										 Command="{Binding page.ShowPatternSheetCommand}"
+										 Command="{Binding page.ShowPatternsMainViewCommand}"
 										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
 					<controls:IconButton IconName="button_undo_pick"
 										 Command="{Binding page.UndoPickCommand}"
@@ -159,7 +159,7 @@
 				  HeightRequest="{OnIdiom Desktop=360, Tablet=320, Phone=280}"
 				  Padding="24"
 				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
-				<patterns:PatternMainPageView />
+				<ContentView x:Name="PatternMainHost" />
 			</Grid>
 		</ContentView>
 		

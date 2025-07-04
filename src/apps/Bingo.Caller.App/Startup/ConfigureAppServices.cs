@@ -29,6 +29,7 @@ public static class ConfigureAppServices
 		builder.Services.AddSingleton<PatternRepositoryBase>(provider =>provider.GetRequiredService<FilePatternRepository>());
 		
 		builder.Services.AddTransient<CreatePatternView>();
+		builder.Services.AddTransient<PatternMainPageView>();
 
 		builder.Services.AddAppServices();
 		return builder;

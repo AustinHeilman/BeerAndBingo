@@ -19,6 +19,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 
 	private bool _nextClockVisible = false;
 	private readonly CreatePatternView _createPatternView;
+	private readonly PatternMainPageView _patternMainpageView;
 
 	public bool NextClockVisible
 	{
@@ -47,7 +48,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel, CreatePatternView createPatternView)
+	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel, CreatePatternView createPatternView, PatternMainPageView patternMainpageView)
 	{
 		InitializeComponent();
 
@@ -56,6 +57,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 		_createPatternView = createPatternView;
+		_patternMainpageView = patternMainpageView;
 
 		NextClockOverlay.RequestClose += (_, _) => CollapseTimerUI();
 
@@ -153,8 +155,14 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 	}
 	private bool _isPatternSheetVisible;
 
-	public ICommand ShowPatternSheetCommand => new Command(async () =>
+	public ICommand ShowPatternsMainViewCommand => new Command(async () =>
 	{
+		if (PatternMainHost.Content is null)
+			PatternMainHost.Content = _patternMainpageView;
+
+		// Reset vertical position before animating in
+		CreatePatternContainer.TranslationY = 400;
+
 		IsPatternSheetVisible = true;
 		await PatternSheetContainer.TranslateTo(0, 0, 300, Easing.SinOut);
 	});
