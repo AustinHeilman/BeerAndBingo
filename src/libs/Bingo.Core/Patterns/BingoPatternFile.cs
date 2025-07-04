@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Bingo.Core.Patterns;
 
@@ -11,7 +10,12 @@ public class BingoPatternFile : BingoPattern
 
 	public async Task SaveAsync()
 	{
-		string json = JsonSerializer.Serialize(this as BingoPattern, new JsonSerializerOptions { WriteIndented = true });
+		var dto = this.ToJsonModel(); // extension method you created earlier
+		string json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
+		{
+			WriteIndented = true
+		});
+
 		await System.IO.File.WriteAllTextAsync(File.FullName, json);
 	}
 

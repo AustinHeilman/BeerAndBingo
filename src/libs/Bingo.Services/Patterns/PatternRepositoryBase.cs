@@ -6,7 +6,7 @@ namespace Bingo.Core.Patterns;
 public abstract class PatternRepositoryBase
 {
 	protected readonly Dictionary<string, BingoPatternFile> PatternIndex = new(StringComparer.OrdinalIgnoreCase);
-
+	protected virtual string FileSearchPattern => "*-pattern.json";
 	public virtual Task<IEnumerable<BingoPattern>> LoadAllFromFilesAsync()
 	{
 		return Task.FromResult(PatternIndex.Values.Cast<BingoPattern>());
@@ -48,33 +48,44 @@ public abstract class PatternRepositoryBase
 	protected virtual string GenerateFileName() =>
 		$"{Guid.NewGuid():N}-pattern.json";
 
-	protected abstract string GetSaveDirectory();
+	public abstract string GetSaveDirectory();
+
+	private bool _isInitialized;
+	private readonly SemaphoreSlim _initLock = new(1, 1);
 
 	public virtual async Task InitializeAsync()
 	{
-		PatternIndex.Clear();
+		await InitializeAsync(false);
+	}
 
+	public virtual async Task InitializeAsync(bool forceReload = false)
+	{
 		if (!Directory.Exists(GetSaveDirectory()))
-			Directory.CreateDirectory(GetSaveDirectory());
+			Directory.CreateDirectory(GetSaveDirectory()); //Create it before trying to read
 
-		var files = Directory.EnumerateFiles(GetSaveDirectory(), "*-pattern.json");
+		var files = Directory.EnumerateFiles(GetSaveDirectory(), FileSearchPattern, SearchOption.TopDirectoryOnly);
 		foreach (var file in files)
 		{
 			try
 			{
 				var json = await File.ReadAllTextAsync(file);
-				var pattern = JsonSerializer.Deserialize<BingoPattern>(json);
-				if (pattern is not null)
+				var dto = JsonSerializer.Deserialize<PatternJsonModel>(json);
+				if (dto is not null)
 				{
+					var pattern = dto.ToDomain(); // your extension method
 					var fileInfo = new FileInfo(file);
-					PatternIndex[pattern.Name] = BingoPatternFile.From(pattern, fileInfo);
+					PatternIndex[pattern.Name] = WrapPattern(pattern, fileInfo);
+					Debug.WriteLine($"[Vault] Loaded pattern: {pattern.Name}");
 				}
 			}
-			catch
+			catch (Exception ex)
 			{
-				Debug.WriteLine($"Skipped malformed pattern file: {file}");
+				Debug.WriteLine($"Skipped malformed pattern file '{file}': {ex.Message}");
 			}
 		}
 	}
 	public virtual bool HasPatternNamed(string name) => PatternIndex.ContainsKey(name);
+
+	protected virtual BingoPatternFile WrapPattern(BingoPattern pattern, FileInfo file) =>
+	BingoPatternFile.From(pattern, file);
 }

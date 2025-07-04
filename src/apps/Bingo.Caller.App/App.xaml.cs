@@ -1,5 +1,6 @@
 ﻿using Bingo.Caller.App.Startup;
-using CommunityToolkit.Mvvm.DependencyInjection;
+using Bingo.Core.Patterns;
+using Bingo.Services.Patterns;
 using System.Diagnostics;
 
 namespace Bingo.Caller.App;
@@ -35,28 +36,36 @@ public partial class App : Application
 
 	protected override async void OnStart()
 	{
-		if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() || OperatingSystem.IsMacCatalyst())
+		if (OperatingSystem.IsWindows() || OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() || OperatingSystem.IsMacCatalyst())
 		{
-			await PatternInstaller.InstallPatternsIfFirstLaunchAsync();
+			try
+			{
+				var repository = _serviceProvider.GetRequiredService<FilePatternRepository>();
+				await DefaultPatternInstaller.InstallPatternsIfFirstLaunchAsync(repository);
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"[App.OnStart] Pattern installation failed: {ex.Message}");
+			}
 		}
 
 #if DEBUG
 		try
 		{
-			//var patternService = Ioc.Resolve<IPatternService>(); // adjust if you're using DI directly
-			// DI the pattern repository service?
-			var patterns = await patternService.GetPatternNamesAsync();
+			var patternRepo = _serviceProvider.GetRequiredService<PatternRepositoryBase>();
+			var patterns = await patternRepo.LoadAllFromFilesAsync();
 
-			Debug.WriteLine(" Saved Patterns on Startup:");
-			foreach (var name in patterns)
-				Debug.WriteLine($"   - {name}");
+			Debug.WriteLine("[App.OnStart] Saved saved patterns on Startup list:");
+			foreach (var pattern in patterns)
+				Debug.WriteLine($"   - {pattern.Name}");
 		}
 		catch (Exception ex)
 		{
-			Debug.WriteLine($" Error loading saved patterns: {ex.Message}");
+			Debug.WriteLine($"Error loading saved patterns: {ex.Message}");
 		}
 #endif
 
-		await Task.Delay(1);
+
+		await Task.Delay(50); // Prevents thread hiccups; safe as a stub
 	}
 }

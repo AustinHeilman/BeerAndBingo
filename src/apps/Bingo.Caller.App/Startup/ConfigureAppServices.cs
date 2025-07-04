@@ -4,6 +4,7 @@ using Bingo.Services.Patterns;
 using Bingo.UI.Shared.Services;
 using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.ViewModel.MainPage;
+using System.Diagnostics;
 
 namespace Bingo.Caller.App.Startup;
 
@@ -20,12 +21,13 @@ public static class ConfigureAppServices
 
 		builder.Services.AddSingleton<FilePatternRepository>(provider =>
 		{
-			string patternPath = Path.Combine(basePath, "Patterns");
-			return new FilePatternRepository(patternPath);
+			Debug.WriteLine($"[ConfigureAppServices.AddBeerAndBingoServices] Using base path for patterns: {basePath}");
+			//string patternPath = Path.Combine(basePath, "Patterns");
+			return new FilePatternRepository(basePath);
 		});
 
 		builder.Services.AddSingleton<PatternRepositoryBase>(provider =>
-			provider.GetRequiredService<PatternRepositoryBase>());
+			provider.GetRequiredService<FilePatternRepository>());
 
 		builder.Services.AddAppServices();
 		return builder;

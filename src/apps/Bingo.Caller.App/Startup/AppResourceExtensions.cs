@@ -1,4 +1,5 @@
 ﻿using Bingo.Core.Device.Fonts;
+using Bingo.UI.Shared.Extensions;
 using Bingo.UI.Shared.Styles;
 
 namespace Bingo.Caller.App.Startup;
@@ -32,11 +33,11 @@ public static class AppResourceExtensions
 
 		app.Resources["FlashBoardHeaderFontSize"] = fontSet.Header.Size;
 		app.Resources["FlashBoardHeaderFontFamily"] = fontSet.Header.FontFamily;
-		app.Resources["FlashBoardHeaderFontAttributes"] = fontSet.Header.Weight;
+		app.Resources["FlashBoardHeaderFontAttributes"] = fontSet.Header.Weight.ToFontAttributes();
 
 		app.Resources["FlashBoardNumberFontSize"] = fontSet.Number.Size;
 		app.Resources["FlashBoardNumberFontFamily"] = fontSet.Number.FontFamily;
-		app.Resources["FlashBoardNumberFontAttributes"] = fontSet.Number.Weight;
+		app.Resources["FlashBoardNumberFontAttributes"] = fontSet.Number.Weight.ToFontAttributes();
 
 		// Bonus: register font attributes for any other roles
 		app.Resources["FlashBoardButtonFontSize"] = fontSet.Button.Size;

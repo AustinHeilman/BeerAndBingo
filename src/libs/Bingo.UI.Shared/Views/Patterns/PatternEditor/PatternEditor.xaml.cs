@@ -1,5 +1,4 @@
 using Bingo.Core.Patterns;
-using Microsoft.Maui.Controls.Shapes;
 
 namespace Bingo.UI.Shared.Views.Patterns;
 
@@ -122,11 +121,11 @@ public partial class PatternEditor : ContentView
 
 	private void ToggleCell(int row, int col)
 	{
-		System.Diagnostics.Debug.WriteLine($"ToggleCell called for ({row},{col})");
+		//System.Diagnostics.Debug.WriteLine($"ToggleCell called for ({row},{col})");
 
 		if (_cellMap.TryGetValue((row, col), out var cell))
 		{
-			System.Diagnostics.Debug.WriteLine($"Toggled ({row},{col}) -> {cell.IsActive}");
+			//System.Diagnostics.Debug.WriteLine($"Toggled ({row},{col}) -> {cell.IsActive}");
 
 			cell.IsActive = !cell.IsActive;
 			UpdatePatternVisuals();

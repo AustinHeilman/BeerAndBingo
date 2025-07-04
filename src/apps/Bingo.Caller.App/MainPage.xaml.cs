@@ -3,7 +3,6 @@ using Bingo.UI.Shared.Views.Patterns;
 using Bingo.ViewModel.MainPage;
 using CommunityToolkit.Mvvm.Messaging;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace Bingo.Caller.App;
@@ -99,7 +98,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 				viewModel.ResetSession();
 			}
 		});
-		
+
 		UndoPickCommand = new Command(async () =>
 		{
 			bool confirm = await DisplayAlert("Undo", "Undo last action?", "Yes", "No");

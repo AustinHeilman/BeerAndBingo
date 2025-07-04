@@ -1,20 +1,17 @@
 ﻿using Bingo.Core.Patterns;
-using Bingo.Services.Patterns;
 using System.Collections.ObjectModel;
 
 namespace Bingo.ViewModel.Patterns;
 
 public class PatternDisplayViewModel
 {
-	private readonly IPatternRepository _repository;
+	private readonly PatternRepositoryBase _repository;
 
 	public ObservableCollection<PatternCell> PatternCells { get; } = new();
 
-	public PatternDisplayViewModel(IPatternRepository repository)
+	public PatternDisplayViewModel(PatternRepositoryBase repository)
 	{
 		_repository = repository;
-
-		// Optional: preload grid with fully empty default to show gray grid
 		LoadFromPattern(BingoPattern.EmptyPattern);
 	}
 

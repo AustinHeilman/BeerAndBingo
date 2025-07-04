@@ -1,6 +1,6 @@
-﻿using Bingo.AppServices.Patterns;
-using Bingo.Core.Domain.Bingo;
+﻿using Bingo.Core.Domain.Bingo;
 using Bingo.Core.FlashBoard.Events;
+using Bingo.Core.Patterns;
 using Bingo.ViewModel.FlashBoard;
 using Bingo.ViewModel.GameInfo;
 using Bingo.ViewModel.Patterns;
@@ -16,6 +16,7 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 {
 	private readonly BingoSession _session = new();
 	private readonly FlashBoardSyncService _sync;
+	private readonly PatternRepositoryBase _repository;
 
 	public GameInfoPanelViewModel GameInfoVM { get; }
 	public FlashBoardViewModel FlashBoardVM { get; }
@@ -36,10 +37,14 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	public bool IsReplaying => _replayCts is not null;
 
 
-	public CallerMainPageViewModel()
+	public CallerMainPageViewModel(PatternRepositoryBase repository)
 	{
+		_repository = repository;
 		_sync = new FlashBoardSyncService(_session);
 		FlashBoardVM = new FlashBoardViewModel(_session, _sync.Board);
+		GameInfoVM = new GameInfoPanelViewModel(_session);
+		PatternVM = new PatternDisplayViewModel(repository);
+
 		_session.ItemCalled += (sender, item) =>
 		{
 			Core.FlashBoard.FlashBoardNumber? cell = _sync.Board.AllCells.FirstOrDefault(c => c.Number == item);
@@ -51,7 +56,6 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 		};
 
 		GameInfoVM = new GameInfoPanelViewModel(_session);
-		PatternVM = new PatternDisplayViewModel(new DefaultPatternRepository());
 
 		_ = PatternVM.LoadPatternAsync("None");
 
