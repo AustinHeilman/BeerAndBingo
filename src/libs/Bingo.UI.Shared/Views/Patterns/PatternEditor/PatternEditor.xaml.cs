@@ -54,21 +54,16 @@ public partial class PatternEditor : ContentView
 		{
 			for (int c = 0; c < cols; c++)
 			{
+				int row = r; // capture loop variable
+				int col = c;
+
 				Border border = new()
 				{
-					Padding = 0,
-					Margin = new Thickness(0),
-					Stroke = Colors.Black,
-					StrokeThickness = 1,
-					Background = Colors.LightGray,
-					StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(1) },
-					HorizontalOptions = LayoutOptions.Fill,
-					VerticalOptions = LayoutOptions.Fill,
-					BindingContext = (r, c)
+					// ... your existing styling
 				};
 
 				var tap = new TapGestureRecognizer();
-				tap.Tapped += (_, _) => ToggleCell(r, c);
+				tap.Tapped += (_, _) => ToggleCell(row, col); // use captured vars
 				border.GestureRecognizers.Add(tap);
 
 				PatternGrid.Children.Add(border);
@@ -94,7 +89,8 @@ public partial class PatternEditor : ContentView
 			FontSize = 16,
 			Opacity = (row == 2 && col == 2) ? 0.1 : 0.35,
 			HorizontalOptions = LayoutOptions.Center,
-			VerticalOptions = LayoutOptions.Center
+			VerticalOptions = LayoutOptions.Center,
+			InputTransparent = true // allows tap to pass to Border below
 		};
 
 		Grid.SetRow(label, row);
@@ -107,9 +103,6 @@ public partial class PatternEditor : ContentView
 		GraphicsView starView = new()
 		{
 			Drawable = new StarDrawable(),
-			HorizontalOptions = LayoutOptions.Fill,
-			VerticalOptions = LayoutOptions.Fill,
-			Margin = new Thickness(4),
 			InputTransparent = true
 		};
 
@@ -129,8 +122,12 @@ public partial class PatternEditor : ContentView
 
 	private void ToggleCell(int row, int col)
 	{
+		System.Diagnostics.Debug.WriteLine($"ToggleCell called for ({row},{col})");
+
 		if (_cellMap.TryGetValue((row, col), out var cell))
 		{
+			System.Diagnostics.Debug.WriteLine($"Toggled ({row},{col}) -> {cell.IsActive}");
+
 			cell.IsActive = !cell.IsActive;
 			UpdatePatternVisuals();
 		}

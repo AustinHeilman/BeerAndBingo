@@ -3,6 +3,7 @@
 			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 			 x:Class="Bingo.UI.Shared.Views.Patterns.CreatePatternView"
 			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
+			 xmlns:helpers="clr-namespace:Bingo.UI.Shared.Helpers;assembly=Bingo.UI.Shared"
 			 xmlns:editor="clr-namespace:Bingo.UI.Shared.Views.Patterns;assembly=Bingo.UI.Shared"
 			 BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#2B2B2B}">
 
@@ -36,8 +37,13 @@
 		</VerticalStackLayout>
 
 		<!-- Right: Grid Editor -->
-		<ContentView Grid.Column="1">
+		<Grid Grid.Column="1">
+			<Grid.GestureRecognizers>
+				<TapGestureRecognizer Command="{x:Static helpers:NoOpCommand.Instance}" />
+			</Grid.GestureRecognizers>
+
 			<editor:PatternEditor PatternLayout="{Binding EditableCells}" />
-		</ContentView>
+		</Grid>
+
 	</Grid>
 </ContentView>

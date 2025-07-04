@@ -8,11 +8,26 @@ public class CloseCreatePatternMessage { }
 
 public partial class CreatePatternView : ContentView
 {
+	public ICommand NoOpCommand { get; } = new Command(() => { });
+
 	public string PatternName { get; set; } = "";
 	public ICommand SaveCommand { get; }
 	public ICommand CancelCommand { get; }
 	public Action? RequestClose { get; set; }
-	public HashSet<PatternCell> EditableCells { get; } = BingoPattern.EmptyPattern.Cells;
+
+	private HashSet<PatternCell> _editableCells = BingoPattern.EmptyPattern.Cells;
+	public HashSet<PatternCell> EditableCells
+	{
+		get => _editableCells;
+		set
+		{
+			if (_editableCells != value)
+			{
+				_editableCells = value;
+				OnPropertyChanged(nameof(EditableCells));
+			}
+		}
+	}
 
 	public CreatePatternView()
 	{
@@ -25,6 +40,7 @@ public partial class CreatePatternView : ContentView
 
 		CancelCommand = new Command(() =>
 		{
+			EditableCells = new HashSet<PatternCell>(BingoPattern.EmptyPattern.Cells);
 			WeakReferenceMessenger.Default.Send(new CloseCreatePatternMessage());
 		});
 
