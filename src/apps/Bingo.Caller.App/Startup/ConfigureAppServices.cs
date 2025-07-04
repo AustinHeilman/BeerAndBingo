@@ -5,6 +5,7 @@ using Bingo.UI.Shared.Services;
 using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.UI.Shared.Views.Patterns;
 using Bingo.ViewModel.MainPage;
+using Bingo.ViewModel.Patterns;
 using System.Diagnostics;
 
 namespace Bingo.Caller.App.Startup;
@@ -28,8 +29,8 @@ public static class ConfigureAppServices
 		});
 		builder.Services.AddSingleton<PatternRepositoryBase>(provider =>provider.GetRequiredService<FilePatternRepository>());
 		
-		builder.Services.AddTransient<CreatePatternView>();
-		builder.Services.AddTransient<PatternMainPageView>();
+		builder.Services.AddTransient<CreatePatternView>();		
+		builder.Services.AddTransient<PatternMainPageViewModel>();		
 
 		builder.Services.AddAppServices();
 		return builder;

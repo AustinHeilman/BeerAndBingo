@@ -4,15 +4,17 @@ using Bingo.Core.Patterns;
 using Bingo.ViewModel.FlashBoard;
 using Bingo.ViewModel.GameInfo;
 using Bingo.ViewModel.Patterns;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bingo.ViewModel.MainPage;
 
-public class CallerMainPageViewModel : INotifyPropertyChanged
+public partial class CallerMainPageViewModel : ObservableObject
 {
 	private readonly BingoSession _session = new();
 	private readonly FlashBoardSyncService _sync;
@@ -35,6 +37,21 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 
 	private CancellationTokenSource? _replayCts;
 	public bool IsReplaying => _replayCts is not null;
+
+	[ObservableProperty]
+	private bool isPatternSheetVisible;
+
+	[RelayCommand]
+	private void ShowPatternSheet()
+	{
+		IsPatternSheetVisible = true;
+	}
+
+	[RelayCommand]
+	private void HidePatternSheet()
+	{
+		IsPatternSheetVisible = false;
+	}
 
 
 	public CallerMainPageViewModel(PatternRepositoryBase repository)
@@ -192,8 +209,4 @@ public class CallerMainPageViewModel : INotifyPropertyChanged
 	#endregion
 
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
-
-	public event PropertyChangedEventHandler? PropertyChanged;
-	protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
-		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

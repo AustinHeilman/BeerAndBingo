@@ -9,16 +9,16 @@
 		  VerticalOptions="Center">
 		<HorizontalStackLayout Spacing="12">			
 			<controls:IconButton IconName="button_create_pattern"
-								 Command="{Binding page.ShowCreatePatternCommand}"
+								 Command="{Binding CreatePatternCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_load_pattern"
-								 Command="{Binding LoadCommand}"
+								 Command="{Binding LoadPatternCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_clear_pattern"
-								 Command="{Binding ClearCommand, Source={x:Reference self}}"
+								 Command="{Binding ClearPatternCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 			<controls:IconButton IconName="button_close"
-								 Command="{Binding page.HidePatternSheetCommand}"
+								 Command="{Binding CloseSheetCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 		</HorizontalStackLayout>
 	</Grid>
