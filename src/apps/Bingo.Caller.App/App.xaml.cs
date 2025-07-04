@@ -1,4 +1,6 @@
 ﻿using Bingo.Caller.App.Startup;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using System.Diagnostics;
 
 namespace Bingo.Caller.App;
 
@@ -35,8 +37,25 @@ public partial class App : Application
 	{
 		if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS() || OperatingSystem.IsMacCatalyst())
 		{
-			// To-do: Install the default patterns if not already installed
+			await PatternInstaller.InstallPatternsIfFirstLaunchAsync();
 		}
+
+#if DEBUG
+		try
+		{
+			//var patternService = Ioc.Resolve<IPatternService>(); // adjust if you're using DI directly
+			// DI the pattern repository service?
+			var patterns = await patternService.GetPatternNamesAsync();
+
+			Debug.WriteLine(" Saved Patterns on Startup:");
+			foreach (var name in patterns)
+				Debug.WriteLine($"   - {name}");
+		}
+		catch (Exception ex)
+		{
+			Debug.WriteLine($" Error loading saved patterns: {ex.Message}");
+		}
+#endif
 
 		await Task.Delay(1);
 	}
