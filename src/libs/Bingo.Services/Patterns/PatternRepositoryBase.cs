@@ -1,6 +1,8 @@
-﻿using System.Diagnostics;
+﻿using Bingo.Services.Patterns.Events;
+using System.Diagnostics;
+using System.Text;
 using System.Text.Json;
-
+using CommunityToolkit.Mvvm.Messaging;
 namespace Bingo.Core.Patterns;
 
 public abstract class PatternRepositoryBase
@@ -63,6 +65,9 @@ public abstract class PatternRepositoryBase
 		if (!Directory.Exists(GetSaveDirectory()))
 			Directory.CreateDirectory(GetSaveDirectory()); //Create it before trying to read
 
+		StringBuilder dbg = new StringBuilder();
+		dbg.AppendLine($"[Vault] Initializing pattern repository at {GetSaveDirectory()}");
+		dbg.Append($"[Vault] Loaded Patterns:");
 		var files = Directory.EnumerateFiles(GetSaveDirectory(), FileSearchPattern, SearchOption.TopDirectoryOnly);
 		foreach (var file in files)
 		{
@@ -75,7 +80,7 @@ public abstract class PatternRepositoryBase
 					var pattern = dto.ToDomain(); // your extension method
 					var fileInfo = new FileInfo(file);
 					PatternIndex[pattern.Name] = WrapPattern(pattern, fileInfo);
-					Debug.WriteLine($"[Vault] Loaded pattern: {pattern.Name}");
+					dbg.Append(pattern.Name + ", ");
 				}
 			}
 			catch (Exception ex)
@@ -83,9 +88,78 @@ public abstract class PatternRepositoryBase
 				Debug.WriteLine($"Skipped malformed pattern file '{file}': {ex.Message}");
 			}
 		}
+		Debug.WriteLine(dbg.ToString());
 	}
 	public virtual bool HasPatternNamed(string name) => PatternIndex.ContainsKey(name);
 
 	protected virtual BingoPatternFile WrapPattern(BingoPattern pattern, FileInfo file) =>
 	BingoPatternFile.From(pattern, file);
+
+	public async Task AddOrUpdatePattern(BingoPattern pattern)
+	{
+		if (string.IsNullOrWhiteSpace(pattern.Name) || pattern.Cells == null || pattern.Cells.Count == 0)
+		{
+			Debug.WriteLine("[Vault] Skipped AddOrUpdate: invalid pattern");
+			return;
+		}
+
+		if (PatternIndex.TryGetValue(pattern.Name, out var existing))
+		{
+			Debug.WriteLine($"[Vault] Updating pattern: {pattern.Name}");
+			existing.Cells = pattern.Cells;
+			await existing.SaveAsync();
+		}
+		else
+		{
+			var file = new FileInfo(Path.Combine(GetSaveDirectory(), $"{Guid.NewGuid()}-pattern.json"));
+			var newFile = BingoPatternFile.From(pattern, file);
+			PatternIndex[pattern.Name] = newFile;
+			Debug.WriteLine($"[Vault] Adding new pattern: {pattern.Name}");
+			await newFile.SaveAsync();
+		}
+	}
+
+	public async Task AddOrUpdatePattern(string name, IEnumerable<PatternCell> cells)
+	{
+		var pattern = new BingoPattern
+		{
+			Name = name,
+			Cells = new HashSet<PatternCell>(cells)
+		};
+
+		await AddOrUpdatePattern(pattern);
+	}
+
+	public virtual bool RemovePattern(string patternName)
+	{
+		if (!PatternIndex.TryGetValue(patternName, out var patternFile))
+		{
+			Debug.WriteLine($"[Vault] Remove skipped: '{patternName}' not found in index.");
+			return false;
+		}
+
+		try
+		{
+			patternFile.Delete(); // Will only delete if file exists
+			PatternIndex.Remove(patternName);
+
+			Debug.WriteLine($"[Vault] Removed pattern: {patternName}");
+			return true;
+		}
+		catch (Exception ex)
+		{
+			Debug.WriteLine($"[Vault] Failed to delete pattern '{patternName}': {ex.Message}");
+			return false;
+		}
+	}
+
+	#region Active Pattern Management
+	public BingoPattern? ActivePattern { get; protected set; }
+
+	public virtual void SetActivePattern(BingoPattern? pattern)
+	{
+		ActivePattern = pattern ?? BingoPattern.EmptyPattern;
+		WeakReferenceMessenger.Default.Send(new PatternChangedEvent(ActivePattern));
+	}
+	#endregion
 }

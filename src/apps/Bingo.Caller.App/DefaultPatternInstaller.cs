@@ -16,10 +16,10 @@ public static class DefaultPatternInstaller
 	{
 		const string installKey = "ArePatternsInstalled";
 
-		//if (Preferences.Default.Get(installKey, false))
-		//	return;
+		if (Preferences.Default.Get(installKey, false))
+			return;
 
-		await Task.Delay(500); // Ensure the app is fully initialized before checking preferences
+		await Task.Delay(50); // Ensure the app is fully initialized before checking preferences
 		try
 		{
 			using var stream = await FileSystem.OpenAppPackageFileAsync("patterns.json");
@@ -36,6 +36,7 @@ public static class DefaultPatternInstaller
 			await repository.InitializeAsync();
 			Debug.WriteLine($"[Installer] Repo initialized — patterns loaded: {repository.LoadAllFromFilesAsync().Result.Count()}");
 			Debug.WriteLine($"[Installer] Repository saving patterns to {repository.GetSaveDirectory()}");
+			await Task.Delay(100); // Give repository time to initialize
 
 			foreach (var dto in dtos)
 			{
@@ -54,7 +55,7 @@ public static class DefaultPatternInstaller
 				}
 
 				await repository.SaveAsync(pattern);
-				Debug.WriteLine($"[Installer] Saved pattern: {pattern.Name}");
+				//Debug.WriteLine($"[Installer] Saved pattern: {pattern.Name}");
 			}
 
 			Preferences.Default.Set(installKey, true);

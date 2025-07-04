@@ -1,5 +1,7 @@
 using Bingo.Core.Patterns;
+using Bingo.Services.Patterns;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Diagnostics;
 using System.Windows.Input;
 namespace Bingo.UI.Shared.Views.Patterns;
 
@@ -9,6 +11,7 @@ public class CloseCreatePatternMessage { }
 public partial class CreatePatternView : ContentView
 {
 	public ICommand NoOpCommand { get; } = new Command(() => { });
+	private readonly FilePatternRepository _repository;
 
 	public string PatternName { get; set; } = "";
 	public ICommand SaveCommand { get; }
@@ -29,14 +32,31 @@ public partial class CreatePatternView : ContentView
 		}
 	}
 
-	public CreatePatternView()
+	public CreatePatternView(FilePatternRepository repository)
 	{
 		InitializeComponent();
-
-		SaveCommand = new Command(() =>
+		_repository = repository;
+		
+		SaveCommand = new Command(async () =>
 		{
-			// TODO: save new BingoPattern with PatternName and current EditableCells
+			if (string.IsNullOrWhiteSpace(PatternName))
+			{
+				Debug.WriteLine("[CreatePatternView] Save aborted: PatternName is empty.");
+				return;
+			}
+
+			var pattern = new BingoPattern
+			{
+				Name = PatternName.Trim(),
+				Cells = new HashSet<PatternCell>(EditableCells)
+			};
+
+			await _repository.AddOrUpdatePattern(pattern);
+			Debug.WriteLine($"[CreatePatternView] Saved pattern: {pattern.Name}");
+
+			WeakReferenceMessenger.Default.Send(new CloseCreatePatternMessage());
 		});
+
 
 		CancelCommand = new Command(() =>
 		{

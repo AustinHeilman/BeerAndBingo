@@ -182,7 +182,7 @@
 				  HeightRequest="{OnIdiom Desktop=420, Tablet=360, Phone=300}"
 				  Padding="24"
 				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
-				<patterns:CreatePatternView />
+				<ContentView x:Name="CreatePatternHost" />
 			</Grid>
 		</ContentView>
 

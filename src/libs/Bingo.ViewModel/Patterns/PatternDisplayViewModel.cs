@@ -1,4 +1,6 @@
 ﻿using Bingo.Core.Patterns;
+using Bingo.Services.Patterns.Events;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
 
 namespace Bingo.ViewModel.Patterns;
@@ -13,6 +15,11 @@ public class PatternDisplayViewModel
 	{
 		_repository = repository;
 		LoadFromPattern(BingoPattern.EmptyPattern);
+
+		WeakReferenceMessenger.Default.Register<PatternChangedEvent>(this, (r, m) =>
+		{
+			LoadFromPattern(m.Pattern); // your viewmodel method
+		});
 	}
 
 	public async Task LoadPatternAsync(string name)

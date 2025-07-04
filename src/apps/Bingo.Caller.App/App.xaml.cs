@@ -48,24 +48,6 @@ public partial class App : Application
 				Debug.WriteLine($"[App.OnStart] Pattern installation failed: {ex.Message}");
 			}
 		}
-
-#if DEBUG
-		try
-		{
-			var patternRepo = _serviceProvider.GetRequiredService<PatternRepositoryBase>();
-			var patterns = await patternRepo.LoadAllFromFilesAsync();
-
-			Debug.WriteLine("[App.OnStart] Saved saved patterns on Startup list:");
-			foreach (var pattern in patterns)
-				Debug.WriteLine($"   - {pattern.Name}");
-		}
-		catch (Exception ex)
-		{
-			Debug.WriteLine($"Error loading saved patterns: {ex.Message}");
-		}
-#endif
-
-
 		await Task.Delay(50); // Prevents thread hiccups; safe as a stub
 	}
 }
