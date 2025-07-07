@@ -67,7 +67,7 @@ public partial class CallerMainPageViewModel : ObservableObject
 			Core.FlashBoard.FlashBoardNumber? cell = _sync.Board.AllCells.FirstOrDefault(c => c.Number == item);
 			if (cell != null)
 			{
-				Debug.WriteLine($"[ItemCalled Handler] Applying call to number {item}");
+				//Debug.WriteLine($"[ItemCalled Handler] Applying call to number {item}");
 				cell.SetCalled(true, FlashBoardEventSource.Manual);
 			}
 		};
@@ -106,11 +106,7 @@ public partial class CallerMainPageViewModel : ObservableObject
 	private void NotifySessionUpdate()
 	{
 		OnPropertyChanged(nameof(UndoPickCommand));
-		OnPropertyChanged(nameof(RedoPickCommand));
-
-		// Optional: Trigger any manual updates for UI-bound properties
-		// FlashBoardVM.NotifyChange();
-		// GameInfoVM.NotifyChange();
+		OnPropertyChanged(nameof(RedoPickCommand));		
 	}
 
 	private bool _isToolsPanelVisible;
