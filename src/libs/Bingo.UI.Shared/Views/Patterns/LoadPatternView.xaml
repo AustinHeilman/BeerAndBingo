@@ -27,14 +27,37 @@
 						BackgroundColor="{AppThemeBinding Light=#FDFDFD, Dark=#1A1A1A}">
 			<CollectionView.ItemTemplate>
 				<DataTemplate x:DataType="core:BingoPattern">
-					<Border Padding="6"
+					<Border x:Name="ItemBorder"
+							Padding="6"
 							Margin="0,2"
 							Stroke="Gray"
 							StrokeThickness="1"
 							BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#222}">
-						<Label Text="{Binding Name}"
+						<Label x:Name="ItemLabel"
+							   Text="{Binding Name}"
 							   FontSize="14"
-							   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+							   TextColor="{AppThemeBinding Light=Black, Dark=White}">
+							<Label.Triggers>
+								<DataTrigger TargetType="Label"
+											 Binding="{Binding Source={x:Reference Root}, Path=SelectedPattern}"
+											 Value="{Binding .}">
+									<Setter Property="FontAttributes"
+											Value="Bold" />
+								</DataTrigger>
+							</Label.Triggers>
+						</Label>
+
+						<Border.Triggers>
+							<DataTrigger TargetType="Border"
+										 Binding="{Binding Source={x:Reference Root}, Path=SelectedPattern}"
+										 Value="{Binding .}">
+								<Setter Property="Stroke"
+										Value="Goldenrod" />
+								<Setter Property="StrokeThickness"
+										Value="2" />
+							</DataTrigger>
+						</Border.Triggers>
+
 						<Border.GestureRecognizers>
 							<TapGestureRecognizer Command="{x:Null}" />
 						</Border.GestureRecognizers>
