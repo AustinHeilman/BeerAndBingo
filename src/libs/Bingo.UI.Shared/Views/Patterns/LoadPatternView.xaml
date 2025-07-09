@@ -4,42 +4,41 @@
 			 xmlns:core="clr-namespace:Bingo.Core.Patterns;assembly=Bingo.Core"
 			 xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
 			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
+			 xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
 			 x:Class="Bingo.UI.Shared.Views.Patterns.LoadPatternView"
 			 x:Name="Root">
 
-	<Grid ColumnDefinitions="*,2*"
+	<ContentView.Resources>
+		<conv:NotNullToBoolConverter x:Key="NotNullToBoolConverter" />
+	</ContentView.Resources>
+
+	<Grid ColumnDefinitions="1.2*,1.8*"
 		  RowDefinitions="*,Auto"
 		  Padding="12"
 		  ColumnSpacing="18"
 		  RowSpacing="18">
 
 		<!-- 📁 Scrollable Pattern List -->
-		<ScrollView Grid.Column="0"
-					VerticalOptions="Fill"
-					HorizontalOptions="Fill">
-			<VerticalStackLayout Spacing="6">
-				<Label Text="Saved Patterns"
-					   FontSize="16"
-					   FontAttributes="Bold"
-					   Margin="0,0,0,6" />
-
-				<CollectionView ItemsSource="{Binding SavedPatterns}"
-								SelectionMode="Single"
-								SelectedItem="{Binding SelectedPattern, Mode=TwoWay}">
-					<CollectionView.ItemTemplate>
-						<DataTemplate x:DataType="core:BingoPattern">
-							<Border Padding="6"
-									Stroke="Gray"
-									BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#1A1A1A}"
-									StrokeThickness="1">
-								<Label Text="{Binding Name}"
-									   FontSize="14" />
-							</Border>
-						</DataTemplate>
-					</CollectionView.ItemTemplate>
-				</CollectionView>
-			</VerticalStackLayout>
-		</ScrollView>
+		<CollectionView Grid.Column="0"
+						ItemsSource="{Binding SavedPatterns}"
+						SelectionMode="Single"
+						SelectedItem="{Binding SelectedPattern, Mode=TwoWay}"
+						VerticalOptions="Fill"
+						BackgroundColor="{AppThemeBinding Light=#FDFDFD, Dark=#1A1A1A}">
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="core:BingoPattern">
+					<Border Padding="6"
+							Margin="0,2"
+							Stroke="Gray"
+							StrokeThickness="1"
+							BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#222}">
+						<Label Text="{Binding Name}"
+							   FontSize="14"
+							   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+					</Border>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
 
 		<!-- 🔲 Pattern Preview Grid -->
 		<Border Grid.Column="1"
@@ -59,14 +58,15 @@
 							   Grid.ColumnSpan="2"
 							   HorizontalOptions="Center"
 							   Spacing="24">
+
 			<controls:IconButton IconName="button_load_pattern"
 								 Command="{Binding ConfirmLoadCommand}"
-								 IconSize="{OnIdiom Desktop=64, Tablet=54, Phone=48}"
-								 IsEnabled="{Binding SelectedPattern}" />
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}"
+								 IsEnabled="{Binding SelectedPattern, Converter={StaticResource NotNullToBoolConverter}}" />
 
 			<controls:IconButton IconName="button_close"
 								 Command="{Binding CloseCommand}"
-								 IconSize="{OnIdiom Desktop=64, Tablet=54, Phone=48}" />
+								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
 		</HorizontalStackLayout>
 	</Grid>
 </ContentView>

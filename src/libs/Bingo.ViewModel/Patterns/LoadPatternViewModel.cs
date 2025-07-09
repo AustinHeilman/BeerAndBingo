@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 
 namespace Bingo.ViewModel.Patterns;
 
@@ -19,15 +20,20 @@ public partial class LoadPatternViewModel : ObservableObject
 	public LoadPatternViewModel(PatternRepositoryBase repository)
 	{
 		_repository = repository;
+		Debug.WriteLine("[LoadPatternViewModel] Constructor entered");
 		LoadCachedPatterns();
 	}
+
 
 	private void LoadCachedPatterns()
 	{
 		SavedPatterns.Clear();
 		var patterns = _repository.GetAllPatternsAsync().GetAwaiter().GetResult();
 		foreach (var pattern in patterns)
+		{
+			Debug.WriteLine($"[LoadCachedPatterns] {pattern.Name}");
 			SavedPatterns.Add(pattern);
+		}
 	}
 
 	[RelayCommand]

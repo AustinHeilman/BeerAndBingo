@@ -32,8 +32,18 @@ public static class ConfigureAppServices
 		builder.Services.AddTransient<CreatePatternView>();
 		builder.Services.AddTransient<PatternMainPageViewModel>();
 		builder.Services.AddTransient<PatternMainPageView>();
-		builder.Services.AddTransient<LoadPatternView>();
-		builder.Services.AddTransient<LoadPatternViewModel>();
+		builder.Services.AddTransient<LoadPatternViewModel>(provider =>
+		{
+			Debug.WriteLine("[DI] Constructing LoadPatternViewModel");
+			return new LoadPatternViewModel(provider.GetRequiredService<PatternRepositoryBase>());
+		});
+		builder.Services.AddTransient<LoadPatternView>(provider =>
+		{
+			Debug.WriteLine("[DI] Constructing LoadPatternView");
+			var repo = provider.GetRequiredService<PatternRepositoryBase>();
+			var vm = new LoadPatternViewModel(repo);
+			return new LoadPatternView(vm);
+		});
 
 		builder.Services.AddAppServices();
 		return builder;
