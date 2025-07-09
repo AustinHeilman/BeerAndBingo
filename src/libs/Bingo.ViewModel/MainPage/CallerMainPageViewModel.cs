@@ -6,11 +6,8 @@ using Bingo.ViewModel.GameInfo;
 using Bingo.ViewModel.Patterns;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bingo.ViewModel.MainPage;
 
@@ -106,7 +103,7 @@ public partial class CallerMainPageViewModel : ObservableObject
 	private void NotifySessionUpdate()
 	{
 		OnPropertyChanged(nameof(UndoPickCommand));
-		OnPropertyChanged(nameof(RedoPickCommand));		
+		OnPropertyChanged(nameof(RedoPickCommand));
 	}
 
 	private bool _isToolsPanelVisible;
@@ -205,4 +202,9 @@ public partial class CallerMainPageViewModel : ObservableObject
 	#endregion
 
 	public string ToolsPanelToggleIcon => IsToolsPanelVisible ? "collapse" : "expand";
+
+	public void SetFlightBarExpanded(bool isExpanded)
+	{
+		IsToolsPanelVisible = isExpanded;
+	}
 }

@@ -6,7 +6,7 @@ public static class RandomPatternGenerator
 
 	private static readonly string[] Prefixes = { "Wiggly", "Turbo", "Sneaky", "Quantum", "Lucky", "Zebra", "Shadow", "Emperor", "Damned" };
 	private static readonly string[] Nouns = { "Waffle", "Rocket", "Goose", "Banana", "Fork", "Spoon", "Car", "Missionary", "FleshyPickle", "Meteor", "Slug", "Number" };
-	private static readonly string[] Suffixes = { "", "Jr", "XL", "Prime", "of Doom", "2000", "Void", "Sr", "The Great", "67"};
+	private static readonly string[] Suffixes = { "", "Jr", "XL", "Prime", "of Doom", "2000", "Void", "Sr", "The Great", "67" };
 
 	public static string RandomPatternName()
 	{

@@ -1,5 +1,4 @@
 ﻿using Bingo.Caller.App.Startup;
-using Bingo.Core.Patterns;
 using Bingo.Services.Patterns;
 using System.Diagnostics;
 

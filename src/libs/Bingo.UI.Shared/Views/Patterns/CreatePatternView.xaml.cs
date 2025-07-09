@@ -36,7 +36,7 @@ public partial class CreatePatternView : ContentView
 	{
 		InitializeComponent();
 		_repository = repository;
-		
+
 		SaveCommand = new Command(async () =>
 		{
 			if (string.IsNullOrWhiteSpace(PatternName))
@@ -54,7 +54,7 @@ public partial class CreatePatternView : ContentView
 			await _repository.AddOrUpdatePattern(pattern);
 			Debug.WriteLine($"[CreatePatternView] Saved pattern: {pattern.Name}");
 			_repository.SetActivePattern(pattern);
-			
+
 			WeakReferenceMessenger.Default.Send(new CloseCreatePatternMessage());
 		});
 

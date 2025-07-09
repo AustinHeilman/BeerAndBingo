@@ -25,7 +25,7 @@ public static class DefaultPatternInstaller
 			using var stream = await FileSystem.OpenAppPackageFileAsync("patterns.json");
 			using var reader = new StreamReader(stream);
 			string json = await reader.ReadToEndAsync();
-			
+
 			var dtos = JsonSerializer.Deserialize<List<PatternJsonModel>>(json);
 			if (dtos == null || dtos.Count == 0)
 			{

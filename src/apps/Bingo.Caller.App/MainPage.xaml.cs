@@ -22,6 +22,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 	private readonly CreatePatternView _createPatternView;
 	private readonly LoadPatternView _loadPatternView;
 	private readonly PatternMainPageView _patternMainpageView;
+	private readonly CallerMainPageViewModel _viewModel;
 
 	public bool NextClockVisible
 	{
@@ -50,7 +51,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel, 
+	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel,
 		CreatePatternView createPatternView, PatternMainPageView patternMainpageView, LoadPatternView loadPatternView)
 	{
 		InitializeComponent();
@@ -62,6 +63,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		_createPatternView = createPatternView;
 		_loadPatternView = loadPatternView;
 		_patternMainpageView = patternMainpageView;
+		_viewModel = viewModel;
 
 		NextClockOverlay.RequestClose += (_, _) => CollapseTimerUI();
 
@@ -72,6 +74,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 				NextClockOverlay.ViewModel.IsReadOnly = false;
 				NextClockOverlay.ViewModel.SetTimer(TimeSpan.FromMinutes(10));
 				NextClockVisible = true;
+				_viewModel.SetFlightBarExpanded(false);
 			}
 			else
 			{
@@ -105,6 +108,8 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 			if (confirm)
 			{
 				viewModel.ResetSession();
+				_viewModel.SetFlightBarExpanded(false);
+
 			}
 		});
 
@@ -148,7 +153,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 			ShowCreatePatternCommand.Execute(null);
 		});
 
-		BindingContext = new { viewModel, page = this };		
+		BindingContext = new { viewModel, page = this };
 	}
 
 	private void CollapseTimerUI()
@@ -179,6 +184,9 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 
 		// Reset vertical position before animating in
 		CreatePatternContainer.TranslationY = 400;
+
+		// Collapse flight bar
+		_viewModel.SetFlightBarExpanded(false);
 
 		IsPatternSheetVisible = true;
 		await PatternSheetContainer.TranslateTo(0, 0, 300, Easing.SinOut);
@@ -254,7 +262,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		await LoadPatternContainer.TranslateTo(0, 400, 250, Easing.SinIn);
 		IsLoadPatternVisible = false;
 	});
-	
+
 	#endregion
 
 	private async Task QuitAppAsync()

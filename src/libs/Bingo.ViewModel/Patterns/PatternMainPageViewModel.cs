@@ -1,8 +1,8 @@
 ﻿using Bingo.Core.Patterns;
+using Bingo.ViewModel.Messages.Patterns;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Bingo.ViewModel.Messages.Patterns;
 
 namespace Bingo.ViewModel.Patterns;
 

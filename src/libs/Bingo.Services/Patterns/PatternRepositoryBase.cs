@@ -1,8 +1,8 @@
 ﻿using Bingo.Services.Patterns.Events;
+using CommunityToolkit.Mvvm.Messaging;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
-using CommunityToolkit.Mvvm.Messaging;
 namespace Bingo.Core.Patterns;
 
 public abstract class PatternRepositoryBase
