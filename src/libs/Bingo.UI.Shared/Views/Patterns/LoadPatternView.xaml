@@ -9,6 +9,9 @@
 			 x:Name="Root">
 
 	<ContentView.Resources>
+		<conv:SelectedPatternToFontConverter x:Key="SelectedPatternToFontConverter" />
+		<conv:SelectedPatternToStrokeConverter x:Key="SelectedPatternToStrokeConverter" />
+
 		<conv:NotNullToBoolConverter x:Key="NotNullToBoolConverter" />
 	</ContentView.Resources>
 
