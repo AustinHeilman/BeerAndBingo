@@ -34,7 +34,7 @@ public static class DefaultPatternInstaller
 			}
 
 			await repository.InitializeAsync();
-			Debug.WriteLine($"[Installer] Repo initialized — patterns loaded: {repository.LoadAllFromFilesAsync().Result.Count()}");
+			Debug.WriteLine($"[Installer] Repo initialized — patterns loaded: {repository.GetAllPatternsAsync().Result.Count()}");
 			Debug.WriteLine($"[Installer] Repository saving patterns to {repository.GetSaveDirectory()}");
 			await Task.Delay(100); // Give repository time to initialize
 

@@ -152,6 +152,11 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		{
 			ShowCreatePatternCommand.Execute(null);
 		});
+		WeakReferenceMessenger.Default.Register<CloseLoadPatternMessage>(this, (_, _) =>
+		{
+			HideLoadPatternCommand.Execute(null);
+		});
+
 
 		BindingContext = new { viewModel, page = this };
 	}

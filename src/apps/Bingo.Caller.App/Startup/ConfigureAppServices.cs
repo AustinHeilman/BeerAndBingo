@@ -33,6 +33,7 @@ public static class ConfigureAppServices
 		builder.Services.AddTransient<PatternMainPageViewModel>();
 		builder.Services.AddTransient<PatternMainPageView>();
 		builder.Services.AddTransient<LoadPatternView>();
+		builder.Services.AddTransient<LoadPatternViewModel>();
 
 		builder.Services.AddAppServices();
 		return builder;

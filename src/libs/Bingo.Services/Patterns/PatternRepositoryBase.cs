@@ -9,7 +9,7 @@ public abstract class PatternRepositoryBase
 {
 	protected readonly Dictionary<string, BingoPatternFile> PatternIndex = new(StringComparer.OrdinalIgnoreCase);
 	protected virtual string FileSearchPattern => "*-pattern.json";
-	public virtual Task<IEnumerable<BingoPattern>> LoadAllFromFilesAsync()
+	public virtual Task<IEnumerable<BingoPattern>> GetAllPatternsAsync()
 	{
 		return Task.FromResult(PatternIndex.Values.Cast<BingoPattern>());
 	}
@@ -152,6 +152,7 @@ public abstract class PatternRepositoryBase
 			return false;
 		}
 	}
+
 
 	#region Active Pattern Management
 	public BingoPattern? ActivePattern { get; protected set; }

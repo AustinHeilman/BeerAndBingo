@@ -192,7 +192,7 @@
 					 HorizontalOptions="Center"
 					 BackgroundColor="#88000000"
 					 IsVisible="{Binding page.IsLoadPatternVisible}"
-					 ZIndex="47">
+					 ZIndex="49">
 			<ContentView.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding page.HideLoadPatternCommand}" />
 			</ContentView.GestureRecognizers>
