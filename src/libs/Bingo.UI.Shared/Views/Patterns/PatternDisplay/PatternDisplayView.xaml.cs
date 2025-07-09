@@ -46,6 +46,7 @@ public partial class PatternDisplayView : ContentView
 	public PatternDisplayView()
 	{
 		InitializeComponent();
+		PatternGrid.SizeChanged += (_, _) => EnforceSquareCells();
 		BuildGrid();
 	}
 
@@ -157,6 +158,22 @@ public partial class PatternDisplayView : ContentView
 			_borderMap[pos].Background = isActive
 				? Colors.Goldenrod
 				: Colors.LightGray;
+		}
+	}
+
+	private void EnforceSquareCells()
+	{
+		if (PatternGrid.Width <= 0 || PatternGrid.Height <= 0)
+			return;
+
+		int cellCount = Math.Max(PatternGridSettings.PatternRowCount, PatternGridSettings.PatternColCount);
+		double side = Math.Min(PatternGrid.Width, PatternGrid.Height);
+		double cellSize = side / cellCount;
+
+		foreach ((int r, int c) in _borderMap.Keys)
+		{
+			_borderMap[(r, c)].WidthRequest = cellSize;
+			_borderMap[(r, c)].HeightRequest = cellSize;
 		}
 	}
 }

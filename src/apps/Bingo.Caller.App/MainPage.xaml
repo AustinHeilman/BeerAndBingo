@@ -59,8 +59,7 @@
 				<ContentView.GestureRecognizers>
 					<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 				</ContentView.GestureRecognizers>
-				<Border WidthRequest="{OnIdiom Phone=140, Tablet=200, Desktop=240}"
-						MinimumHeightRequest="{OnIdiom Phone=160, Tablet=240, Desktop=280}"
+				<Border HorizontalOptions="Center" VerticalOptions="Center"
 						BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#1A1A1A}"
 						StrokeShape="RoundRectangle 6">
 					<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />

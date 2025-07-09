@@ -139,6 +139,14 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		{
 			HidePatternSheetCommand.Execute(null);
 		});
+		WeakReferenceMessenger.Default.Register<OpenLoadPatternMessage>(this, (_, _) =>
+		{
+			ShowLoadPatternCommand.Execute(null);
+		});
+		WeakReferenceMessenger.Default.Register<OpenCreatePatternMessage>(this, (_, _) =>
+		{
+			ShowCreatePatternCommand.Execute(null);
+		});
 
 		BindingContext = new { viewModel, page = this };		
 	}
