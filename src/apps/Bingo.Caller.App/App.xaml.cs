@@ -40,13 +40,15 @@ public partial class App : Application
 			try
 			{
 				var repository = _serviceProvider.GetRequiredService<FilePatternRepository>();
+				await repository.InitializeAsync(); // Make sure the repository is initialized before use
 				await DefaultPatternInstaller.InstallPatternsIfFirstLaunchAsync(repository);
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"[App.OnStart] Pattern installation failed: {ex.Message}");
+				Debug.WriteLine($"[App.OnStart] Pattern setup failed: {ex.Message}");
 			}
 		}
-		await Task.Delay(50); // Prevents thread hiccups; safe as a stub
+
+		await Task.Delay(50); // Optional safeguard against UI thread hiccups
 	}
 }

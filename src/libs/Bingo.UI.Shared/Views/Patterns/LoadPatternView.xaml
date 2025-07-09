@@ -47,9 +47,7 @@
 				StrokeThickness="1"
 				Padding="12"
 				HorizontalOptions="Center"
-				VerticalOptions="Center"
-				WidthRequest="260"
-				HeightRequest="260">
+				VerticalOptions="Center">
 			<patterns:PatternDisplayView PatternCells="{Binding SelectedPattern.Cells}" />
 		</Border>
 

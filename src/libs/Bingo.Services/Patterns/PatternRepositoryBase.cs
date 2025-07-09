@@ -11,6 +11,7 @@ public abstract class PatternRepositoryBase
 	protected virtual string FileSearchPattern => "*-pattern.json";
 	public virtual Task<IEnumerable<BingoPattern>> GetAllPatternsAsync()
 	{
+		Debug.WriteLine($"[Repository] Returning {PatternIndex.Count} pattern(s)");
 		return Task.FromResult(PatternIndex.Values.Cast<BingoPattern>());
 	}
 
