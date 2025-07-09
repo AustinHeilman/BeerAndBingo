@@ -186,6 +186,29 @@
 			</Grid>
 		</ContentView>
 
+		<!-- Slide-Up Load Pattern -->
+		<ContentView x:Name="LoadPatternOverlay"
+					 Grid.RowSpan="2"
+					 VerticalOptions="Center"
+					 HorizontalOptions="Center"
+					 BackgroundColor="#88000000"
+					 IsVisible="{Binding page.IsLoadPatternVisible}"
+					 ZIndex="47">
+			<ContentView.GestureRecognizers>
+				<TapGestureRecognizer Command="{Binding page.HideLoadPatternCommand}" />
+			</ContentView.GestureRecognizers>
+			<Grid x:Name="LoadPatternContainer"
+				  TranslationY="400"
+				  HorizontalOptions="Center"
+				  VerticalOptions="End"
+				  WidthRequest="{OnIdiom Desktop=620, Tablet=520, Phone=360}"
+				  HeightRequest="{OnIdiom Desktop=420, Tablet=360, Phone=300}"
+				  Padding="24"
+				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
+				<ContentView x:Name="LoadPatternHost" />
+			</Grid>
+		</ContentView>
+
 		<!-- Timer Modals -->
 		<ContentView Grid.RowSpan="2"
 					 BackgroundColor="#88000000"

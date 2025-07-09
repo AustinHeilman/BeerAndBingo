@@ -11,6 +11,6 @@ public partial class PatternMainPageView : ContentView
 	public PatternMainPageView(PatternMainPageViewModel viewModel)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+		self.BindingContext = viewModel;
 	}
 }

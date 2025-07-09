@@ -1,6 +1,7 @@
 ﻿using Bingo.UI.Shared.Views.FlashBoard;
 using Bingo.UI.Shared.Views.Patterns;
 using Bingo.ViewModel.MainPage;
+using Bingo.ViewModel.Messages.Patterns;
 using CommunityToolkit.Mvvm.Messaging;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -19,6 +20,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 
 	private bool _nextClockVisible = false;
 	private readonly CreatePatternView _createPatternView;
+	private readonly LoadPatternView _loadPatternView;
 	private readonly PatternMainPageView _patternMainpageView;
 
 	public bool NextClockVisible
@@ -48,7 +50,8 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		}
 	}
 
-	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel, CreatePatternView createPatternView, PatternMainPageView patternMainpageView)
+	public MainPage(FlashBoardView flashBoardView, CallerMainPageViewModel viewModel, 
+		CreatePatternView createPatternView, PatternMainPageView patternMainpageView, LoadPatternView loadPatternView)
 	{
 		InitializeComponent();
 
@@ -57,6 +60,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		MainGrid.Children.Add(flashBoardView);
 		Grid.SetRow(flashBoardView, 0);
 		_createPatternView = createPatternView;
+		_loadPatternView = loadPatternView;
 		_patternMainpageView = patternMainpageView;
 
 		NextClockOverlay.RequestClose += (_, _) => CollapseTimerUI();
@@ -129,6 +133,11 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 			{
 				viewModel.ReplayCommand.Execute(null);
 			}
+		});
+
+		WeakReferenceMessenger.Default.Register<ClosePatternSheetMessage>(this, (r, m) =>
+		{
+			HidePatternSheetCommand.Execute(null);
 		});
 
 		BindingContext = new { viewModel, page = this };		
@@ -206,6 +215,38 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 		IsCreatePatternVisible = false;
 	});
 
+	#endregion
+
+	#region Load Pattern Button UI
+	private bool _isLoadPatternVisible;
+	public bool IsLoadPatternVisible
+	{
+		get => _isLoadPatternVisible;
+		set
+		{
+			if (_isLoadPatternVisible != value)
+			{
+				_isLoadPatternVisible = value;
+				OnPropertyChanged(nameof(IsLoadPatternVisible));
+			}
+		}
+	}
+	public ICommand ShowLoadPatternCommand => new Command(async () =>
+	{
+		if (LoadPatternHost.Content is null)
+			LoadPatternHost.Content = _loadPatternView;
+
+		LoadPatternContainer.TranslationY = 400;
+		IsLoadPatternVisible = true;
+		await LoadPatternContainer.TranslateTo(0, 0, 300, Easing.SinOut);
+	});
+
+	public ICommand HideLoadPatternCommand => new Command(async () =>
+	{
+		await LoadPatternContainer.TranslateTo(0, 400, 250, Easing.SinIn);
+		IsLoadPatternVisible = false;
+	});
+	
 	#endregion
 
 	private async Task QuitAppAsync()
