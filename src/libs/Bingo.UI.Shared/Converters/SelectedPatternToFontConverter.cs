@@ -1,5 +1,8 @@
-﻿using Bingo.ViewModel.Patterns;
+﻿using Bingo.UI.Shared.Views.Patterns;
+using Bingo.ViewModel.Patterns;
 using System.Globalization;
+
+namespace Bingo.UI.Shared.Converters;
 
 public class SelectedPatternToFontConverter : IValueConverter
 {

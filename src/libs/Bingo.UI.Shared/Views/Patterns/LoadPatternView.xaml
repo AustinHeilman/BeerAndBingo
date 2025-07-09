@@ -4,7 +4,7 @@
 			 xmlns:core="clr-namespace:Bingo.Core.Patterns;assembly=Bingo.Core"
 			 xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
 			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-			 xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
+			 xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"			 
 			 x:Class="Bingo.UI.Shared.Views.Patterns.LoadPatternView"
 			 x:Name="Root">
 
