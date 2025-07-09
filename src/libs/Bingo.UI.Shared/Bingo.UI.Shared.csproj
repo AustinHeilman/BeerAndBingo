@@ -74,7 +74,7 @@
 	  <MauiXaml Update="Views\Patterns\PatternEditor\PatternEditor.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Patterns\PatternList\PatternList.xaml">
+	  <MauiXaml Update="Views\Patterns\PatternList\PatternRow.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

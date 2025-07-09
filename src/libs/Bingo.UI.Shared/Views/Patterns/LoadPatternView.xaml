@@ -4,16 +4,9 @@
 			 xmlns:core="clr-namespace:Bingo.Core.Patterns;assembly=Bingo.Core"
 			 xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
 			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-			 xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"			 
+			 xmlns:patternrow="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternList;assembly=Bingo.UI.Shared"
 			 x:Class="Bingo.UI.Shared.Views.Patterns.LoadPatternView"
 			 x:Name="Root">
-
-	<ContentView.Resources>
-		<conv:SelectedPatternToFontConverter x:Key="SelectedPatternToFontConverter" />
-		<conv:SelectedPatternToStrokeConverter x:Key="SelectedPatternToStrokeConverter" />
-
-		<conv:NotNullToBoolConverter x:Key="NotNullToBoolConverter" />
-	</ContentView.Resources>
 
 	<Grid ColumnDefinitions="1.2*,1.8*"
 		  RowDefinitions="*,Auto"
@@ -30,41 +23,7 @@
 						BackgroundColor="{AppThemeBinding Light=#FDFDFD, Dark=#1A1A1A}">
 			<CollectionView.ItemTemplate>
 				<DataTemplate x:DataType="core:BingoPattern">
-					<Border x:Name="ItemBorder"
-							Padding="6"
-							Margin="0,2"
-							Stroke="Gray"
-							StrokeThickness="1"
-							BackgroundColor="{AppThemeBinding Light=#F7F7F7, Dark=#222}">
-						<Label x:Name="ItemLabel"
-							   Text="{Binding Name}"
-							   FontSize="14"
-							   TextColor="{AppThemeBinding Light=Black, Dark=White}">
-							<Label.Triggers>
-								<DataTrigger TargetType="Label"
-											 Binding="{Binding Source={x:Reference Root}, Path=SelectedPattern}"
-											 Value="{Binding .}">
-									<Setter Property="FontAttributes"
-											Value="Bold" />
-								</DataTrigger>
-							</Label.Triggers>
-						</Label>
-
-						<Border.Triggers>
-							<DataTrigger TargetType="Border"
-										 Binding="{Binding Source={x:Reference Root}, Path=SelectedPattern}"
-										 Value="{Binding .}">
-								<Setter Property="Stroke"
-										Value="Goldenrod" />
-								<Setter Property="StrokeThickness"
-										Value="2" />
-							</DataTrigger>
-						</Border.Triggers>
-
-						<Border.GestureRecognizers>
-							<TapGestureRecognizer Command="{x:Null}" />
-						</Border.GestureRecognizers>
-					</Border>
+					<patternrow:PatternRow SelectedPattern="{Binding Source={x:Reference Root}, Path=SelectedPattern}" />
 				</DataTemplate>
 			</CollectionView.ItemTemplate>
 		</CollectionView>
@@ -89,7 +48,7 @@
 			<controls:IconButton IconName="button_load_pattern"
 								 Command="{Binding ConfirmLoadCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}"
-								 IsEnabled="{Binding SelectedPattern, Converter={StaticResource NotNullToBoolConverter}}" />
+								 IsEnabled="{Binding SelectedPattern}" />
 
 			<controls:IconButton IconName="button_close"
 								 Command="{Binding CloseCommand}"
