@@ -35,6 +35,9 @@
 						<Label Text="{Binding Name}"
 							   FontSize="14"
 							   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+						<Border.GestureRecognizers>
+							<TapGestureRecognizer Command="{x:Null}" />
+						</Border.GestureRecognizers>
 					</Border>
 				</DataTemplate>
 			</CollectionView.ItemTemplate>

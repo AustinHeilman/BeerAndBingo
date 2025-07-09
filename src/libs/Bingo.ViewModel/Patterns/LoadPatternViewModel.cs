@@ -23,6 +23,8 @@ public partial class LoadPatternViewModel : ObservableObject
 		Debug.WriteLine("[LoadPatternViewModel] Constructor entered");
 	}
 
+	public PatternRepositoryBase Repository => _repository;
+
 	public async Task InitializeAsync()
 	{
 		SavedPatterns.Clear();
@@ -40,6 +42,7 @@ public partial class LoadPatternViewModel : ObservableObject
 	{
 		if (SelectedPattern is null) return;
 
+		Debug.WriteLine($"[LoadPatternViewModel] Confirming load of pattern: {SelectedPattern.Name}");
 		_repository.SetActivePattern(SelectedPattern);
 		WeakReferenceMessenger.Default.Send(new CloseLoadPatternMessage());
 	}

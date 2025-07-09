@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:conv="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
              x:Class="Bingo.UI.Shared.Controls.IconButton"
              x:Name="Root">
 
-	<Grid>
-		<Image x:Name="Icon"
-               WidthRequest="{Binding IconSize, Source={x:Reference Root}}"
-               HeightRequest="{Binding IconSize, Source={x:Reference Root}}"
-               Aspect="AspectFit" />
-		<Grid.GestureRecognizers>
-			<TapGestureRecognizer Tapped="OnTapped" />
-		</Grid.GestureRecognizers>
-	</Grid>
+    <ContentView.Resources>
+        <conv:IconSourceConverter x:Key="IconSourceConverter" />
+    </ContentView.Resources>
+
+    <Button x:Name="Icon"
+            Pressed="OnPressed"
+            Released="OnReleased"
+            Command="{Binding Command, Source={x:Reference Root}}"
+            ImageSource="{Binding IconName, Source={x:Reference Root}, Converter={StaticResource IconSourceConverter}}"
+            BackgroundColor="Transparent"
+            BorderColor="Transparent"
+            BorderWidth="0"
+            Padding="0"
+            WidthRequest="{Binding IconSize, Source={x:Reference Root}}"
+            HeightRequest="{Binding IconSize, Source={x:Reference Root}}" />
 </ContentView>

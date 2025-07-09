@@ -21,7 +21,7 @@ public partial class LoadPatternView : ContentView
 		{
 			Debug.WriteLine("[LoadPatternView] Waiting for vault initialization...");
 			await _repository.InitializeAsync();
-			await viewModel.InitializeAsync();
+			await viewModel.InitializeAsync(); // pattern fetch now happens after repo is ready
 		};
 	}
 }

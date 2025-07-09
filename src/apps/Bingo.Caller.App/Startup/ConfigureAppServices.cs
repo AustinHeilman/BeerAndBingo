@@ -42,7 +42,7 @@ public static class ConfigureAppServices
 			Debug.WriteLine("[DI] Constructing LoadPatternView");
 			var repo = provider.GetRequiredService<PatternRepositoryBase>();
 			var vm = provider.GetRequiredService<LoadPatternViewModel>();
-			return new LoadPatternView(vm, repo); // Pass both arguments
+			return new LoadPatternView(vm, repo); // two args
 		});
 
 		builder.Services.AddAppServices();
