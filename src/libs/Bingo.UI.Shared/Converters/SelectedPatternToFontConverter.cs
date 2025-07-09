@@ -6,11 +6,14 @@ namespace Bingo.UI.Shared.Converters;
 
 public class SelectedPatternToFontConverter : IValueConverter
 {
-	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 	{
+		if (parameter is not BindableObject bindable || bindable.BindingContext is not LoadPatternViewModel)
+			return FontAttributes.None;
+
 		var selected = (parameter as LoadPatternView)?.BindingContext as LoadPatternViewModel;
 		return selected?.SelectedPattern == value ? FontAttributes.Bold : FontAttributes.None;
 	}
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+	public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 }

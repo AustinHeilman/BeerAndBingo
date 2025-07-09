@@ -18,7 +18,7 @@
 							 Spacing="16"
 							 WidthRequest="280"
 							 VerticalOptions="Center"
-							 HorizontalOptions="Fill">
+							 HorizontalOptions="Center">
 			<Label Text="Create New Pattern"
 				   FontSize="{OnIdiom Phone=18, Tablet=20, Desktop=22}"
 				   FontAttributes="Bold"

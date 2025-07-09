@@ -6,7 +6,7 @@ namespace Bingo.UI.Shared.Converters;
 
 public class SelectedPatternToBackgroundConverter : IValueConverter
 {
-	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 	{
 		if (parameter is LoadPatternView root && root.BindingContext is LoadPatternViewModel vm)
 		{
@@ -19,7 +19,7 @@ public class SelectedPatternToBackgroundConverter : IValueConverter
 		return Colors.Transparent;
 	}
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
 		=> throw new NotImplementedException();
 }
 

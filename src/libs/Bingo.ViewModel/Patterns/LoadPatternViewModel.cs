@@ -23,13 +23,12 @@ public partial class LoadPatternViewModel : ObservableObject
 		Debug.WriteLine("[LoadPatternViewModel] Constructor entered");
 	}
 
-	public PatternRepositoryBase Repository => _repository;
-
 	public async Task InitializeAsync()
 	{
 		SavedPatterns.Clear();
 		var patterns = await _repository.GetAllPatternsAsync();
 		Debug.WriteLine($"[LoadPatternViewModel] Loaded {patterns.Count()} patterns");
+
 		foreach (var pattern in patterns)
 		{
 			Debug.WriteLine($"[LoadPatternViewModel] Pattern: {pattern.Name}");

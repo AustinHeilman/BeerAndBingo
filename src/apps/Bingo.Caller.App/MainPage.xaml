@@ -55,15 +55,30 @@
 									BindingContext="{Binding viewModel.GameInfoVM}" />
 
 			<!-- Pattern Preview -->
-			<ContentView Grid.Column="2">
+			<ContentView Grid.Column="2"
+						 HorizontalOptions="Fill"
+						 VerticalOptions="Fill">
 				<ContentView.GestureRecognizers>
 					<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 				</ContentView.GestureRecognizers>
-				<Border HorizontalOptions="Center" VerticalOptions="Center"
-						BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#1A1A1A}"
-						StrokeShape="RoundRectangle 6">
-					<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
-				</Border>
+
+				<ContentView Grid.Column="2"
+							 HorizontalOptions="Fill"
+							 VerticalOptions="Fill">
+					<ContentView.GestureRecognizers>
+						<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
+					</ContentView.GestureRecognizers>
+
+					<controls:AspectRatioContainer Ratio="1"
+												   HorizontalOptions="Center"
+												   VerticalOptions="Center">
+						<Border BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#1A1A1A}"
+								StrokeShape="RoundRectangle 6"
+								Padding="4">
+							<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
+						</Border>
+					</controls:AspectRatioContainer>
+				</ContentView>
 			</ContentView>
 		</Grid>
 

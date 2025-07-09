@@ -1,6 +1,7 @@
 ﻿using Bingo.Core.Patterns;
 using Bingo.ViewModel.Patterns;
 using Microsoft.Maui.Controls.Shapes;
+using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Views.Patterns.PatternDisplay;
 
@@ -165,6 +166,8 @@ public partial class PatternDisplayView : ContentView
 	{
 		if (PatternGrid.Width <= 0 || PatternGrid.Height <= 0)
 			return;
+
+		Debug.WriteLine("[PatternDisplayView] Resizing");
 
 		int cellCount = Math.Max(PatternGridSettings.PatternRowCount, PatternGridSettings.PatternColCount);
 		double side = Math.Min(PatternGrid.Width, PatternGrid.Height);

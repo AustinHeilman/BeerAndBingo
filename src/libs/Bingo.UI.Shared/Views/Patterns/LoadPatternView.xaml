@@ -14,21 +14,20 @@
 		  ColumnSpacing="18"
 		  RowSpacing="18">
 
-		<!-- 📁 Scrollable Pattern List -->
+		<!-- Pattern List -->
 		<CollectionView Grid.Column="0"
 						ItemsSource="{Binding SavedPatterns}"
-						SelectionMode="Single"
-						SelectedItem="{Binding SelectedPattern, Mode=TwoWay}"
 						VerticalOptions="Fill"
 						BackgroundColor="{AppThemeBinding Light=#FDFDFD, Dark=#1A1A1A}">
 			<CollectionView.ItemTemplate>
 				<DataTemplate x:DataType="core:BingoPattern">
-					<patternrow:PatternRow SelectedPattern="{Binding Source={x:Reference Root}, Path=SelectedPattern}" />
+					<patternrow:PatternRow Pattern="{Binding .}"
+										   SelectedPattern="{Binding Source={x:Reference Root}, Path=SelectedPattern}" />
 				</DataTemplate>
 			</CollectionView.ItemTemplate>
 		</CollectionView>
 
-		<!-- 🔲 Pattern Preview Grid -->
+		<!-- Pattern Preview -->
 		<Border Grid.Column="1"
 				BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#2A2A2A}"
 				Stroke="DarkGray"
@@ -39,12 +38,11 @@
 			<patterns:PatternDisplayView PatternCells="{Binding SelectedPattern.Cells}" />
 		</Border>
 
-		<!-- ⬇️ Action Buttons -->
+		<!-- Buttons -->
 		<HorizontalStackLayout Grid.Row="1"
 							   Grid.ColumnSpan="2"
 							   HorizontalOptions="Center"
 							   Spacing="24">
-
 			<controls:IconButton IconName="button_load_pattern"
 								 Command="{Binding ConfirmLoadCommand}"
 								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}"

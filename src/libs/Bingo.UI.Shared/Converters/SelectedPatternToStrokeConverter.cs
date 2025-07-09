@@ -6,7 +6,7 @@ namespace Bingo.UI.Shared.Converters;
 
 public class SelectedPatternToStrokeConverter : IValueConverter
 {
-	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+	public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
 	{
 		if (parameter is LoadPatternView root && root.BindingContext is LoadPatternViewModel vm)
 			return vm.SelectedPattern == value ? Colors.Orange : Colors.Gray;
@@ -14,6 +14,6 @@ public class SelectedPatternToStrokeConverter : IValueConverter
 		return Colors.Transparent;
 	}
 
-	public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+	public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
 		=> throw new NotImplementedException();
 }
