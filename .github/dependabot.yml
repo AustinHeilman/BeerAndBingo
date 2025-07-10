@@ -6,10 +6,10 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/" # Location of your solution or project files
+    directory: "/src/apps"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 10
-    ignore:
-      - dependency-name: "Microsoft.NET.Test.Sdk"
-        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "nuget"
+    directory: "/src/libs"
+    schedule:
+      interval: "monthly"
