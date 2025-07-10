@@ -3,6 +3,7 @@ using Bingo.ViewModel.Messages.Patterns;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -25,8 +26,10 @@ public partial class LoadPatternViewModel : ObservableObject
 
 	public async Task InitializeAsync()
 	{
-		SavedPatterns.Clear();
+		SavedPatterns.Clear();		
 		var patterns = await _repository.GetAllPatternsAsync();
+		patterns = patterns.OrderBy(p => p.Name).ToImmutableList();
+
 		Debug.WriteLine($"[LoadPatternViewModel] Loaded {patterns.Count()} patterns");
 
 		foreach (var pattern in patterns)

@@ -80,8 +80,8 @@ public partial class CallerMainPageViewModel : ObservableObject
 		UndoPickCommand = new RelayCommand(_session.Undo);
 		RedoPickCommand = new RelayCommand(_session.Redo);
 		ReplayCommand = new AsyncRelayCommand(ToggleReplayAsync);
-		PatternsCommand = new RelayCommand(() => { /* TODO */ });
-		SettingsCommand = new RelayCommand(() => { /* TODO */ });
+		PatternsCommand = new RelayCommand(() => { });
+		SettingsCommand = new RelayCommand(() => { });
 
 		// Optional: Subscribe to session change events
 		_session.ItemCalled += (_, _) => NotifySessionUpdate();
