@@ -17,22 +17,22 @@ public abstract class PatternRepositoryBase
 
 	public virtual Task<BingoPattern?> GetByNameAsync(string name)
 	{
-		PatternIndex.TryGetValue(name, out var pattern);
+		PatternIndex.TryGetValue(name, out BingoPatternFile? pattern);
 		return Task.FromResult(pattern as BingoPattern);
 	}
 
 	public virtual async Task SaveAsync(BingoPattern pattern)
 	{
-		if (PatternIndex.TryGetValue(pattern.Name, out var existing))
+		if (PatternIndex.TryGetValue(pattern.Name, out BingoPatternFile? existing))
 		{
 			existing.Cells = pattern.Cells.ToHashSet();
 			await existing.SaveAsync();
 		}
 		else
 		{
-			var newPath = Path.Combine(GetSaveDirectory(), GenerateFileName());
-			var file = new FileInfo(newPath);
-			var patternFile = BingoPatternFile.From(pattern, file);
+			string newPath = Path.Combine(GetSaveDirectory(), GenerateFileName());
+			FileInfo file = new(newPath);
+			BingoPatternFile patternFile = BingoPatternFile.From(pattern, file);
 			await patternFile.SaveAsync();
 			PatternIndex[pattern.Name] = patternFile;
 		}
@@ -40,7 +40,7 @@ public abstract class PatternRepositoryBase
 
 	public virtual Task DeleteAsync(string name)
 	{
-		if (PatternIndex.TryGetValue(name, out var file))
+		if (PatternIndex.TryGetValue(name, out BingoPatternFile? file))
 		{
 			file.Delete();
 			PatternIndex.Remove(name);
@@ -66,20 +66,20 @@ public abstract class PatternRepositoryBase
 		if (!Directory.Exists(GetSaveDirectory()))
 			Directory.CreateDirectory(GetSaveDirectory()); //Create it before trying to read
 
-		StringBuilder dbg = new StringBuilder();
+		StringBuilder dbg = new();
 		dbg.AppendLine($"[Vault] Initializing pattern repository at {GetSaveDirectory()}");
 		dbg.Append($"[Vault] Loaded Patterns:");
-		var files = Directory.EnumerateFiles(GetSaveDirectory(), FileSearchPattern, SearchOption.TopDirectoryOnly);
-		foreach (var file in files)
+		IEnumerable<string> files = Directory.EnumerateFiles(GetSaveDirectory(), FileSearchPattern, SearchOption.TopDirectoryOnly);
+		foreach (string file in files)
 		{
 			try
 			{
-				var json = await File.ReadAllTextAsync(file);
-				var dto = JsonSerializer.Deserialize<PatternJsonModel>(json);
+				string json = await File.ReadAllTextAsync(file);
+				PatternJsonModel? dto = JsonSerializer.Deserialize<PatternJsonModel>(json);
 				if (dto is not null)
 				{
-					var pattern = dto.ToDomain(); // your extension method
-					var fileInfo = new FileInfo(file);
+					BingoPattern pattern = dto.ToDomain(); // your extension method
+					FileInfo fileInfo = new(file);
 					PatternIndex[pattern.Name] = WrapPattern(pattern, fileInfo);
 					dbg.Append(pattern.Name + ", ");
 				}
@@ -104,7 +104,7 @@ public abstract class PatternRepositoryBase
 			return;
 		}
 
-		if (PatternIndex.TryGetValue(pattern.Name, out var existing))
+		if (PatternIndex.TryGetValue(pattern.Name, out BingoPatternFile? existing))
 		{
 			Debug.WriteLine($"[Vault] Updating pattern: {pattern.Name}");
 			existing.Cells = pattern.Cells;
@@ -112,8 +112,8 @@ public abstract class PatternRepositoryBase
 		}
 		else
 		{
-			var file = new FileInfo(Path.Combine(GetSaveDirectory(), $"{Guid.NewGuid()}-pattern.json"));
-			var newFile = BingoPatternFile.From(pattern, file);
+			FileInfo file = new(Path.Combine(GetSaveDirectory(), $"{Guid.NewGuid()}-pattern.json"));
+			BingoPatternFile newFile = BingoPatternFile.From(pattern, file);
 			PatternIndex[pattern.Name] = newFile;
 			Debug.WriteLine($"[Vault] Adding new pattern: {pattern.Name}");
 			await newFile.SaveAsync();
@@ -122,7 +122,7 @@ public abstract class PatternRepositoryBase
 
 	public async Task AddOrUpdatePattern(string name, IEnumerable<PatternCell> cells)
 	{
-		var pattern = new BingoPattern
+		BingoPattern pattern = new()
 		{
 			Name = name,
 			Cells = new HashSet<PatternCell>(cells)
@@ -133,7 +133,7 @@ public abstract class PatternRepositoryBase
 
 	public virtual bool RemovePattern(string patternName)
 	{
-		if (!PatternIndex.TryGetValue(patternName, out var patternFile))
+		if (!PatternIndex.TryGetValue(patternName, out BingoPatternFile? patternFile))
 		{
 			Debug.WriteLine($"[Vault] Remove skipped: '{patternName}' not found in index.");
 			return false;

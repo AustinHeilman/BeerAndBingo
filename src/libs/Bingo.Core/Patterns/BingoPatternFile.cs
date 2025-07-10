@@ -10,7 +10,7 @@ public class BingoPatternFile : BingoPattern
 
 	public async Task SaveAsync()
 	{
-		var dto = this.ToJsonModel(); // extension method you created earlier
+		PatternJsonModel dto = this.ToJsonModel(); // extension method you created earlier
 		string json = JsonSerializer.Serialize(dto, new JsonSerializerOptions
 		{
 			WriteIndented = true

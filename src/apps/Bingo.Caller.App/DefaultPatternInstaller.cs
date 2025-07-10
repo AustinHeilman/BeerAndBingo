@@ -17,23 +17,23 @@ public static class DefaultPatternInstaller
 		const string installKey = "ArePatternsInstalled";
 
 		if (Preferences.Default.Get(installKey, false))
-			return;				
+			return;
 		try
 		{
-			using var stream = await FileSystem.OpenAppPackageFileAsync("patterns.json");
-			using var reader = new StreamReader(stream);
+			using Stream stream = await FileSystem.OpenAppPackageFileAsync("patterns.json");
+			using StreamReader reader = new(stream);
 			string json = await reader.ReadToEndAsync();
 
-			var dtos = JsonSerializer.Deserialize<List<PatternJsonModel>>(json);
+			List<PatternJsonModel>? dtos = JsonSerializer.Deserialize<List<PatternJsonModel>>(json);
 			if (dtos == null || dtos.Count == 0)
 			{
 				Debug.WriteLine("[Installer] No patterns found in JSON.");
 				return;
 			}
-			
-			foreach (var dto in dtos)
+
+			foreach (PatternJsonModel dto in dtos)
 			{
-				var pattern = dto.ToDomain();
+				BingoPattern pattern = dto.ToDomain();
 
 				if (string.IsNullOrWhiteSpace(pattern.Name) || pattern.Cells is null || pattern.Cells.Count == 0)
 				{

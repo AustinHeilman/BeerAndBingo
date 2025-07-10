@@ -1,6 +1,5 @@
 ﻿using Bingo.Caller.App.Startup;
 using Bingo.Services.Patterns;
-using System.Diagnostics;
 
 namespace Bingo.Caller.App;
 
@@ -35,7 +34,7 @@ public partial class App : Application
 
 	protected override async void OnStart()
 	{
-		var repository = _serviceProvider.GetRequiredService<FilePatternRepository>();
+		FilePatternRepository repository = _serviceProvider.GetRequiredService<FilePatternRepository>();
 		await repository.InitializeAsync(); // Make sure the repository is initialized before use
 		await Task.Delay(150); // Give some time for the repository to be ready
 		await DefaultPatternInstaller.InstallPatternsIfFirstLaunchAsync(repository);

@@ -26,13 +26,13 @@ public partial class LoadPatternViewModel : ObservableObject
 
 	public async Task InitializeAsync()
 	{
-		SavedPatterns.Clear();		
-		var patterns = await _repository.GetAllPatternsAsync();
+		SavedPatterns.Clear();
+		IEnumerable<BingoPattern> patterns = await _repository.GetAllPatternsAsync();
 		patterns = patterns.OrderBy(p => p.Name).ToImmutableList();
 
 		Debug.WriteLine($"[LoadPatternViewModel] Loaded {patterns.Count()} patterns");
 
-		foreach (var pattern in patterns)
+		foreach (BingoPattern pattern in patterns)
 		{
 			Debug.WriteLine($"[LoadPatternViewModel] Pattern: {pattern.Name}");
 			SavedPatterns.Add(pattern);

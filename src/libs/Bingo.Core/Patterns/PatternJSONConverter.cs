@@ -4,7 +4,7 @@ public static class PatternJsonConverter
 {
 	public static BingoPattern ToDomain(this PatternJsonModel dto)
 	{
-		var pattern = new BingoPattern
+		BingoPattern pattern = new()
 		{
 			Name = dto.PatternName
 		};
@@ -36,7 +36,7 @@ public static class PatternJsonConverter
 			.Select(_ => new bool[gridSize])
 			.ToArray();
 
-		foreach (var cell in pattern.GetActiveCells())
+		foreach (PatternCell cell in pattern.GetActiveCells())
 		{
 			if (cell.Row < gridSize && cell.Col < gridSize)
 				grid[cell.Row][cell.Col] = true;

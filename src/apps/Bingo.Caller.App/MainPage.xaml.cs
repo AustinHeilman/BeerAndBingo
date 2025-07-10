@@ -269,7 +269,7 @@ public partial class MainPage : ContentPage, INotifyPropertyChanged
 	});
 
 	#endregion
-	
+
 	private async Task QuitAppAsync()
 	{
 		await Task.Delay(100); // Simulate some delay if needed

@@ -21,7 +21,7 @@ public static class RandomPatternGenerator
 
 	public static HashSet<PatternCell> RandomPatternSquares(int rows = 5, int cols = 5, double fillRatio = 0.3)
 	{
-		var cells = new HashSet<PatternCell>();
+		HashSet<PatternCell> cells = new();
 		for (int row = 0; row < rows; row++)
 		{
 			for (int col = 0; col < cols; col++)
@@ -36,7 +36,7 @@ public static class RandomPatternGenerator
 	public static BingoPattern GenerateRandomPattern(int rows = 5, int cols = 5, double fillRatio = 0.3)
 	{
 		string name = RandomPatternName();
-		var cells = RandomPatternSquares(rows, cols, fillRatio);
+		HashSet<PatternCell> cells = RandomPatternSquares(rows, cols, fillRatio);
 
 		return new BingoPattern
 		{

@@ -1,6 +1,3 @@
-using Microsoft.Maui.Controls;
-using Microsoft.Maui;
-
 namespace Bingo.UI.Shared.Controls;
 
 public partial class AspectRatioContainer : ContentView

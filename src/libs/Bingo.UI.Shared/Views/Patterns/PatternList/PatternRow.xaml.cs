@@ -35,7 +35,7 @@ public partial class PatternRow : ContentView
 		if (Pattern is null) return;
 
 		// Look for the view model by walking the visual tree
-		var vm = this.FindParent<LoadPatternView>()?.BindingContext as LoadPatternViewModel;
+		LoadPatternViewModel? vm = this.FindParent<LoadPatternView>()?.BindingContext as LoadPatternViewModel;
 		if (vm is not null)
 			vm.SelectedPattern = Pattern;
 	}

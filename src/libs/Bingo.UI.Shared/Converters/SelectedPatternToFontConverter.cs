@@ -11,7 +11,7 @@ public class SelectedPatternToFontConverter : IValueConverter
 		if (parameter is not BindableObject bindable || bindable.BindingContext is not LoadPatternViewModel)
 			return FontAttributes.None;
 
-		var selected = (parameter as LoadPatternView)?.BindingContext as LoadPatternViewModel;
+		LoadPatternViewModel? selected = (parameter as LoadPatternView)?.BindingContext as LoadPatternViewModel;
 		return selected?.SelectedPattern == value ? FontAttributes.Bold : FontAttributes.None;
 	}
 

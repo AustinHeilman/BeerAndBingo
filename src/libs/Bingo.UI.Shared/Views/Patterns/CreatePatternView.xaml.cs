@@ -45,7 +45,7 @@ public partial class CreatePatternView : ContentView
 				return;
 			}
 
-			var pattern = new BingoPattern
+			BingoPattern pattern = new()
 			{
 				Name = PatternName.Trim(),
 				Cells = new HashSet<PatternCell>(EditableCells)

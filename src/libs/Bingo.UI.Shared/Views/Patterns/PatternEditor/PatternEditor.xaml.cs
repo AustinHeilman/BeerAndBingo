@@ -67,7 +67,7 @@ public partial class PatternEditor : ContentView
 					StrokeShape = new RoundRectangle { CornerRadius = 2 },
 				};
 
-				var tap = new TapGestureRecognizer();
+				TapGestureRecognizer tap = new();
 				tap.Tapped += (_, _) => ToggleCell(row, col); // use captured vars
 				border.GestureRecognizers.Add(tap);
 
@@ -119,7 +119,7 @@ public partial class PatternEditor : ContentView
 	private void SetPatternCells(IEnumerable<PatternCell> cells)
 	{
 		_cellMap.Clear();
-		foreach (var cell in cells)
+		foreach (PatternCell cell in cells)
 			_cellMap[(cell.Row, cell.Col)] = cell;
 
 		UpdatePatternVisuals();
@@ -129,7 +129,7 @@ public partial class PatternEditor : ContentView
 	{
 		//System.Diagnostics.Debug.WriteLine($"ToggleCell called for ({row},{col})");
 
-		if (_cellMap.TryGetValue((row, col), out var cell))
+		if (_cellMap.TryGetValue((row, col), out PatternCell? cell))
 		{
 			//System.Diagnostics.Debug.WriteLine($"Toggled ({row},{col}) -> {cell.IsActive}");
 
@@ -140,9 +140,9 @@ public partial class PatternEditor : ContentView
 
 	private void UpdatePatternVisuals()
 	{
-		foreach (var pos in _borderMap.Keys)
+		foreach ((int, int) pos in _borderMap.Keys)
 		{
-			bool isActive = _cellMap.TryGetValue(pos, out var cell) && cell.IsActive;
+			bool isActive = _cellMap.TryGetValue(pos, out PatternCell? cell) && cell.IsActive;
 			_borderMap[pos].Background = isActive ? Colors.Goldenrod : Colors.LightGray;
 		}
 	}

@@ -1,80 +1,87 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 x:Class="Bingo.Caller.App.MainPage"
-			 x:Name="RootPage"
-			 xmlns:flash="clr-namespace:Bingo.UI.Shared.Views.FlashBoard;assembly=Bingo.UI.Shared"
-			 xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
-			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-			 xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
-			 xmlns:views="clr-namespace:Bingo.UI.Shared.Views.NextRoundClock;assembly=Bingo.UI.Shared"
-			 xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
-			 xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns;assembly=Bingo.UI.Shared"
-			 BackgroundColor="{AppThemeBinding Light=White, Dark=Black}">
+<ContentPage
+	x:Class="Bingo.Caller.App.MainPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
+	xmlns:converters="clr-namespace:Bingo.UI.Shared.Converters;assembly=Bingo.UI.Shared"
+	xmlns:flash="clr-namespace:Bingo.UI.Shared.Views.FlashBoard;assembly=Bingo.UI.Shared"
+	xmlns:gameinfo="clr-namespace:Bingo.UI.Shared.Views.GameInfoPanel;assembly=Bingo.UI.Shared"
+	xmlns:pattern="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
+	xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns;assembly=Bingo.UI.Shared"
+	xmlns:views="clr-namespace:Bingo.UI.Shared.Views.NextRoundClock;assembly=Bingo.UI.Shared"
+	x:Name="RootPage"
+	BackgroundColor="{AppThemeBinding Light=White,
+	                                  Dark=Black}">
 
 	<ContentPage.Resources>
 		<Style TargetType="Button">
-			<Setter Property="FontSize"
-					Value="14" />
-			<Setter Property="Padding"
-					Value="4,2" />
+			<Setter Property="FontSize" Value="14" />
+			<Setter Property="Padding" Value="4,2" />
 		</Style>
 		<converters:InverseBoolConverter x:Key="InverseBoolConverter" />
 	</ContentPage.Resources>
 
-	<Grid x:Name="MainGrid"
-		  RowSpacing="8"
-		  ColumnSpacing="12"
-		  Padding="0,0,16,16">
+	<Grid
+		x:Name="MainGrid"
+		Padding="0,0,16,16"
+		ColumnSpacing="12"
+		RowSpacing="8">
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="5*" />
 			<RowDefinition Height="2*" />
 		</Grid.RowDefinitions>
 
-		<!-- FlashBoard injected at runtime into Grid.Row=0 -->
+		<!--  FlashBoard injected at runtime into Grid.Row=0  -->
 
-		<!-- Controls Row -->
-		<Grid Grid.Row="1"
-			  ColumnSpacing="12">
+		<!--  Controls Row  -->
+		<Grid Grid.Row="1" ColumnSpacing="12">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="2*" />
 				<ColumnDefinition Width="3*" />
 			</Grid.ColumnDefinitions>
 
-			<controls:IconButton Grid.Column="0"
-								 IconName="button_next_pick"
-								 Command="{Binding viewModel.NextCallCommand}"
-								 IconSize="{OnIdiom Desktop=200, Tablet=150, Phone=100}"
-								 HorizontalOptions="Center"
-								 VerticalOptions="Center"
-								 Margin="0,0,8,0" />
+			<controls:IconButton
+				Grid.Column="0"
+				Margin="0,0,8,0"
+				Command="{Binding viewModel.NextCallCommand}"
+				HorizontalOptions="Center"
+				IconName="button_next_pick"
+				IconSize="{OnIdiom Desktop=200,
+				                   Tablet=150,
+				                   Phone=100}"
+				VerticalOptions="Center" />
 
-			<gameinfo:GameInfoPanel Grid.Column="1"
-									BindingContext="{Binding viewModel.GameInfoVM}" />
+			<gameinfo:GameInfoPanel Grid.Column="1" BindingContext="{Binding viewModel.GameInfoVM}" />
 
-			<!-- Pattern Preview -->
-			<ContentView Grid.Column="2"
-						 HorizontalOptions="Fill"
-						 VerticalOptions="Fill">
+			<!--  Pattern Preview  -->
+			<ContentView
+				Grid.Column="2"
+				HorizontalOptions="Fill"
+				VerticalOptions="Fill">
 				<ContentView.GestureRecognizers>
 					<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 				</ContentView.GestureRecognizers>
 
-				<ContentView Grid.Column="2"
-							 HorizontalOptions="Fill"
-							 VerticalOptions="Fill">
+				<ContentView
+					Grid.Column="2"
+					HorizontalOptions="Fill"
+					VerticalOptions="Fill">
 					<ContentView.GestureRecognizers>
 						<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 					</ContentView.GestureRecognizers>
 
-					<controls:AspectRatioContainer Ratio="1"
-												   HorizontalOptions="Center"
-												   VerticalOptions="Center">
-						<Border BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#1A1A1A}"
-								StrokeShape="RoundRectangle 6"
-								Padding="4">
+					<controls:AspectRatioContainer
+						HorizontalOptions="Center"
+						Ratio="1"
+						VerticalOptions="Center">
+						<Border
+							Padding="4"
+							BackgroundColor="{AppThemeBinding Light=#EFEFEF,
+							                                  Dark=#1A1A1A}"
+							StrokeShape="RoundRectangle 6">
 							<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
 						</Border>
 					</controls:AspectRatioContainer>
@@ -82,158 +89,223 @@
 			</ContentView>
 		</Grid>
 
-		<!-- Tools Panel -->
-		<Grid Grid.Row="1"
-			  VerticalOptions="End"
-			  HeightRequest="{OnIdiom Phone=120, Tablet=150, Desktop=240}"
-			  BackgroundColor="#80000000"
-			  IsVisible="{Binding viewModel.IsToolsPanelVisible}"
-			  ZIndex="100">
-			<Grid BackgroundColor="DarkSlateGray"
-				  Padding="12,0"
-				  VerticalOptions="Fill"
-				  HorizontalOptions="Start">
-				<HorizontalStackLayout HorizontalOptions="Center"
-									   VerticalOptions="Center"
-									   Spacing="12">
-					<controls:IconButton IconName="button_new_game"
-										 Command="{Binding page.NewGameCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_nextgame"
-										 Command="{Binding page.NextClockCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_patterns"
-										 Command="{Binding page.ShowPatternsMainViewCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_undo_pick"
-										 Command="{Binding page.UndoPickCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_redo_pick"
-										 Command="{Binding page.RedoPickCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_replay"
-										 Command="{Binding page.ReplayCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_settings"
-										 Command="{Binding viewModel.SettingsCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="button_exit"
-										 Command="{Binding page.QuitCommand}"
-										 IconSize="{OnIdiom Desktop=130, Tablet=80, Phone=60}" />
-					<controls:IconButton IconName="{Binding viewModel.ToolsPanelToggleIcon}"
-										 Command="{Binding viewModel.ToggleToolsPanelCommand}"
-										 IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}" />					
-					<!-- Other toolbar buttons here... -->
+		<!--  Tools Panel  -->
+		<Grid
+			Grid.Row="1"
+			BackgroundColor="#80000000"
+			HeightRequest="{OnIdiom Phone=120,
+			                        Tablet=150,
+			                        Desktop=240}"
+			IsVisible="{Binding viewModel.IsToolsPanelVisible}"
+			VerticalOptions="End"
+			ZIndex="100">
+			<Grid
+				Padding="12,0"
+				BackgroundColor="DarkSlateGray"
+				HorizontalOptions="Start"
+				VerticalOptions="Fill">
+				<HorizontalStackLayout
+					HorizontalOptions="Center"
+					Spacing="12"
+					VerticalOptions="Center">
+					<controls:IconButton
+						Command="{Binding page.NewGameCommand}"
+						IconName="button_new_game"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.NextClockCommand}"
+						IconName="button_nextgame"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.ShowPatternsMainViewCommand}"
+						IconName="button_patterns"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.UndoPickCommand}"
+						IconName="button_undo_pick"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.RedoPickCommand}"
+						IconName="button_redo_pick"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.ReplayCommand}"
+						IconName="button_replay"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding viewModel.SettingsCommand}"
+						IconName="button_settings"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding page.QuitCommand}"
+						IconName="button_exit"
+						IconSize="{OnIdiom Desktop=130,
+						                   Tablet=80,
+						                   Phone=60}" />
+					<controls:IconButton
+						Command="{Binding viewModel.ToggleToolsPanelCommand}"
+						IconName="{Binding viewModel.ToolsPanelToggleIcon}"
+						IconSize="{OnIdiom Desktop=50,
+						                   Tablet=50,
+						                   Phone=30}" />
+					<!--  Other toolbar buttons here...  -->
 				</HorizontalStackLayout>
 			</Grid>
 		</Grid>
 
-		<!-- Tools Panel Toggle -->
-		<controls:IconButton Grid.Row="1"
-							 IconName="{Binding viewModel.ToolsPanelToggleIcon}"
-							 Command="{Binding viewModel.ToggleToolsPanelCommand}"
-							 IconSize="{OnIdiom Desktop=50, Tablet=50, Phone=30}"
-							 HorizontalOptions="Start"
-							 VerticalOptions="Center"
-							 IsVisible="{Binding viewModel.IsToolsPanelVisible, Converter={StaticResource InverseBoolConverter}}" />
+		<!--  Tools Panel Toggle  -->
+		<controls:IconButton
+			Grid.Row="1"
+			Command="{Binding viewModel.ToggleToolsPanelCommand}"
+			HorizontalOptions="Start"
+			IconName="{Binding viewModel.ToolsPanelToggleIcon}"
+			IconSize="{OnIdiom Desktop=50,
+			                   Tablet=50,
+			                   Phone=30}"
+			IsVisible="{Binding viewModel.IsToolsPanelVisible, Converter={StaticResource InverseBoolConverter}}"
+			VerticalOptions="Center" />
 
-		<!-- Pattern Zoom Modal -->
-		<ContentView Grid.RowSpan="2"
-					 BackgroundColor="#88000000"
-					 IsVisible="{Binding page.IsPatternZoomed}"
-					 ZIndex="46">
+		<!--  Pattern Zoom Modal  -->
+		<ContentView
+			Grid.RowSpan="2"
+			BackgroundColor="#88000000"
+			IsVisible="{Binding page.IsPatternZoomed}"
+			ZIndex="46">
 			<ContentView.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding page.TogglePatternZoomCommand}" />
 			</ContentView.GestureRecognizers>
-			<Border WidthRequest="{OnIdiom Phone=350, Tablet=550, Desktop=720}"
-					HeightRequest="{OnIdiom Phone=350, Tablet=550, Desktop=720}"
-					StrokeShape="RoundRectangle 24"
-					BackgroundColor="{AppThemeBinding Light=White, Dark=#222}"
-					Padding="24">
+			<Border
+				Padding="24"
+				BackgroundColor="{AppThemeBinding Light=White,
+				                                  Dark=#222}"
+				HeightRequest="{OnIdiom Phone=350,
+				                        Tablet=550,
+				                        Desktop=720}"
+				StrokeShape="RoundRectangle 24"
+				WidthRequest="{OnIdiom Phone=350,
+				                       Tablet=550,
+				                       Desktop=720}">
 				<pattern:PatternDisplayView ViewModel="{Binding viewModel.PatternVM}" />
 			</Border>
 		</ContentView>
 
-		<!-- Slide-Up Pattern Sheet -->
-		<ContentView x:Name="PatternSheetOverlay"
-					 Grid.RowSpan="2"					 
-					 VerticalOptions="Center"
-					 HorizontalOptions="Center"
-					 BackgroundColor="#88000000"
-					 IsVisible="{Binding page.IsPatternSheetVisible}"
-					 ZIndex="48">
+		<!--  Slide-Up Pattern Sheet  -->
+		<ContentView
+			x:Name="PatternSheetOverlay"
+			Grid.RowSpan="2"
+			BackgroundColor="#88000000"
+			HorizontalOptions="Center"
+			IsVisible="{Binding page.IsPatternSheetVisible}"
+			VerticalOptions="Center"
+			ZIndex="48">
 			<ContentView.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding page.HidePatternSheetCommand}" />
 			</ContentView.GestureRecognizers>
-			<Grid x:Name="PatternSheetContainer"
-				  HorizontalOptions="Center"
-				  VerticalOptions="End"
-				  TranslationY="400"
-				  WidthRequest="{OnIdiom Desktop=600, Tablet=480, Phone=320}"
-				  HeightRequest="{OnIdiom Desktop=360, Tablet=320, Phone=280}"
-				  Padding="24"
-				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
+			<Grid
+				x:Name="PatternSheetContainer"
+				Padding="24"
+				BackgroundColor="{AppThemeBinding Light=White,
+				                                  Dark=#222}"
+				HeightRequest="{OnIdiom Desktop=360,
+				                        Tablet=320,
+				                        Phone=280}"
+				HorizontalOptions="Center"
+				TranslationY="400"
+				VerticalOptions="End"
+				WidthRequest="{OnIdiom Desktop=600,
+				                       Tablet=480,
+				                       Phone=320}">
 				<ContentView x:Name="PatternMainHost" />
 			</Grid>
 		</ContentView>
-		
-		<!-- Slide-Up Create Pattern -->
-		<ContentView x:Name="CreatePatternOverlay"
-					 Grid.RowSpan="2"
-					 VerticalOptions="Center"
-					 HorizontalOptions="Center"
-					 BackgroundColor="#88000000"
-					 IsVisible="{Binding page.IsCreatePatternVisible}"
-					 ZIndex="49">
+
+		<!--  Slide-Up Create Pattern  -->
+		<ContentView
+			x:Name="CreatePatternOverlay"
+			Grid.RowSpan="2"
+			BackgroundColor="#88000000"
+			HorizontalOptions="Center"
+			IsVisible="{Binding page.IsCreatePatternVisible}"
+			VerticalOptions="Center"
+			ZIndex="49">
 			<ContentView.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding page.HideCreatePatternCommand}" />
 			</ContentView.GestureRecognizers>
-			<Grid x:Name="CreatePatternContainer"
-				  TranslationY="400"
-				  HorizontalOptions="Center"
-				  VerticalOptions="End"
-				  WidthRequest="{OnIdiom Desktop=620, Tablet=520, Phone=360}"
-				  HeightRequest="{OnIdiom Desktop=420, Tablet=360, Phone=300}"
-				  Padding="24"
-				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
+			<Grid
+				x:Name="CreatePatternContainer"
+				Padding="24"
+				BackgroundColor="{AppThemeBinding Light=White,
+				                                  Dark=#222}"
+				HeightRequest="{OnIdiom Desktop=420,
+				                        Tablet=360,
+				                        Phone=300}"
+				HorizontalOptions="Center"
+				TranslationY="400"
+				VerticalOptions="End"
+				WidthRequest="{OnIdiom Desktop=620,
+				                       Tablet=520,
+				                       Phone=360}">
 				<ContentView x:Name="CreatePatternHost" />
 			</Grid>
 		</ContentView>
 
-		<!-- Slide-Up Load Pattern -->
-		<ContentView x:Name="LoadPatternOverlay"
-					 Grid.RowSpan="2"
-					 VerticalOptions="Center"
-					 HorizontalOptions="Center"
-					 BackgroundColor="#88000000"
-					 IsVisible="{Binding page.IsLoadPatternVisible}"
-					 ZIndex="49">
+		<!--  Slide-Up Load Pattern  -->
+		<ContentView
+			x:Name="LoadPatternOverlay"
+			Grid.RowSpan="2"
+			BackgroundColor="#88000000"
+			HorizontalOptions="Center"
+			IsVisible="{Binding page.IsLoadPatternVisible}"
+			VerticalOptions="Center"
+			ZIndex="49">
 			<ContentView.GestureRecognizers>
 				<TapGestureRecognizer Command="{Binding page.HideLoadPatternCommand}" />
 			</ContentView.GestureRecognizers>
-			<Grid x:Name="LoadPatternContainer"
-				  TranslationY="400"
-				  HorizontalOptions="Center"
-				  VerticalOptions="End"
-				  WidthRequest="{OnIdiom Desktop=620, Tablet=520, Phone=360}"
-				  HeightRequest="{OnIdiom Desktop=420, Tablet=360, Phone=300}"
-				  Padding="24"
-				  BackgroundColor="{AppThemeBinding Light=White, Dark=#222}">
+			<Grid
+				x:Name="LoadPatternContainer"
+				Padding="24"
+				BackgroundColor="{AppThemeBinding Light=White,
+				                                  Dark=#222}"
+				HeightRequest="{OnIdiom Desktop=420,
+				                        Tablet=360,
+				                        Phone=300}"
+				HorizontalOptions="Center"
+				TranslationY="400"
+				VerticalOptions="End"
+				WidthRequest="{OnIdiom Desktop=620,
+				                       Tablet=520,
+				                       Phone=360}">
 				<ContentView x:Name="LoadPatternHost" />
 			</Grid>
 		</ContentView>
 
-		<!-- Timer Modals -->
-		<ContentView Grid.RowSpan="2"
-					 BackgroundColor="#88000000"
-					 IsVisible="{Binding page.NextClockVisible}"
-					 ZIndex="45" />
+		<!--  Timer Modals  -->
+		<ContentView
+			Grid.RowSpan="2"
+			BackgroundColor="#88000000"
+			IsVisible="{Binding page.NextClockVisible}"
+			ZIndex="45" />
 
-		<views:NextRoundClock x:Name="NextClockOverlay"
-							  Grid.RowSpan="2"
-							  HorizontalOptions="Center"
-							  VerticalOptions="Center"
-							  IsVisible="{Binding page.NextClockVisible}"
-							  ZIndex="50" />
+		<views:NextRoundClock
+			x:Name="NextClockOverlay"
+			Grid.RowSpan="2"
+			HorizontalOptions="Center"
+			IsVisible="{Binding page.NextClockVisible}"
+			VerticalOptions="Center"
+			ZIndex="50" />
 	</Grid>
 </ContentPage>

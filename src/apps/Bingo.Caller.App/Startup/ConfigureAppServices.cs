@@ -40,8 +40,8 @@ public static class ConfigureAppServices
 		builder.Services.AddTransient<LoadPatternView>(provider =>
 		{
 			Debug.WriteLine("[DI] Constructing LoadPatternView");
-			var repo = provider.GetRequiredService<PatternRepositoryBase>();
-			var vm = provider.GetRequiredService<LoadPatternViewModel>();
+			PatternRepositoryBase repo = provider.GetRequiredService<PatternRepositoryBase>();
+			LoadPatternViewModel vm = provider.GetRequiredService<LoadPatternViewModel>();
 			return new LoadPatternView(vm, repo); // two args
 		});
 
