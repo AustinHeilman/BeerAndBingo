@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 x:Class="Bingo.UI.Shared.Views.Patterns.PatternEditor"
-			 x:Name="Root">
+<ContentView
+	x:Class="Bingo.UI.Shared.Views.Patterns.PatternEditor"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	x:Name="Root">
 
-	<Grid x:Name="PatternGrid"
-		  VerticalOptions="Fill"
-		  HorizontalOptions="Fill"
-		  RowSpacing="1"
-		  ColumnSpacing="1"
-		  BackgroundColor="Transparent" />
+	<Grid
+		x:Name="PatternGrid"
+		BackgroundColor="Transparent"
+		ColumnSpacing="-1"
+		HorizontalOptions="Fill"
+		RowSpacing="-1"
+		VerticalOptions="Fill" />
 </ContentView>

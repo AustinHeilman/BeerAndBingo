@@ -1,42 +1,53 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 x:Class="Bingo.UI.Shared.Views.Patterns.CreatePatternView"
-			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-			 xmlns:helpers="clr-namespace:Bingo.UI.Shared.Helpers;assembly=Bingo.UI.Shared"
-			 xmlns:editor="clr-namespace:Bingo.UI.Shared.Views.Patterns;assembly=Bingo.UI.Shared"
-			 BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#2B2B2B}">
+<ContentView
+	x:Class="Bingo.UI.Shared.Views.Patterns.CreatePatternView"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
+	xmlns:editor="clr-namespace:Bingo.UI.Shared.Views.Patterns;assembly=Bingo.UI.Shared"
+	xmlns:helpers="clr-namespace:Bingo.UI.Shared.Helpers;assembly=Bingo.UI.Shared"
+	BackgroundColor="{AppThemeBinding Light=#FAFAFA,
+	                                  Dark=#2B2B2B}">
 
-	<Grid ColumnDefinitions="Auto,*"
-		  Padding="24"
-		  ColumnSpacing="32"
-		  VerticalOptions="Center"
-		  HorizontalOptions="Fill">
+	<Grid
+		Padding="24"
+		ColumnDefinitions="Auto,*"
+		ColumnSpacing="32"
+		HorizontalOptions="Center"
+		VerticalOptions="Center">
 
-		<!-- Left: Pattern Name + Actions -->
-		<VerticalStackLayout Grid.Column="0"
-							 Spacing="16"
-							 WidthRequest="280"
-							 VerticalOptions="Center"
-							 HorizontalOptions="Center">
-			<Label Text="Create New Pattern"
-				   FontSize="{OnIdiom Phone=18, Tablet=20, Desktop=22}"
-				   FontAttributes="Bold"
-				   TextColor="{AppThemeBinding Light=Black, Dark=White}" />
-			<Entry Placeholder="Pattern Name"
-				   Text="{Binding PatternName}" />
-			<HorizontalStackLayout Spacing="12"
-								   Margin="0,12">
-				<controls:IconButton IconName="button_save"
-									 Command="{Binding SaveCommand}"
-									 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
-				<controls:IconButton IconName="button_cancel"
-									 Command="{Binding CancelCommand}"
-									 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
+		<!--  Left: Pattern Name + Actions  -->
+		<VerticalStackLayout
+			Grid.Column="0"
+			HorizontalOptions="Center"
+			Spacing="16"
+			VerticalOptions="Center">
+			<Label
+				FontAttributes="Bold"
+				FontSize="{OnIdiom Phone=18,
+				                   Tablet=20,
+				                   Desktop=22}"
+				Text="Create New Pattern"
+				TextColor="{AppThemeBinding Light=Black,
+				                            Dark=White}" />
+			<Entry Placeholder="Pattern Name" Text="{Binding PatternName}" />
+			<HorizontalStackLayout Margin="0,12" Spacing="12">
+				<controls:IconButton
+					Command="{Binding SaveCommand}"
+					IconName="button_save"
+					IconSize="{OnIdiom Desktop=100,
+					                   Tablet=80,
+					                   Phone=60}" />
+				<controls:IconButton
+					Command="{Binding CancelCommand}"
+					IconName="button_cancel"
+					IconSize="{OnIdiom Desktop=100,
+					                   Tablet=80,
+					                   Phone=60}" />
 			</HorizontalStackLayout>
 		</VerticalStackLayout>
 
-		<!-- Right: Grid Editor -->
+		<!--  Right: Grid Editor  -->
 		<Grid Grid.Column="1">
 			<Grid.GestureRecognizers>
 				<TapGestureRecognizer Command="{x:Static helpers:NoOpCommand.Instance}" />

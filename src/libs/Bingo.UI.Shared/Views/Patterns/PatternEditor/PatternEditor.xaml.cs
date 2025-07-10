@@ -1,4 +1,6 @@
 using Bingo.Core.Patterns;
+using Microsoft.Maui.Controls.Shapes;
+using System.Diagnostics;
 
 namespace Bingo.UI.Shared.Views.Patterns;
 
@@ -30,6 +32,7 @@ public partial class PatternEditor : ContentView
 	public PatternEditor()
 	{
 		InitializeComponent();
+		PatternGrid.SizeChanged += (_, _) => EnforceSquareCells();
 		BuildGrid();
 	}
 
@@ -58,7 +61,10 @@ public partial class PatternEditor : ContentView
 
 				Border border = new()
 				{
-					// ... your existing styling
+					Background = Colors.LightGray,
+					Stroke = Colors.Gray,
+					StrokeThickness = 0.5,
+					StrokeShape = new RoundRectangle { CornerRadius = 2 },
 				};
 
 				var tap = new TapGestureRecognizer();
@@ -138,6 +144,24 @@ public partial class PatternEditor : ContentView
 		{
 			bool isActive = _cellMap.TryGetValue(pos, out var cell) && cell.IsActive;
 			_borderMap[pos].Background = isActive ? Colors.Goldenrod : Colors.LightGray;
+		}
+	}
+
+	private void EnforceSquareCells()
+	{
+		if (PatternGrid.Width <= 0 || PatternGrid.Height <= 0)
+			return;
+
+		Debug.WriteLine("[PatternEditor] Resizing");
+
+		int cellCount = Math.Max(PatternGridSettings.PatternRowCount, PatternGridSettings.PatternColCount);
+		double side = Math.Min(PatternGrid.Width, PatternGrid.Height);
+		double cellSize = side / cellCount;
+
+		foreach ((int r, int c) in _borderMap.Keys)
+		{
+			_borderMap[(r, c)].WidthRequest = cellSize;
+			_borderMap[(r, c)].HeightRequest = cellSize;
 		}
 	}
 }
