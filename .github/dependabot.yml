@@ -6,10 +6,42 @@
 version: 2
 updates:
   - package-ecosystem: "nuget"
-    directory: "/src/apps"
+    directory: "/src/apps/Bingo.Caller.App"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
   - package-ecosystem: "nuget"
-    directory: "/src/libs"
+    directory: "/src/apps/Bingo.Player.App"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.AppServices"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.Core"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.ImageProcessing"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.Infrastructure"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.Integrations"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.Services"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.UI.Shared"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "nuget"
+    directory: "/src/libs/Bingo.ViewModel"
+    schedule:
+      interval: "weekly"
