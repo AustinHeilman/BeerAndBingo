@@ -74,7 +74,7 @@ public partial class CallerMainPageViewModel : ObservableObject
 		_ = PatternVM.LoadPatternAsync("None");
 
 		ToggleToolsPanelCommand = new RelayCommand(() => IsToolsPanelVisible = !IsToolsPanelVisible);
-		NextCallCommand = new RelayCommand(() => _session.CallNext());
+		NextCallCommand = new RelayCommand(() => _session.CallNext(_repository?.ActivePattern?.GetUsedColumns()));
 		NextGameCommand = new RelayCommand(OnNextGame);
 
 		UndoPickCommand = new RelayCommand(_session.Undo);

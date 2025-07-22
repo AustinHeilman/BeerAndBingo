@@ -56,7 +56,30 @@ public class GameSessionState<T>
 	{
 		if (IsDone) return;
 
-		T next = _availableSet.First(); // Will throw if empty, but IsDone guards against that
+		T next = _availableSet.First();
+		CallItem(next);
+	}
+
+	public void CallNext(HashSet<int>? allowedColumns)
+	{
+		if ( allowedColumns is null || allowedColumns.Count == 0)
+		{
+			CallNext();
+			return;
+		}
+		if (IsDone) return;
+
+		var validPool = _availableSet
+			.Where(n => allowedColumns.Contains(GetColumnFor(n)))
+			.ToList();
+
+		if (validPool.Count == 0)
+		{
+			Debug.WriteLine("[CallNext] No valid picks for provided columns.");
+			return;
+		}
+
+		var next = validPool.First(); // or Random.Shared.Next(validPool.Count)
 		CallItem(next);
 	}
 
@@ -204,6 +227,14 @@ public class GameSessionState<T>
 			int j = rng.Next(i + 1);
 			(list[i], list[j]) = (list[j], list[i]);
 		}
+	}
+
+	private static int GetColumnFor(T item)
+	{
+		if (item is int number)
+			return (number - 1) / 15;
+
+		throw new InvalidOperationException("[GameSessionState] GetColumnFor: Unsupported type");
 	}
 
 	#endregion
