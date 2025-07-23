@@ -1,56 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-			 xmlns:core="clr-namespace:Bingo.Core.Patterns;assembly=Bingo.Core"
-			 xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
-			 xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
-			 xmlns:patternrow="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternList;assembly=Bingo.UI.Shared"
-			 x:Class="Bingo.UI.Shared.Views.Patterns.LoadPatternView"
-			 x:Name="Root">
+<ContentView
+	x:Class="Bingo.UI.Shared.Views.Patterns.LoadPatternView"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:controls="clr-namespace:Bingo.UI.Shared.Controls;assembly=Bingo.UI.Shared"
+	xmlns:core="clr-namespace:Bingo.Core.Patterns;assembly=Bingo.Core"
+	xmlns:patternrow="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternList;assembly=Bingo.UI.Shared"
+	xmlns:patterns="clr-namespace:Bingo.UI.Shared.Views.Patterns.PatternDisplay;assembly=Bingo.UI.Shared"
+	x:Name="Root">
 
-	<Grid ColumnDefinitions="1.2*,1.8*"
-		  RowDefinitions="*,Auto"
-		  Padding="12"
-		  ColumnSpacing="18"
-		  RowSpacing="18">
+	<Grid
+		Padding="12"
+		ColumnDefinitions="1.2*,1.8*"
+		ColumnSpacing="8"
+		RowDefinitions="*,Auto"
+		RowSpacing="18">
 
-		<!-- Pattern List -->
-		<CollectionView Grid.Column="0"
-						ItemsSource="{Binding SavedPatterns}"
-						VerticalOptions="Fill"
-						BackgroundColor="{AppThemeBinding Light=#FDFDFD, Dark=#1A1A1A}">
+		<!--  Pattern List  -->
+		<CollectionView
+			Grid.Column="0"
+			BackgroundColor="Transparent"
+			HorizontalOptions="Fill"
+			ItemsSource="{Binding SavedPatterns}"
+			VerticalOptions="Fill">
 			<CollectionView.ItemTemplate>
 				<DataTemplate x:DataType="core:BingoPattern">
-					<patternrow:PatternRow Pattern="{Binding .}"
-										   SelectedPattern="{Binding Source={x:Reference Root}, Path=SelectedPattern}" />
+					<patternrow:PatternRow Pattern="{Binding .}" SelectedPattern="{Binding Source={x:Reference Root}, Path=SelectedPattern}" />
 				</DataTemplate>
 			</CollectionView.ItemTemplate>
 		</CollectionView>
 
-		<!-- Pattern Preview -->
-		<Border Grid.Column="1"
-				BackgroundColor="{AppThemeBinding Light=#EFEFEF, Dark=#2A2A2A}"
-				Stroke="DarkGray"
-				StrokeThickness="1"
-				Padding="12"
-				HorizontalOptions="Center"
-				VerticalOptions="Center">
+		<!--  Pattern Preview  -->
+		<Border
+			Grid.Column="1"
+			Padding="0"
+			BackgroundColor="Transparent"
+			HorizontalOptions="Center"
+			Stroke="DarkGray"
+			StrokeThickness="1"
+			VerticalOptions="Center">
 			<patterns:PatternDisplayView PatternCells="{Binding SelectedPattern.Cells}" />
 		</Border>
 
-		<!-- Buttons -->
-		<HorizontalStackLayout Grid.Row="1"
-							   Grid.ColumnSpan="2"
-							   HorizontalOptions="Center"
-							   Spacing="24">
-			<controls:IconButton IconName="button_load_pattern"
-								 Command="{Binding ConfirmLoadCommand}"
-								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}"
-								 IsEnabled="{Binding SelectedPattern}" />
+		<!--  Buttons  -->
+		<HorizontalStackLayout
+			Grid.Row="1"
+			Grid.ColumnSpan="2"
+			HorizontalOptions="Center"
+			Spacing="24">
+			<controls:IconButton
+				Command="{Binding ConfirmLoadCommand}"
+				IconName="button_load_pattern"
+				IconSize="{OnIdiom Desktop=100,
+				                   Tablet=80,
+				                   Phone=60}"
+				IsEnabled="{Binding SelectedPattern}" />
 
-			<controls:IconButton IconName="button_close"
-								 Command="{Binding CloseCommand}"
-								 IconSize="{OnIdiom Desktop=100, Tablet=80, Phone=60}" />
+			<controls:IconButton
+				Command="{Binding CloseCommand}"
+				IconName="button_close"
+				IconSize="{OnIdiom Desktop=100,
+				                   Tablet=80,
+				                   Phone=60}" />
 		</HorizontalStackLayout>
 	</Grid>
 </ContentView>

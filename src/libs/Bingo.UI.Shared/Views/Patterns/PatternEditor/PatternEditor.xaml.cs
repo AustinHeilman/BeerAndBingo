@@ -64,7 +64,7 @@ public partial class PatternEditor : ContentView
 					Background = Colors.LightGray,
 					Stroke = Colors.Gray,
 					StrokeThickness = 0.5,
-					StrokeShape = new RoundRectangle { CornerRadius = 2 },
+					StrokeShape = new Rectangle { },
 				};
 
 				TapGestureRecognizer tap = new();
