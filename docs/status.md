@@ -7,6 +7,17 @@ where things stand.
 
 ## Recent work (most recent first)
 
+- **Upgraded to MAUI 10 / net10.0** (2026-08-05): updated the MAUI workload from 9.0.120 to the
+  10.x band (`dotnet workload update`), retargeted `Bingo.UI.Shared`, `Bingo.Caller.App`, and
+  `Bingo.Player.App` from `net9.0-*` to `net10.0-*`, and bumped `Microsoft.Maui.Controls` →
+  10.0.90, `SkiaSharp`/`SkiaSharp.Views.Maui.Controls` → 4.151.1, `SkiaSharp.Extended.UI.Maui` →
+  3.0.0. Had to add an explicit `Microsoft.Maui.Controls.Compatibility` 10.0.90 package reference
+  to `Bingo.UI.Shared` — without it, the Windows TFM transitively resolved
+  `Microsoft.Maui.Controls.Compatibility`/`Core`/`Xaml` to a stale `9.0.82` and failed to copy
+  `WebView2Loader.dll` (missing from that stale package on disk). Full solution now builds clean
+  (0 errors) across Android/iOS/MacCatalyst/Windows and all 54 unit tests pass. As a side effect,
+  the workload update also resolved the Android SDK gap below (it now targets API 36, which *is*
+  installed, instead of API 35, which wasn't).
 - Added a winner sound effect (currently placeholder: Windows 3.1 startup sound) for when a
   player calls bingo.
 - Added column-calling restrictions for patterns — e.g. a four-corners pattern now only calls
@@ -29,30 +40,19 @@ where things stand.
 ## Known gaps / open questions
 
 - Winner sound is a placeholder — needs a real sound asset.
-- **Android SDK platform 35 is not installed** on this dev machine
-  (`C:\Program Files (x86)\Android\android-sdk\platforms\android-35` is missing `android.jar`).
-  This blocks building for `net9.0-android` — the primary target — even though the `android`
-  MAUI workload itself is installed. Fix with:
-  `dotnet build -t:InstallAndroidDependencies -f net9.0-android "-p:AndroidSdkDirectory=C:\Program Files (x86)\Android\android-sdk"`
-  (or install API 35 via Android Studio's SDK Manager). Windows/iOS/MacCatalyst targets build fine.
 - `Bingo.UI.Shared.Tests.csproj` exists on disk but **is not referenced in `BeerAndBingo.sln`** —
   it was skipped by solution-wide build/test/package commands until this was noticed. Worth
   adding it to the `.sln`.
-- **NuGet packages updated 2026-08-05** (see git history) to the latest versions that work with
-  the currently-installed **MAUI workload 9.0.120** (`net9.0-*` TFMs): `Microsoft.Maui.Controls`
-  → 9.0.120, `CommunityToolkit.Mvvm` → 8.4.2, `SkiaSharp`/`SkiaSharp.Views.Maui.Controls` →
-  3.119.4, `Microsoft.Extensions.*`/`System.Text.Json` → 10.0.10, `Microsoft.ML` → 5.0.0,
-  `TesseractOcrMaui` → 1.5.2, `Microsoft.NET.Test.Sdk` → 18.8.1, `coverlet.collector` → 10.0.1,
-  `xunit.runner.visualstudio` → 3.1.5. All lib/test builds pass; app builds pass on
-  Windows/iOS/MacCatalyst (Android blocked by the SDK gap above, unrelated to these bumps).
-  - **Not bumped**: `Microsoft.Maui.Controls` has a true-latest of 10.0.90, but that requires
-    MAUI workload 10.x (confirmed via a failed test build: error `MA003`). Moving to it means
-    running `dotnet workload update` to the 10.x band and likely retargeting `net9.0-*` →
-    `net10.0-*` — a deliberate upgrade, not a routine package bump. `SkiaSharp.Extended.UI.Maui`
-    was left at 2.0.0 (latest 2.x; true latest 3.0.0 is untested against the 9.x MAUI workload).
+- All NuGet packages are now at latest-stable as of 2026-08-05 (see git history for the two
+  commits: the initial 9.x-workload-safe bump, then the MAUI 10 upgrade above). No known
+  version-drift gaps remain.
   - No `global.json`/central package management — worth considering if version drift across
     projects becomes a recurring papercut.
 - Player app scope/roadmap not yet defined here — fill in once decided.
+- Now that the toolchain is on MAUI 10, keep an eye on the `CS0618` obsolete-API warnings that
+  showed up in the upgrade build (`ViewExtensions.TranslateTo/ScaleTo/FadeTo` →
+  `*Async` variants, `Page.DisplayAlert` → `DisplayAlertAsync`) — non-blocking today, but worth
+  migrating next time those call sites are touched.
 
 ## Next steps
 

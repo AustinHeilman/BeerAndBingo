@@ -1,9 +1,9 @@
 # Architecture
 
 Beer & Bingo is a .NET MAUI solution (`src/BeerAndBingo.sln`) split into two apps and a set of
-shared libraries. The apps target `net9.0-android`, `net9.0-ios`, `net9.0-maccatalyst`, and
-`net9.0-windows10.0.19041.0`; the class libraries mostly target plain `net9.0` except where they
-need MAUI (`Bingo.UI.Shared`).
+shared libraries. The apps and `Bingo.UI.Shared` target `net10.0-android`, `net10.0-ios`,
+`net10.0-maccatalyst`, and `net10.0-windows10.0.19041.0` (MAUI 10, upgraded 2026-08-05 — see
+`docs/status.md`); the other class libraries have no MAUI dependency and stay on plain `net9.0`.
 
 ## Apps (`src/apps`)
 
