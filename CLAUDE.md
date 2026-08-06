@@ -7,7 +7,7 @@ Guidance for Claude Code sessions working in this repo. See `docs/` for details:
 ## What this is
 
 Beer & Bingo — a .NET MAUI solution with two apps (`Bingo.Caller.App`, `Bingo.Player.App`) and a
-set of shared class libraries under `src/libs`. Solution file: `src/BeerAndBingo.sln`.
+set of shared class libraries under `src/libs`. Solution file: `BeerAndBingo.sln` (repo root).
 
 ## Conventions
 
@@ -24,9 +24,9 @@ set of shared class libraries under `src/libs`. Solution file: `src/BeerAndBingo
 ## Build/test
 
 ```
-dotnet restore src/BeerAndBingo.sln
-dotnet build src/BeerAndBingo.sln
-dotnet test src/BeerAndBingo.sln
+dotnet restore BeerAndBingo.sln
+dotnet build BeerAndBingo.sln
+dotnet test BeerAndBingo.sln
 ```
 
 Full details, including per-app Android build/run commands and workload prerequisites, are in

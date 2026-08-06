@@ -22,8 +22,8 @@
 ## Restore & build the whole solution
 
 ```
-dotnet restore src/BeerAndBingo.sln
-dotnet build src/BeerAndBingo.sln
+dotnet restore BeerAndBingo.sln
+dotnet build BeerAndBingo.sln
 ```
 
 ## Build/run a specific app
@@ -39,13 +39,13 @@ dotnet build src/apps/Bingo.Player.App/Bingo.Player.App.csproj -f net10.0-androi
 ```
 
 To deploy to a connected device/emulator, use `dotnet build -t:Run -f net10.0-android` from the
-app's project directory, or open `src/BeerAndBingo.sln` in Visual Studio and select the Android
+app's project directory, or open `BeerAndBingo.sln` in Visual Studio and select the Android
 target + device.
 
 ## Run tests
 
 ```
-dotnet test src/BeerAndBingo.sln
+dotnet test BeerAndBingo.sln
 ```
 
 Or an individual test project, e.g.:

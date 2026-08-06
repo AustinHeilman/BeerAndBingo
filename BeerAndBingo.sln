@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36212.18
@@ -7,41 +7,41 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{18575EE2-FEA8-4BFA-90C5-D3F5D02C68F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Core", "libs\Bingo.Core\Bingo.Core.csproj", "{6D81A4FC-7A6C-D625-0848-547C009EFD52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Core", "src\libs\Bingo.Core\Bingo.Core.csproj", "{6D81A4FC-7A6C-D625-0848-547C009EFD52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Integrations", "libs\Bingo.Integrations\Bingo.Integrations.csproj", "{1F4BB1D1-187C-40AD-3553-A2D6E294D350}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Integrations", "src\libs\Bingo.Integrations\Bingo.Integrations.csproj", "{1F4BB1D1-187C-40AD-3553-A2D6E294D350}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.AppServices", "libs\Bingo.AppServices\Bingo.AppServices.csproj", "{8348F9A2-2EC3-09F2-41C6-C62D36157E05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.AppServices", "src\libs\Bingo.AppServices\Bingo.AppServices.csproj", "{8348F9A2-2EC3-09F2-41C6-C62D36157E05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ImageProcessing", "libs\Bingo.ImageProcessing\Bingo.ImageProcessing.csproj", "{59B6D4A7-87B3-CCBB-2730-91AEC0CD1152}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ImageProcessing", "src\libs\Bingo.ImageProcessing\Bingo.ImageProcessing.csproj", "{59B6D4A7-87B3-CCBB-2730-91AEC0CD1152}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Infrastructure", "libs\Bingo.Infrastructure\Bingo.Infrastructure.csproj", "{621B76F2-DEAD-6A3A-CDBB-26975F1785D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Infrastructure", "src\libs\Bingo.Infrastructure\Bingo.Infrastructure.csproj", "{621B76F2-DEAD-6A3A-CDBB-26975F1785D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.UI.Shared", "libs\Bingo.UI.Shared\Bingo.UI.Shared.csproj", "{E242AC1B-AC92-A165-535E-EDC22CBD295C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.UI.Shared", "src\libs\Bingo.UI.Shared\Bingo.UI.Shared.csproj", "{E242AC1B-AC92-A165-535E-EDC22CBD295C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ViewModel", "libs\Bingo.ViewModel\Bingo.ViewModel.csproj", "{187CA89A-A1B3-6DF1-67D2-7B40D1DD0291}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ViewModel", "src\libs\Bingo.ViewModel\Bingo.ViewModel.csproj", "{187CA89A-A1B3-6DF1-67D2-7B40D1DD0291}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Core.Tests", "tests\Bingo.Core.Tests\Bingo.Core.Tests.csproj", "{CB0442EE-0A12-7C02-2FE6-97BFE72EDF6B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Core.Tests", "src\tests\Bingo.Core.Tests\Bingo.Core.Tests.csproj", "{CB0442EE-0A12-7C02-2FE6-97BFE72EDF6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.AppServices.Tests", "tests\Bingo.AppServices.Tests\Bingo.AppServices.Tests.csproj", "{DC1436A2-AEEA-2E74-80A4-A22212D05632}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.AppServices.Tests", "src\tests\Bingo.AppServices.Tests\Bingo.AppServices.Tests.csproj", "{DC1436A2-AEEA-2E74-80A4-A22212D05632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ImageProcessing.Tests", "tests\Bingo.ImageProcessing.Tests\Bingo.ImageProcessing.Tests.csproj", "{E0C4F30D-6553-C045-7042-5BC97BF0B80A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ImageProcessing.Tests", "src\tests\Bingo.ImageProcessing.Tests\Bingo.ImageProcessing.Tests.csproj", "{E0C4F30D-6553-C045-7042-5BC97BF0B80A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Infrastructure.Tests", "tests\Bingo.Infrastructure.Tests\Bingo.Infrastructure.Tests.csproj", "{FCAF2864-0087-94D6-D7D3-D5F7478BD6B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Infrastructure.Tests", "src\tests\Bingo.Infrastructure.Tests\Bingo.Infrastructure.Tests.csproj", "{FCAF2864-0087-94D6-D7D3-D5F7478BD6B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Integrations.Tests", "tests\Bingo.Integrations.Tests\Bingo.Integrations.Tests.csproj", "{53D203C5-C6FE-0AC3-68BE-09D19892EA1D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Integrations.Tests", "src\tests\Bingo.Integrations.Tests\Bingo.Integrations.Tests.csproj", "{53D203C5-C6FE-0AC3-68BE-09D19892EA1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ViewModel.Tests", "tests\Bingo.ViewModel.Tests\Bingo.ViewModel.Tests.csproj", "{BF1DAC77-DDBF-2FE8-DBA5-0BB0FDD13BCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.ViewModel.Tests", "src\tests\Bingo.ViewModel.Tests\Bingo.ViewModel.Tests.csproj", "{BF1DAC77-DDBF-2FE8-DBA5-0BB0FDD13BCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Caller.App", "apps\Bingo.Caller.App\Bingo.Caller.App.csproj", "{02E33551-0D5E-4E80-BF66-F1390A13F43A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Caller.App", "src\apps\Bingo.Caller.App\Bingo.Caller.App.csproj", "{02E33551-0D5E-4E80-BF66-F1390A13F43A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Player.App", "apps\Bingo.Player.App\Bingo.Player.App.csproj", "{E7C10FA8-43B8-18C1-4F38-04E852B0B404}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Player.App", "src\apps\Bingo.Player.App\Bingo.Player.App.csproj", "{E7C10FA8-43B8-18C1-4F38-04E852B0B404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Services", "libs\Bingo.Services\Bingo.Services.csproj", "{446FECB3-E06F-41FF-9871-9487B1190E4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Services", "src\libs\Bingo.Services\Bingo.Services.csproj", "{446FECB3-E06F-41FF-9871-9487B1190E4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{E267AD58-C573-4C81-B397-49D669E77953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Services.Tests", "tests\Bingo.Services.Tests\Bingo.Services.Tests.csproj", "{4560938C-2FF9-4B79-9E99-F38829325992}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bingo.Services.Tests", "src\tests\Bingo.Services.Tests\Bingo.Services.Tests.csproj", "{4560938C-2FF9-4B79-9E99-F38829325992}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
