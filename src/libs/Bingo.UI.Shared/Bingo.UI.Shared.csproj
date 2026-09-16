@@ -30,11 +30,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.90" />
-		<PackageReference Include="SkiaSharp" Version="4.151.1" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.101" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.101" />
+		<PackageReference Include="SkiaSharp" Version="4.152.0" />
 		<PackageReference Include="SkiaSharp.Extended.UI.Maui" Version="3.0.0" />
-		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="4.151.1" />
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="4.152.0" />
 	</ItemGroup>
 
 	<ItemGroup>

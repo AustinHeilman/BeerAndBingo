@@ -1,12 +1,27 @@
 # Project Status
 
-Last updated: 2026-08-05
+Last updated: 2026-09-16
 
 This is a living doc — update it as work resumes/pauses so future sessions (human or Claude) know
 where things stand.
 
 ## Recent work (most recent first)
 
+- **Retargeted remaining libs/tests to net10.0 + full NuGet update** (2026-09-16): the class
+  libraries under `src/libs` (`Bingo.Core`, `Bingo.AppServices`, `Bingo.ImageProcessing`,
+  `Bingo.Infrastructure`, `Bingo.Integrations`, `Bingo.Services`, `Bingo.ViewModel`) and all 8 test
+  projects were still on `net9.0` after the MAUI 10 upgrade below — bumped them all to `net10.0`.
+  Updated every outdated top-level package to latest: `Microsoft.Extensions.*`/`System.Text.Json`
+  10.0.10 → 10.0.12, `Microsoft.Maui.Controls`/`.Compatibility` 10.0.90 → 10.0.101, `SkiaSharp`/
+  `SkiaSharp.Views.Maui.Controls` 4.151.1 → 4.152.0, `SkiaSharp` in `Bingo.ImageProcessing` 3.119.4
+  → 4.152.0 (now matches the `SkiaSharp` major version used in `Bingo.UI.Shared`),
+  `Microsoft.NET.Test.Sdk` 18.8.1 → 18.10.1, `xunit.runner.visualstudio` 3.1.5 → 4.0.0. Also
+  dropped the explicit `System.Text.Json` `PackageReference` from `Bingo.AppServices` and
+  `Bingo.Infrastructure` — NuGet's new net10.0 pruning warning (NU1510) flagged it as redundant
+  since it now ships in the shared framework. Full solution restores/builds clean (0 errors,
+  pre-existing warnings only) and all tests pass. `Microsoft.ML`, `TesseractOcrMaui`,
+  `CommunityToolkit.Mvvm`, `Moq`, `xunit`, `coverlet.collector` were already at latest and
+  untouched.
 - **Upgraded to MAUI 10 / net10.0** (2026-08-05): updated the MAUI workload from 9.0.120 to the
   10.x band (`dotnet workload update`), retargeted `Bingo.UI.Shared`, `Bingo.Caller.App`, and
   `Bingo.Player.App` from `net9.0-*` to `net10.0-*`, and bumped `Microsoft.Maui.Controls` →
@@ -43,9 +58,9 @@ where things stand.
 - `Bingo.UI.Shared.Tests.csproj` exists on disk but **is not referenced in `BeerAndBingo.sln`** —
   it was skipped by solution-wide build/test/package commands until this was noticed. Worth
   adding it to the `.sln`.
-- All NuGet packages are now at latest-stable as of 2026-08-05 (see git history for the two
-  commits: the initial 9.x-workload-safe bump, then the MAUI 10 upgrade above). No known
-  version-drift gaps remain.
+- All NuGet packages are now at latest-stable as of 2026-09-16 (see git history: the initial
+  9.x-workload-safe bump, the MAUI 10 upgrade, then the net10.0 retarget + full package update
+  above). No known version-drift gaps remain.
   - No `global.json`/central package management — worth considering if version drift across
     projects becomes a recurring papercut.
 - Player app scope/roadmap not yet defined here — fill in once decided.
